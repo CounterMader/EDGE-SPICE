@@ -1,0 +1,5 @@
+write down a lexer[]
+write down a pareser[]
+add linear algebra library[]
+
+our first goal is to take an pure resistive networks netlist so parse it and build MNA matrix;
