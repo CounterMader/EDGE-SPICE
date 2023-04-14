@@ -4,6 +4,7 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include "parser.tab.h"
+    #include "log.h"
 
     #define  RLC 1
     #define  I_IV 2
@@ -58,7 +59,10 @@ PREFIX      ({FEMNTO}|{PICO}|{NANO}|{MICRO}|{MILLI}|{CENTI}|{KILO}|{MEGA}|{GIGA}
         value_num = 0;
         return '\n';
         }
-        
+
+[Gg]"2"                     {
+                            return G2;
+                            }        
 <INITIAL>^"R"{ELM_ID}/{WS}  {
                             yylval.sv = malloc(yyleng * sizeof(char));
                             strcpy(yylval.sv, yytext);
@@ -159,6 +163,9 @@ PREFIX      ({FEMNTO}|{PICO}|{NANO}|{MICRO}|{MILLI}|{CENTI}|{KILO}|{MEGA}|{GIGA}
                                 case 'P':   yylval.dv = 1e+15; break;
                             }
                             return T_PREFIX;
+                            }
+<INITIAL>".END"             {
+                                return END;
                             }
 .                           {yyerror("ERROR!\n");}
 %%
