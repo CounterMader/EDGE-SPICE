@@ -51,5 +51,5 @@ int node_insert(HASH_TAB *tab, char *key, int number);
 ELM_TAB *search_element(HASH_TAB *tab, char *key);
 NODE_TAB *search_node(HASH_TAB *tab, char *key);
 int node_exist(HASH_TAB *htab, char *nid);
-void print_element_table(HASH_TAB *tab);
-void print_node_table(HASH_TAB *tab);
+void print_element_table(HASH_TAB *tab, FILE *fp);
+void print_node_table(HASH_TAB *tab, FILE *fp);

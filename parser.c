@@ -16,9 +16,7 @@ int parse(const char *file_name){
         log_fatal("can't open %s",file_name);
         exit(EXIT_FAILURE);
     }
-    htab = maketab(53, 5, symtab_hash_pjw, node_cmp, elm_cmp);
-    circuit = makeckt();
-    log_trace("SPICE initialization SUCCESS!");
+    
     yyparse();
 }
 
@@ -41,7 +39,7 @@ void add_V(char *eid, int node1, int node2, double value){
 }
 
 void add_I(char *eid, int node1, int node2, double value, int group){
-    //Consistency Requirement chek FUTURE!
+    //Consistency Requirement check FUTURE!
     if(elm_insert(htab, eid, node1, node2, value, group)){
         log_error("Duplicated Current Source : %s in line %d",eid, (yylineno - 1));
         exit(EXIT_FAILURE);
@@ -56,5 +54,5 @@ void add_node(int num){
     }
 }
 void yyerror(char *msg){
-    log_fatal("%s",msg);
+    log_fatal("%s in line %d", msg, yylineno);
 }

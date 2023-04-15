@@ -7,23 +7,68 @@
 #include "hash.h"
 #include "defs.h"
 
-extern FILE* yyin;
-extern int yyparse();
+
+/*
+    Work Flow:
+        1)  Initializing Simulator:
+              -Initializing Symbol table
+              -Initializing Circuit structure
+
+        2)  Parsing netlist and adding elements to symbol table
+
+        3)  Get MNA Matrix size and add it to Circuit structure
+
+        4)  Initializing MNA and RHS Matrices with given size
+
+        5)  Based on Analysis mode(ac, dc, Transient):
+              -Allocate enough memory for each node voltage
+              -Allocate enough memory for each Group2 Elemts current
+
+        6)  Stamping Elements to MNA Matrix
+
+        7)  Solve the Matrix
+
+        8)  Update the voltages and currents in symbol table
+
+        9)  Printing the Result to user given file
+
+        10) Free every matrices and structures we have allocated
+*/
 
 int main(int argc, char **argv){
-    if(argc > 1){
+    
+    switch (argc)
+    {
+    case 1:
+        printf("EDGE-SPICE v1.0\nAuther : Ali Esmaeily - University of Tabriz - Spring 2023\n"
+               "Use Following Format : espice <netlist> <output>\n");
+        return 0;
+        break;
+    case 2:
+        //Log redirection
+        FILE *log = fopen("log","w");
+        log_add_fp(log, LOG_TRACE);
+        log_set_level(LOG_ERROR);
+
+        //symbol table and circuit structure initial
+        htab = maketab(53, 5, symtab_hash_pjw, node_cmp, elm_cmp);
+        circuit = makeckt();
+        log_trace("SPICE initialization SUCCESS!");
+
+        //Parsing netlist
         parse(argv[1]);
+        print_element_table(htab, log);
+        print_node_table(htab, log);
+
+        //MNA size
+        get_MNA_size(circuit, htab);
+        log_trace("MNA matrix size is %d", circuit -> MNA_size);
+
+        free_hash_table(htab);
+        free_ckt(circuit);
+        return 0;
+   
+    default:
+        break;
     }
-    print_element_table(htab);
-    printf("-------------------------\n");
-    print_node_table(htab);
-    //printf("%s value is : %d\n",argv[2],search_node(htab, argv[2]) -> number);
-    printf("-------------------------\n");
-    printf("Node number = %d\n",htab -> n_numsyms);
-    printf("Element number = %d\n",htab -> e_numsyms);
-    get_MNA_size(circuit, htab);
-    printf("MNA matrix size is %d\n", circuit -> MNA_size);
-    free_hash_table(htab);
-    //free_ckt(circuit);
-    return 0;
 }

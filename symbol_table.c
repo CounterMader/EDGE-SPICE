@@ -291,28 +291,32 @@ int node_exist(HASH_TAB *htab, char *nid){
     return 1;
 }
 
-void print_element_table(HASH_TAB *tab){
+void print_element_table(HASH_TAB *tab, FILE *fp){
     for(int i = 0;i < tab -> e_size;i++){
         if(tab -> e_table[i] == NULL)
             continue;
         ELM_TAB *temp = tab -> e_table[i];
         while(temp){
-            printf("%d\teid = %s\tnode : %d -> %d\tvalue = %f\tg:%d\n",tab -> hash(temp -> key) % tab -> e_size,
+            fprintf(fp,"%d\teid = %s\tnode : %d -> %d\tvalue = %f\tg:%d\n",tab -> hash(temp -> key) % tab -> e_size,
                                                                        temp -> key, temp -> node1, temp ->node2,
                                                                        temp -> value, temp -> group);
             temp = temp -> next;
         }
     }
+    fprintf(fp, "Element number = %d\n", tab -> e_numsyms);
+    fprintf(fp, "-------------------------\n");
 }
 
-void print_node_table(HASH_TAB *tab){
+void print_node_table(HASH_TAB *tab, FILE *fp){
     for(int i = 0;i < tab -> n_size;i++){
         if(tab -> n_table[i] == NULL)
             continue;
         NODE_TAB *temp = tab -> n_table[i];
         while(temp){
-            printf("%d\tnid = %s\tnumber = %d\n",tab -> hash(temp -> key) % tab -> n_size, temp -> key, temp -> number);
+            fprintf(fp,"%d\tnid = %s\tnumber = %d\n",tab -> hash(temp -> key) % tab -> n_size, temp -> key, temp -> number);
             temp = temp -> next;
         }
     }
+    fprintf(fp, "Node number = %d\n", tab -> n_numsyms);
+    fprintf(fp, "-------------------------\n");
 }

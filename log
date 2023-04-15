@@ -1,0 +1,29 @@
+2023-04-15 05:46:58 TRACE main.c:56: SPICE initialization SUCCESS!
+2023-04-15 05:46:58 TRACE parser.y:101: Current Source : I1 ,node 3 --> 1 ,value = 3.000000 A.
+2023-04-15 05:46:58 TRACE parser.y:101: Current Source : I2 ,node 0 --> 2 ,value = 1.000000 A.
+2023-04-15 05:46:58 TRACE parser.y:118: Voltage Source : V1 ,node 1 --> 0 ,value = 2.000000 V.
+2023-04-15 05:46:58 TRACE parser.y:118: Voltage Source : V2 ,node 3 --> 0 ,value = 6.000000 V.
+2023-04-15 05:46:58 TRACE parser.y:57: Resistor : R1 ,node 1 --> 2 ,value = 1.000000 OHM.
+2023-04-15 05:46:58 TRACE parser.y:57: Resistor : R2 ,node 2 --> 3 ,value = 2.000000 OHM.
+2023-04-15 05:46:58 TRACE parser.y:57: Resistor : R3 ,node 2 --> 0 ,value = 2.000000 OHM.
+0	eid = V1	node : 1 -> 0	value = 2.000000	g:2
+1	eid = V2	node : 3 -> 0	value = 6.000000	g:2
+1	eid = R1	node : 1 -> 2	value = 1.000000	g:2
+2	eid = I1	node : 3 -> 1	value = 3.000000	g:1
+2	eid = R2	node : 2 -> 3	value = 2.000000	g:2
+3	eid = I2	node : 0 -> 2	value = 1.000000	g:1
+3	eid = R3	node : 2 -> 0	value = 2.000000	g:2
+Element number = 7
+-------------------------
+48	nid = 0	number = 0
+49	nid = 1	number = 1
+50	nid = 2	number = 2
+51	nid = 3	number = 3
+Node number = 4
+-------------------------
+2023-04-15 05:46:58 TRACE main.c:65: MNA matrix size is 8
+2023-04-15 05:46:58 TRACE symbol_table.c:133: Symbol table free SUCCESS!
+2023-04-15 05:46:58 TRACE ESmat.c:80: Matrix Already NULL!
+2023-04-15 05:46:58 TRACE ESmat.c:80: Matrix Already NULL!
+2023-04-15 05:46:58 TRACE ESmat.c:80: Matrix Already NULL!
+2023-04-15 05:46:58 TRACE circuit.c:31: Circuit structure free SUCCESS!

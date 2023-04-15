@@ -76,6 +76,10 @@ ES_mat *ES_mat_cp(ES_mat *m){
 */
 
 void ES_mat_free(ES_mat *mat){
+    if(mat == NULL){
+        log_trace("Matrix Already NULL!");
+        return;
+    }
     int i;
     for(i = 0; i < mat -> num_rows; ++i){
         free(mat -> data[i]);
