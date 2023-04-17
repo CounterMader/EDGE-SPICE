@@ -53,6 +53,37 @@ void add_node(int num){
         node_insert(htab,buf,num);
     }
 }
+
+void set_simultaor_dc(){
+    if(!(circuit -> simulate_type == NULL_SYM)){
+        log_error("SIMULATOR Already SET!");
+        return;
+    }
+
+    circuit -> simulate_type = DC_SYM;
+
+    node_voltage_initial(htab, 1);
+    element_current_initial(htab, 1);
+    log_trace("current and voltage allocation success!");
+}
+
+void set_simultaor_tran(double Tstop, double Tstep){
+    if(!(circuit -> simulate_type == NULL_SYM)){
+        log_error("SIMULATOR Already SET!");
+        return;
+    }
+
+    circuit -> simulate_type = TRAN_SYM;
+    circuit -> Tstart = 0;
+    circuit -> Tstep = Tstep;
+    circuit -> Tstop = Tstop;
+
+    node_voltage_initial(htab, (int)(Tstop/Tstep));
+    element_current_initial(htab, (int)(Tstop/Tstep));
+    log_trace("current and voltage allocation success! %d, Tstep = %f, Tstop = %f",(int)(Tstop/Tstep),circuit -> Tstep, circuit -> Tstop);
+
+}
+
 void yyerror(char *msg){
     log_fatal("%s in line %d", msg, yylineno);
 }

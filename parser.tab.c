@@ -118,17 +118,22 @@ enum yysymbol_kind_t
   YYSYMBOL_INTEGER = 10,                   /* INTEGER  */
   YYSYMBOL_END = 11,                       /* END  */
   YYSYMBOL_G2 = 12,                        /* G2  */
-  YYSYMBOL_13_n_ = 13,                     /* '\n'  */
-  YYSYMBOL_YYACCEPT = 14,                  /* $accept  */
-  YYSYMBOL_netlist = 15,                   /* netlist  */
-  YYSYMBOL_statement = 16,                 /* statement  */
-  YYSYMBOL_element = 17,                   /* element  */
-  YYSYMBOL_resistor = 18,                  /* resistor  */
-  YYSYMBOL_capacitor = 19,                 /* capacitor  */
-  YYSYMBOL_inductor = 20,                  /* inductor  */
-  YYSYMBOL_current_source = 21,            /* current_source  */
-  YYSYMBOL_voltage_source = 22,            /* voltage_source  */
-  YYSYMBOL_value = 23                      /* value  */
+  YYSYMBOL_DC = 13,                        /* DC  */
+  YYSYMBOL_TRAN = 14,                      /* TRAN  */
+  YYSYMBOL_15_n_ = 15,                     /* '\n'  */
+  YYSYMBOL_YYACCEPT = 16,                  /* $accept  */
+  YYSYMBOL_netlist = 17,                   /* netlist  */
+  YYSYMBOL_statement = 18,                 /* statement  */
+  YYSYMBOL_control = 19,                   /* control  */
+  YYSYMBOL_element = 20,                   /* element  */
+  YYSYMBOL_resistor = 21,                  /* resistor  */
+  YYSYMBOL_capacitor = 22,                 /* capacitor  */
+  YYSYMBOL_inductor = 23,                  /* inductor  */
+  YYSYMBOL_current_source = 24,            /* current_source  */
+  YYSYMBOL_voltage_source = 25,            /* voltage_source  */
+  YYSYMBOL_dc = 26,                        /* dc  */
+  YYSYMBOL_tran = 27,                      /* tran  */
+  YYSYMBOL_value = 28                      /* value  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -456,19 +461,19 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   33
+#define YYLAST   36
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  14
+#define YYNTOKENS  16
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  10
+#define YYNNTS  13
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  24
+#define YYNRULES  29
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  40
+#define YYNSTATES  48
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   267
+#define YYMAXUTOK   269
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -483,7 +488,7 @@ union yyalloc
 static const yytype_int8 yytranslate[] =
 {
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      13,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+      15,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -508,16 +513,16 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11,    12
+       5,     6,     7,     8,     9,    10,    11,    12,    13,    14
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_int8 yyrline[] =
+static const yytype_uint8 yyrline[] =
 {
-       0,    27,    27,    28,    29,    31,    32,    33,    34,    38,
-      39,    40,    41,    42,    46,    53,    63,    70,    80,    87,
-      97,   104,   114,   123,   124
+       0,    27,    27,    28,    29,    31,    32,    33,    34,    35,
+      39,    40,    44,    45,    46,    47,    48,    52,    59,    69,
+      76,    86,    93,   103,   110,   120,   129,   135,   140,   141
 };
 #endif
 
@@ -534,9 +539,10 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
 static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "E_R", "E_C", "E_L",
-  "E_I", "E_V", "DECIMAL", "T_PREFIX", "INTEGER", "END", "G2", "'\\n'",
-  "$accept", "netlist", "statement", "element", "resistor", "capacitor",
-  "inductor", "current_source", "voltage_source", "value", YY_NULLPTR
+  "E_I", "E_V", "DECIMAL", "T_PREFIX", "INTEGER", "END", "G2", "DC",
+  "TRAN", "'\\n'", "$accept", "netlist", "statement", "control", "element",
+  "resistor", "capacitor", "inductor", "current_source", "voltage_source",
+  "dc", "tran", "value", YY_NULLPTR
 };
 
 static const char *
@@ -546,7 +552,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-11)
+#define YYPACT_NINF (-12)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -560,10 +566,11 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -11,     0,   -11,    -8,    -2,    -1,     2,     9,   -11,   -11,
-     -11,     1,   -11,   -11,   -11,   -11,   -11,    10,    11,    12,
-      13,    14,   -11,   -11,    17,    17,    17,    17,    17,    18,
-      16,    19,    20,    21,   -11,   -11,   -11,   -11,   -11,   -11
+     -12,     0,   -12,    -8,    -2,    -1,     2,     8,   -12,   -12,
+      11,   -12,   -12,    -5,     1,   -12,   -12,   -12,   -12,   -12,
+     -12,   -12,    10,    16,    17,    18,    19,    21,    11,   -12,
+     -12,   -12,    11,    11,    11,    11,    11,   -12,   -12,    20,
+      22,    23,    24,   -12,   -12,   -12,   -12,   -12
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -571,22 +578,25 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,     0,     1,     0,     0,     0,     0,     0,     4,     8,
-       3,     0,     9,    10,    11,    12,    13,     0,     0,     0,
-       0,     0,     7,     6,     0,     0,     0,     0,     0,    23,
-      14,    16,    18,    20,    22,    24,    15,    17,    19,    21
+       2,     0,     1,     0,     0,     0,     0,     0,     4,    26,
+       0,     9,     3,     0,     0,    12,    13,    14,    15,    16,
+      10,    11,     0,     0,     0,     0,     0,    28,     0,     7,
+       8,     6,     0,     0,     0,     0,     0,    29,    27,    17,
+      19,    21,    23,    25,    18,    20,    22,    24
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -11,   -11,   -11,   -11,   -11,   -11,   -11,   -11,   -11,   -10
+     -12,   -12,   -12,   -12,   -12,   -12,   -12,   -12,   -12,   -12,
+     -12,   -12,   -11
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     1,    10,    11,    12,    13,    14,    15,    16,    30
+       0,     1,    12,    13,    14,    15,    16,    17,    18,    19,
+      20,    21,    28
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -594,44 +604,45 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       2,    22,    17,     3,     4,     5,     6,     7,    18,    19,
-       0,     8,    20,     9,    23,    31,    32,    33,    34,    21,
-      24,    25,    26,    27,    28,    29,     0,    35,    36,     0,
-       0,    37,    38,    39
+       2,    30,    22,     3,     4,     5,     6,     7,    23,    24,
+      29,     8,    25,     9,    10,    11,    31,    38,    26,    27,
+      32,    39,    40,    41,    42,    43,    33,    34,    35,    36,
+      37,     0,    44,     0,    45,    46,    47
 };
 
 static const yytype_int8 yycheck[] =
 {
        0,     0,    10,     3,     4,     5,     6,     7,    10,    10,
-      -1,    11,    10,    13,    13,    25,    26,    27,    28,    10,
-      10,    10,    10,    10,    10,     8,    -1,     9,    12,    -1,
-      -1,    12,    12,    12
+      15,    11,    10,    13,    14,    15,    15,    28,    10,     8,
+      10,    32,    33,    34,    35,    36,    10,    10,    10,    10,
+       9,    -1,    12,    -1,    12,    12,    12
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    15,     0,     3,     4,     5,     6,     7,    11,    13,
-      16,    17,    18,    19,    20,    21,    22,    10,    10,    10,
-      10,    10,     0,    13,    10,    10,    10,    10,    10,     8,
-      23,    23,    23,    23,    23,     9,    12,    12,    12,    12
+       0,    17,     0,     3,     4,     5,     6,     7,    11,    13,
+      14,    15,    18,    19,    20,    21,    22,    23,    24,    25,
+      26,    27,    10,    10,    10,    10,    10,     8,    28,    15,
+       0,    15,    10,    10,    10,    10,    10,     9,    28,    28,
+      28,    28,    28,    28,    12,    12,    12,    12
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    14,    15,    15,    15,    16,    16,    16,    16,    17,
-      17,    17,    17,    17,    18,    18,    19,    19,    20,    20,
-      21,    21,    22,    23,    23
+       0,    16,    17,    17,    17,    18,    18,    18,    18,    18,
+      19,    19,    20,    20,    20,    20,    20,    21,    21,    22,
+      22,    23,    23,    24,    24,    25,    26,    27,    28,    28
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     0,     2,     2,     0,     2,     2,     1,     1,
-       1,     1,     1,     1,     4,     5,     4,     5,     4,     5,
-       4,     5,     4,     1,     2
+       0,     2,     0,     2,     2,     0,     2,     2,     2,     1,
+       1,     1,     1,     1,     1,     1,     1,     4,     5,     4,
+       5,     4,     5,     4,     5,     4,     1,     3,     1,     2
 };
 
 
@@ -1364,8 +1375,8 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 14: /* resistor: E_R INTEGER INTEGER value  */
-#line 46 "parser.y"
+  case 17: /* resistor: E_R INTEGER INTEGER value  */
+#line 52 "parser.y"
                                 {
         add_node((yyvsp[-2].iv));
         add_node((yyvsp[-1].iv));
@@ -1373,11 +1384,11 @@ yyreduce:
         log_trace("Resistor : %s ,node %d --> %d ,value = %f OHM.",(yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv));
         free((yyvsp[-3].sv));   //DeAllocating sv memory which we allocatd in lexer
     }
-#line 1377 "parser.tab.c"
+#line 1388 "parser.tab.c"
     break;
 
-  case 15: /* resistor: E_R INTEGER INTEGER value G2  */
-#line 53 "parser.y"
+  case 18: /* resistor: E_R INTEGER INTEGER value G2  */
+#line 59 "parser.y"
                                    {
         add_node((yyvsp[-3].iv));
         add_node((yyvsp[-2].iv));
@@ -1385,11 +1396,11 @@ yyreduce:
         log_trace("Resistor : %s ,node %d --> %d ,value = %f OHM.",(yyvsp[-4].sv),(yyvsp[-3].iv),(yyvsp[-2].iv),(yyvsp[-1].dv));
         free((yyvsp[-4].sv));   //DeAllocating sv memory which we allocatd in lexer
     }
-#line 1389 "parser.tab.c"
+#line 1400 "parser.tab.c"
     break;
 
-  case 16: /* capacitor: E_C INTEGER INTEGER value  */
-#line 63 "parser.y"
+  case 19: /* capacitor: E_C INTEGER INTEGER value  */
+#line 69 "parser.y"
                                 {
         add_node((yyvsp[-2].iv));
         add_node((yyvsp[-1].iv));
@@ -1397,11 +1408,11 @@ yyreduce:
         log_trace("Capacitor : %s ,node %d --> %d ,value = %f FARAD.",(yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv));
         free((yyvsp[-3].sv));   //DeAllocating sv memory which we allocatd in lexer
     }
-#line 1401 "parser.tab.c"
+#line 1412 "parser.tab.c"
     break;
 
-  case 17: /* capacitor: E_C INTEGER INTEGER value G2  */
-#line 70 "parser.y"
+  case 20: /* capacitor: E_C INTEGER INTEGER value G2  */
+#line 76 "parser.y"
                                    {
         add_node((yyvsp[-3].iv));
         add_node((yyvsp[-2].iv));
@@ -1409,11 +1420,11 @@ yyreduce:
         log_trace("Capacitor : %s ,node %d --> %d ,value = %f FARAD.",(yyvsp[-4].sv),(yyvsp[-3].iv),(yyvsp[-2].iv),(yyvsp[-1].dv));
         free((yyvsp[-4].sv));   //DeAllocating sv memory which we allocatd in lexer
     }
-#line 1413 "parser.tab.c"
+#line 1424 "parser.tab.c"
     break;
 
-  case 18: /* inductor: E_L INTEGER INTEGER value  */
-#line 80 "parser.y"
+  case 21: /* inductor: E_L INTEGER INTEGER value  */
+#line 86 "parser.y"
                                 {
         add_node((yyvsp[-2].iv));
         add_node((yyvsp[-1].iv));
@@ -1421,11 +1432,11 @@ yyreduce:
         log_trace("Inductor : %s ,node %d --> %d ,value = %f Henry.",(yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv));
         free((yyvsp[-3].sv));   //DeAllocating sv memory which we allocatd in lexer
     }
-#line 1425 "parser.tab.c"
+#line 1436 "parser.tab.c"
     break;
 
-  case 19: /* inductor: E_L INTEGER INTEGER value G2  */
-#line 87 "parser.y"
+  case 22: /* inductor: E_L INTEGER INTEGER value G2  */
+#line 93 "parser.y"
                                    {
         add_node((yyvsp[-3].iv));
         add_node((yyvsp[-2].iv));
@@ -1433,11 +1444,11 @@ yyreduce:
         log_trace("Inductor : %s ,node %d --> %d ,value = %f Henry.",(yyvsp[-4].sv),(yyvsp[-3].iv),(yyvsp[-2].iv),(yyvsp[-1].dv));
         free((yyvsp[-4].sv));   //DeAllocating sv memory which we allocatd in lexer
     }
-#line 1437 "parser.tab.c"
+#line 1448 "parser.tab.c"
     break;
 
-  case 20: /* current_source: E_I INTEGER INTEGER value  */
-#line 97 "parser.y"
+  case 23: /* current_source: E_I INTEGER INTEGER value  */
+#line 103 "parser.y"
                                 {
         add_node((yyvsp[-2].iv));
         add_node((yyvsp[-1].iv));
@@ -1445,11 +1456,11 @@ yyreduce:
         log_trace("Current Source : %s ,node %d --> %d ,value = %f A.",(yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv));
         free((yyvsp[-3].sv));   //DeAllocating sv memory which we allocatd in lexer
     }
-#line 1449 "parser.tab.c"
+#line 1460 "parser.tab.c"
     break;
 
-  case 21: /* current_source: E_I INTEGER INTEGER value G2  */
-#line 104 "parser.y"
+  case 24: /* current_source: E_I INTEGER INTEGER value G2  */
+#line 110 "parser.y"
                                    {
         add_node((yyvsp[-3].iv));
         add_node((yyvsp[-2].iv));
@@ -1457,11 +1468,11 @@ yyreduce:
         log_trace("Current Source : %s ,node %d --> %d ,value = %f A.",(yyvsp[-4].sv),(yyvsp[-3].iv),(yyvsp[-2].iv),(yyvsp[-1].dv));
         free((yyvsp[-4].sv));   //DeAllocating sv memory which we allocatd in lexer
     }
-#line 1461 "parser.tab.c"
+#line 1472 "parser.tab.c"
     break;
 
-  case 22: /* voltage_source: E_V INTEGER INTEGER value  */
-#line 114 "parser.y"
+  case 25: /* voltage_source: E_V INTEGER INTEGER value  */
+#line 120 "parser.y"
                               {
         add_node((yyvsp[-2].iv));
         add_node((yyvsp[-1].iv));
@@ -1469,17 +1480,35 @@ yyreduce:
         log_trace("Voltage Source : %s ,node %d --> %d ,value = %f V.",(yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv));
         free((yyvsp[-3].sv));   //DeAllocating sv memory which we allocatd in lexer
     }
-#line 1473 "parser.tab.c"
+#line 1484 "parser.tab.c"
     break;
 
-  case 24: /* value: DECIMAL T_PREFIX  */
-#line 124 "parser.y"
+  case 26: /* dc: DC  */
+#line 129 "parser.y"
+       {
+        log_trace("DC Analysis Detected!");
+        set_simultaor_dc();
+    }
+#line 1493 "parser.tab.c"
+    break;
+
+  case 27: /* tran: TRAN value value  */
+#line 135 "parser.y"
+                     {
+        log_trace("Transient Analysis Detected!,stop time = %lf, step = %lf", (yyvsp[-1].dv), (yyvsp[0].dv));
+        set_simultaor_tran((yyvsp[-1].dv), (yyvsp[0].dv));
+    }
+#line 1502 "parser.tab.c"
+    break;
+
+  case 29: /* value: DECIMAL T_PREFIX  */
+#line 141 "parser.y"
                         {(yyval.dv) = (yyvsp[-1].dv) * (yyvsp[0].dv);}
-#line 1479 "parser.tab.c"
+#line 1508 "parser.tab.c"
     break;
 
 
-#line 1483 "parser.tab.c"
+#line 1512 "parser.tab.c"
 
       default: break;
     }
@@ -1703,4 +1732,4 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 126 "parser.y"
+#line 143 "parser.y"

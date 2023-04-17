@@ -8,41 +8,28 @@
 /*
     Matrix Construction
 */
-
-ES_mat *ES_mat_new(unsigned int num_rows, unsigned int num_cols){
-    if(num_cols == 0){
-        log_trace("Zero Colunms Matrix!");
+ES_mat *ES_mat_new(unsigned int num_rows, unsigned int num_cols) {
+    if (num_rows == 0) {
+        log_error(INVALID_ROWS);
         return NULL;
     }
-    if(num_rows == 0){
-        log_trace("Zero Rows Matrix!\n");
+    if (num_cols == 0) {
+        log_error(INVALID_COLS);
         return NULL;
     }
-
-    ES_mat *mat = (ES_mat*)calloc(1,sizeof(ES_mat));
-    if(mat == NULL){
-        log_fatal("ES_mat allocation faild! NULL POINTER!!!\n");
-        exit(EXIT_FAILURE);
+    ES_mat *m = calloc(1, sizeof(*m));
+    NP_CHECK(m);
+    m->num_rows = num_rows;
+    m->num_cols = num_cols;
+    m->is_square = (num_rows == num_cols) ? 1 : 0;
+    m->data = calloc(m->num_rows, sizeof(*m->data));
+    NP_CHECK(m->data);
+    int i;
+    for(i = 0; i < m->num_rows; ++i) {
+        m->data[i] = calloc(m->num_cols, sizeof(**m->data));
+        NP_CHECK(m->data[i]);
     }
-    mat -> num_cols = num_cols;
-    mat -> num_rows = num_rows;
-    mat -> is_square = (num_cols == num_rows) ? 1 : 0;
-
-    mat -> data = (double**)calloc(mat -> num_rows, sizeof(*mat -> data));
-    if(mat -> data == NULL){
-        log_fatal("ES_mat data array allocation faild! NULL POINTER!!!\n");
-        exit(EXIT_FAILURE);
-    }
-
-    for(int i = 0;i < mat -> num_cols;i++){
-        mat -> data[i] = calloc(mat -> num_cols, sizeof(**mat -> data));
-        if(mat -> data[i] == NULL){
-            log_fatal("ES_mat colunms data array allocation faild! NULL POINTER!!!\n");
-            exit(EXIT_FAILURE);
-        }
-    }
-
-    return mat;
+    return m;
 }
 
 ES_mat *ES_mat_sqr(unsigned int size){
@@ -108,9 +95,9 @@ int ES_mat_eq(ES_mat *m1, ES_mat *m2, double tolerance){
     int i, j;
     for(i = 0; i < m1 -> num_rows; i++){
         for(j = 0; j < m1 -> num_cols; j++){
-        if (fabs(m1 -> data[i][j] - m2 -> data[i][j]) > tolerance){
-            return 0;
-        }
+            if (fabs(m1 -> data[i][j] - m2 -> data[i][j]) > tolerance){
+                return 0;
+            }
         }
     }
     return 1;
@@ -120,24 +107,24 @@ int ES_mat_eq(ES_mat *m1, ES_mat *m2, double tolerance){
     Print the matrix
 */
 
-void ES_mat_print(ES_mat *matrix){
-    ES_mat_printf(matrix, "%lf\t\t");
+void ES_mat_print(ES_mat *matrix, FILE *fp){
+    ES_mat_printf(matrix, "%lf\t\t", fp);
 }
 
-void ES_mat_printf(ES_mat *mat, const char *d_fmt){
+void ES_mat_printf(ES_mat *mat, const char *d_fmt, FILE *fp){
     if(mat == NULL){
         log_trace("NULL pointer passed through ES_mat_printf!\n");
         return;
     }
     int i, j;
-    fprintf(stdout, "\n");
+    fprintf(fp, "\n");
     for(i = 0; i < mat->num_rows; ++i){
         for(j = 0; j < mat->num_cols; ++j){
-        fprintf(stdout, d_fmt, mat->data[i][j]);
+            fprintf(fp, d_fmt, mat->data[i][j]);
         }
-        fprintf(stdout, "\n");
+        fprintf(fp, "\n");
     }
-    fprintf(stdout, "\n");
+    fprintf(fp, "\n");
 }
 
 /*
@@ -449,7 +436,7 @@ ES_mat *ES_mat_catv(unsigned int mnum, ES_mat **marr){
             r -> data[i][j] = marr[k] -> data[i - offset][j];
         }
     }
-    ES_mat_print(r);
+    ES_mat_print(r, stdout);
     return r;
 }
 
@@ -688,16 +675,16 @@ void ES_mat_lup_free(ES_mat_lup* lu){
     free(lu);
 }
 
-void ES_mat_lup_print(ES_mat_lup *lu){
-    ES_mat_print(lu->L);
-    ES_mat_print(lu->U);
-    ES_mat_print(lu->P);
+void ES_mat_lup_print(ES_mat_lup *lu, FILE *fp){
+    ES_mat_print(lu->L, fp);
+    ES_mat_print(lu->U, fp);
+    ES_mat_print(lu->P, fp);
 }
 
-void ES_mat_lup_printf(ES_mat_lup *lu, const char *fmt){
-    ES_mat_printf(lu->L, fmt);
-    ES_mat_printf(lu->U, fmt);
-    ES_mat_printf(lu->P, fmt);
+void ES_mat_lup_printf(ES_mat_lup *lu, const char *fmt, FILE *fp){
+    ES_mat_printf(lu->L, fmt, fp);
+    ES_mat_printf(lu->U, fmt, fp);
+    ES_mat_printf(lu->P, fmt, fp);
 }
 
 ES_mat_lup *ES_mat_lup_solve(ES_mat *m){

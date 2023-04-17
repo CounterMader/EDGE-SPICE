@@ -6,6 +6,7 @@
 #include "log.h"
 #include "hash.h"
 #include "defs.h"
+#include "simulator.h"
 
 
 /*
@@ -37,8 +38,7 @@
 
 int main(int argc, char **argv){
     
-    switch (argc)
-    {
+    switch (argc){
     case 1:
         printf("EDGE-SPICE v1.0\nAuther : Ali Esmaeily - University of Tabriz - Spring 2023\n"
                "Use Following Format : espice <netlist> <output>\n");
@@ -60,12 +60,28 @@ int main(int argc, char **argv){
         print_element_table(htab, log);
         print_node_table(htab, log);
 
+        //Set RHS pointer
+        circuit -> RHS_free_pointer = htab -> n_numsyms - 1;        //Because of GND node
+
         //MNA size
         get_MNA_size(circuit, htab);
         log_trace("MNA matrix size is %d", circuit -> MNA_size);
 
+        //MNA and RHS matrices initialization
+        circuit -> MNAmat = ES_mat_new(circuit -> MNA_size, circuit -> MNA_size);
+        circuit -> RHSmat = ES_mat_new(circuit -> MNA_size, 1);
+        circuit -> RHSmat_prev = ES_mat_new(circuit -> MNA_size, 1);
+    
+        //simulate
+        simulate(circuit, htab);
+
+        ES_mat_print(circuit -> MNAmat, log);
+        ES_mat_print(circuit -> RHSmat, log);
+        ES_mat_print(circuit -> RHSmat_prev, log);
+        
         free_hash_table(htab);
         free_ckt(circuit);
+        fclose(log);
         return 0;
    
     default:

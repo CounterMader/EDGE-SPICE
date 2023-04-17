@@ -91,6 +91,12 @@
 
 #define ES_MIN_COEF 0.000000000000001
 
+#define NP_CHECK(ptr) \
+        if (!(ptr)) { \
+            log_error("%s:%d NULL POINTER: %s n", \
+                __FILE__, __LINE__, (#ptr)); \
+            exit(-1); \
+        } \
 /*
     Matrix structure
 */
@@ -121,8 +127,8 @@ ES_mat *ES_mat_cp(ES_mat *m);
 void ES_mat_free(ES_mat *mat);
 int ES_mat_eqdim(ES_mat *m1, ES_mat *m2);
 int ES_mat_eq(ES_mat *m1, ES_mat *m2, double tolerance);
-void ES_mat_print(ES_mat *matrix);
-void ES_mat_printf(ES_mat *mat, const char *d_fmt);
+void ES_mat_print(ES_mat *matrix, FILE *fp);
+void ES_mat_printf(ES_mat *mat, const char *d_fmt, FILE *fp);
 double ES_mat_get(ES_mat *matrix, unsigned int i, unsigned int j);
 ES_mat *ES_mat_col_get(ES_mat *m, unsigned int col);
 ES_mat *ES_mat_row_get(ES_mat *m, unsigned int row);
@@ -169,8 +175,8 @@ ES_mat *ES_mat_rref(ES_mat *m);
 ES_mat_lup *ES_mat_lup_new(ES_mat *L, ES_mat *U, ES_mat *P, unsigned int num_permutations);
 ES_mat_lup *ES_mat_lup_solve(ES_mat *m);
 void ES_mat_lup_free(ES_mat_lup* lu);
-void ES_mat_lup_print(ES_mat_lup *lu);
-void ES_mat_lup_printf(ES_mat_lup *lu, const char *fmt);
+void ES_mat_lup_print(ES_mat_lup *lu, FILE *fp);
+void ES_mat_lup_printf(ES_mat_lup *lu, const char *fmt, FILE *fp);
 double ES_mat_det(ES_mat_lup* lup);
 ES_mat *ES_mat_lu_get(ES_mat_lup* lup);
 ES_mat *ES_mat_inv(ES_mat_lup *m);

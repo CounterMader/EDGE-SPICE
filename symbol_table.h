@@ -15,6 +15,7 @@ typedef struct elm_table {
     NODE_TAB *node1;
     NODE_TAB *node2;
     */
+    int index_in_RHS;
     int node1;
     int node2;
     int group;
@@ -53,3 +54,5 @@ NODE_TAB *search_node(HASH_TAB *tab, char *key);
 int node_exist(HASH_TAB *htab, char *nid);
 void print_element_table(HASH_TAB *tab, FILE *fp);
 void print_node_table(HASH_TAB *tab, FILE *fp);
+void element_current_initial(HASH_TAB *htab, int step_num);
+void node_voltage_initial(HASH_TAB *htab, int step_num);

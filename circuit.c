@@ -18,6 +18,7 @@ CKTcircuit *makeckt(){
     }
 
     circuit -> MNA_size = 0;
+    circuit -> simulate_type = NULL_SYM;
     
     return circuit;
 }
@@ -48,4 +49,9 @@ void get_MNA_size(CKTcircuit *circuit, HASH_TAB *htab){
     }
 
     circuit -> MNA_size = size; 
+}
+
+int get_RHS_index(CKTcircuit *circuit){
+    circuit -> RHS_free_pointer++;
+    return circuit -> RHS_free_pointer;
 }

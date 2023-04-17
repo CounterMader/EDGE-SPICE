@@ -74,6 +74,8 @@ NODE_TAB *create_node(char *key,int number){
     NODE_TAB *ntab = NULL;
     ntab = (NODE_TAB*)malloc(sizeof(NODE_TAB));
 
+    ntab -> voltage =NULL;
+
     ntab -> number = number;
 
     ntab -> key = (char*)malloc(strlen(key) + 1);
@@ -91,6 +93,8 @@ ELM_TAB *create_element(char *eid, int node1, int node2, double value, int group
 
     etab -> key = (char*)malloc(strlen(eid) + 1);
     strcpy(etab -> key, eid);
+
+    etab ->current = NULL;
 
     etab -> next = NULL;
     etab -> prev = NULL;
@@ -117,14 +121,22 @@ void free_hash_table(HASH_TAB *tab){
 
     for (int i = 0; i < tab->n_size; i++){
         NODE_TAB *p = tab -> n_table[i];
-        if(p != NULL)
+        if(p != NULL){
+            if(p -> voltage != NULL){
+               free(p -> voltage);
+            }
             free(p);
+        }
     }
     
     for (int i = 0; i < tab->e_size; i++){
         ELM_TAB *p = tab -> e_table[i];
-        if(p != NULL)
+        if(p != NULL){
+            if(p -> current != NULL){
+                free(p -> current);
+            }
             free(p);
+        }
     }
 
     free(tab -> n_table);
@@ -319,4 +331,40 @@ void print_node_table(HASH_TAB *tab, FILE *fp){
     }
     fprintf(fp, "Node number = %d\n", tab -> n_numsyms);
     fprintf(fp, "-------------------------\n");
+}
+
+void node_voltage_initial(HASH_TAB *htab, int step_num){
+    for(int i = 0;i < htab -> n_size;i++){
+        if(htab -> n_table[i] == NULL)
+            continue;
+        NODE_TAB *temp = htab -> n_table[i];
+        while(temp){
+            temp -> voltage = (double*)calloc(step_num, sizeof(double)); 
+            if(temp -> voltage == NULL){
+                    //safe exit routibe
+                    log_fatal("element current allocation faild!");
+                    exit(EXIT_FAILURE);
+                }
+            temp = temp -> next;
+        }
+    }
+}
+
+void element_current_initial(HASH_TAB *htab, int step_num){
+    for(int i = 0;i < htab -> e_size;i++){
+        if(htab -> e_table[i] == NULL)
+            continue;
+        ELM_TAB *temp = htab -> e_table[i];
+        while(temp){
+            if(temp -> group == 2){
+                temp -> current = (double*)calloc(step_num, sizeof(double));
+                if(temp -> current == NULL){
+                    //safe exit routibe
+                    log_fatal("element current allocation faild!");
+                    exit(EXIT_FAILURE);
+                }
+            }
+            temp = temp -> next;
+        }
+    }
 }

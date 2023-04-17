@@ -18,7 +18,7 @@
 %token <sv> E_R E_C E_L E_I E_V 
 %token <dv> DECIMAL T_PREFIX
 %token <iv> INTEGER
-%token END G2
+%token END G2 DC TRAN
 %type <dv> value
 
 
@@ -30,8 +30,14 @@ netlist:
     ;
 statement:
     | element '\n'
+    | control '\n'
     | element YYEOF
     | '\n'
+    ;
+
+control:
+      dc
+    | tran
     ;
 
 element:
@@ -119,6 +125,17 @@ voltage_source:
         free($1);   //DeAllocating sv memory which we allocatd in lexer
     }
     ;
+dc:
+    DC {
+        log_trace("DC Analysis Detected!");
+        set_simultaor_dc();
+    }
+    ;
+tran:
+    TRAN value value {
+        log_trace("Transient Analysis Detected!,stop time = %lf, step = %lf", $2, $3);
+        set_simultaor_tran($2, $3);
+    }
 value:
       DECIMAL
     | DECIMAL T_PREFIX  {$$ = $1 * $2;}
