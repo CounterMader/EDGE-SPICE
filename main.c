@@ -79,6 +79,13 @@ int main(int argc, char **argv){
         ES_mat_print(circuit -> RHSmat, log);
         ES_mat_print(circuit -> RHSmat_prev, log);
         
+        //result print
+        ES_mat_lup *lup = ES_mat_lup_solve(circuit -> MNAmat);
+        ES_mat *x = ES_ls_solve(lup, circuit -> RHSmat);
+        ES_mat_print(x, stdout);
+
+        
+        
         free_hash_table(htab);
         free_ckt(circuit);
         fclose(log);
