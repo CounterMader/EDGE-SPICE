@@ -59,13 +59,17 @@ extern int yydebug;
     E_L = 260,                     /* E_L  */
     E_I = 261,                     /* E_I  */
     E_V = 262,                     /* E_V  */
-    DECIMAL = 263,                 /* DECIMAL  */
-    T_PREFIX = 264,                /* T_PREFIX  */
-    INTEGER = 265,                 /* INTEGER  */
-    END = 266,                     /* END  */
-    G2 = 267,                      /* G2  */
-    DC = 268,                      /* DC  */
-    TRAN = 269                     /* TRAN  */
+    VCCS = 263,                    /* VCCS  */
+    VCVS = 264,                    /* VCVS  */
+    CCVS = 265,                    /* CCVS  */
+    CCCS = 266,                    /* CCCS  */
+    DECIMAL = 267,                 /* DECIMAL  */
+    T_PREFIX = 268,                /* T_PREFIX  */
+    INTEGER = 269,                 /* INTEGER  */
+    END = 270,                     /* END  */
+    G2 = 271,                      /* G2  */
+    DC = 272,                      /* DC  */
+    TRAN = 273                     /* TRAN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -80,7 +84,7 @@ union YYSTYPE
     double dv;
     int iv;
 
-#line 84 "parser.tab.h"
+#line 88 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -111,6 +111,42 @@ PREFIX      ({FEMNTO}|{PICO}|{NANO}|{MICRO}|{MILLI}|{CENTI}|{KILO}|{MEGA}|{GIGA}
                                 //printf("There is a Voltage source named as : %s\n",yytext);
                                 return E_V;
                             }
+<INITIAL>^"E"{ELM_ID}/{WS}  {
+                                yylval.sv = malloc(yyleng * sizeof(char));
+                                strcpy(yylval.sv, yytext);
+                                BEGIN INT_INPUT;
+                                node_num = 4;
+                                current_elm = D_IV;
+                                //printf("There is a Voltage source named as : %s\n",yytext);
+                                return VCVS;
+                            }
+<INITIAL>^"F"{ELM_ID}/{WS}  {
+                                yylval.sv = malloc(yyleng * sizeof(char));
+                                strcpy(yylval.sv, yytext);
+                                BEGIN INT_INPUT;
+                                node_num = 4;
+                                current_elm = D_IV;
+                                //printf("There is a Voltage source named as : %s\n",yytext);
+                                return CCCS;
+                            }
+<INITIAL>^"G"{ELM_ID}/{WS}  {
+                                yylval.sv = malloc(yyleng * sizeof(char));
+                                strcpy(yylval.sv, yytext);
+                                BEGIN INT_INPUT;
+                                node_num = 4;
+                                current_elm = D_IV;
+                                //printf("There is a Voltage source named as : %s\n",yytext);
+                                return VCCS;
+                            }
+<INITIAL>^"H"{ELM_ID}/{WS}  {
+                                yylval.sv = malloc(yyleng * sizeof(char));
+                                strcpy(yylval.sv, yytext);
+                                BEGIN INT_INPUT;
+                                node_num = 4;
+                                current_elm = D_IV;
+                                //printf("There is a Voltage source named as : %s\n",yytext);
+                                return CCVS;
+                            }
 
 <INT_INPUT>{NUM}+           {
                                 yylval.iv = atoi(yytext);
@@ -125,7 +161,7 @@ PREFIX      ({FEMNTO}|{PICO}|{NANO}|{MICRO}|{MILLI}|{CENTI}|{KILO}|{MEGA}|{GIGA}
                                             value_num = 1;
                                         case D_IV:
                                             BEGIN DEC_INPUT;
-                                            value_num = 2;
+                                            value_num = 1;
                                     }
                                 }
                                 return INTEGER;

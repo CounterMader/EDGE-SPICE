@@ -15,7 +15,7 @@
 }
 
 
-%token <sv> E_R E_C E_L E_I E_V 
+%token <sv> E_R E_C E_L E_I E_V VCCS VCVS CCVS CCCS
 %token <dv> DECIMAL T_PREFIX
 %token <iv> INTEGER
 %token END G2 DC TRAN
@@ -46,6 +46,10 @@ element:
     | inductor
     | current_source
     | voltage_source
+    | voltage_controled_voltage_source
+    | voltage_controled_current_source
+    | current_controled_voltage_source
+    | current_controled_current_source
     ;
 
 resistor:
@@ -86,13 +90,6 @@ inductor:
       E_L INTEGER INTEGER value {
         add_node($2);
         add_node($3);
-        add_RLC($1,$2,$3,$4,1);
-        log_trace("Inductor : %s ,node %d --> %d ,value = %f Henry.",$1,$2,$3,$4);
-        free($1);   //DeAllocating sv memory which we allocatd in lexer
-    }
-    | E_L INTEGER INTEGER value G2 {
-        add_node($2);
-        add_node($3);
         add_RLC($1,$2,$3,$4,2);
         log_trace("Inductor : %s ,node %d --> %d ,value = %f Henry.",$1,$2,$3,$4);
         free($1);   //DeAllocating sv memory which we allocatd in lexer
@@ -125,6 +122,44 @@ voltage_source:
         free($1);   //DeAllocating sv memory which we allocatd in lexer
     }
     ;
+voltage_controled_voltage_source:
+    VCVS INTEGER INTEGER INTEGER INTEGER value {
+        add_node($2);
+        add_node($3);
+        add_node($4);
+        add_node($5);
+        add_VCVS($1, $2, $3, $4, $5, $6, 2);
+        log_trace("VCVS : %s ,control : %d --> %d ,out : %d --> %d ,value = %f",$1, $2, $3, $4, $5, $6);
+        free($1);
+    }
+voltage_controled_current_source:
+    VCCS INTEGER INTEGER INTEGER INTEGER value {
+        add_node($2);
+        add_node($3);
+        add_node($4);
+        add_node($5);
+        add_VCCS($1, $2, $3, $4, $5, $6, 1);
+        log_trace("VCCS : %s ,control : %d --> %d ,out : %d --> %d ,value = %f",$1, $2, $3, $4, $5, $6);
+        free($1);
+    }
+current_controled_voltage_source:
+    CCVS INTEGER INTEGER INTEGER INTEGER value {
+        add_node($2);
+        add_node($3);
+        add_node($4);
+        add_node($5);
+        log_trace("CCVS : %s ,control : %d --> %d ,out : %d --> %d ,value = %f",$1, $2, $3, $4, $5, $6);
+        free($1);
+    }
+current_controled_current_source:
+    CCCS INTEGER INTEGER INTEGER INTEGER value {
+        add_node($2);
+        add_node($3);
+        add_node($4);
+        add_node($5);
+        log_trace("CCCS : %s ,control : %d --> %d ,out : %d --> %d ,value = %f",$1, $2, $3, $4, $5, $6);
+        free($1);
+    }
 dc:
     DC {
         log_trace("DC Analysis Detected!");

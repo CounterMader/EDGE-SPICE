@@ -1,3 +1,5 @@
+#define NO_NODE -1
+
 //Entries of DB
 typedef struct node_table {
     struct node_table *next;
@@ -18,6 +20,8 @@ typedef struct elm_table {
     int index_in_RHS;
     int node1;
     int node2;
+    int node3;
+    int node4;
     int group;
     double value;
     double *current;
@@ -41,13 +45,13 @@ HASH_TAB *maketab(int NTsize, int ETsize,
                   int(*e_cmp_function)(ELM_TAB *, ELM_TAB*));
 
 NODE_TAB *create_node(char *key,int data);
-ELM_TAB *create_element(char *eid, int node1, int node2, double value, int group);
+ELM_TAB *create_element(char *eid, int node1, int node2, int node3, int node4, double value, int group);
 void free_node(NODE_TAB *ntab);
 void free_element(ELM_TAB *etab);
 void free_hash_table(HASH_TAB *tab);
 int node_cmp(NODE_TAB *p, NODE_TAB *q);
 int elm_cmp(ELM_TAB *p, ELM_TAB *q);
-int elm_insert(HASH_TAB *tab, char *uid, int node1, int node2, double value, int group);
+int elm_insert(HASH_TAB *tab, char *uid, int node1, int node2, int node3, int node4, double value, int group);
 int node_insert(HASH_TAB *tab, char *key, int number);
 ELM_TAB *search_element(HASH_TAB *tab, char *key);
 NODE_TAB *search_node(HASH_TAB *tab, char *key);

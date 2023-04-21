@@ -87,7 +87,7 @@ NODE_TAB *create_node(char *key,int number){
     return ntab;
 }
 
-ELM_TAB *create_element(char *eid, int node1, int node2, double value, int group){
+ELM_TAB *create_element(char *eid, int node1, int node2, int node3, int node4, double value, int group){
     ELM_TAB *etab = NULL;
     etab = (ELM_TAB*)malloc(sizeof(ELM_TAB));
 
@@ -101,6 +101,8 @@ ELM_TAB *create_element(char *eid, int node1, int node2, double value, int group
 
     etab -> node1 = node1;
     etab -> node2 = node2;
+    etab -> node3 = node3;
+    etab -> node4 = node4;
     etab -> value = value; 
     etab -> group = group;
 
@@ -155,8 +157,8 @@ int elm_cmp(ELM_TAB *p, ELM_TAB*q){
 
 /*return 1 when symbol already exist in data base
   return 0 when inserting successfull*/
-int elm_insert(HASH_TAB *tab, char *eid, int node1, int node2, double value, int group){
-    ELM_TAB *elm = create_element(eid, node1, node2, value, group);
+int elm_insert(HASH_TAB *tab, char *eid, int node1, int node2, int node3, int node4, double value, int group){
+    ELM_TAB *elm = create_element(eid, node1, node2, node3, node4, value, group);
     
     unsigned int index = tab -> hash(eid) % tab -> e_size;
     
