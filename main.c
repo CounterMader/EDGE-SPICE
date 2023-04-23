@@ -82,9 +82,10 @@ int main(int argc, char **argv){
         //result print
         ES_mat_lup *lup = ES_mat_lup_solve(circuit -> MNAmat);
         ES_mat *x = ES_ls_solve(lup, circuit -> RHSmat);
-        ES_mat_print(x, stdout);
+        ES_mat_print(x, log);
 
-        
+        update_result(x, htab);
+        print_result(htab);
         
         free_hash_table(htab);
         free_ckt(circuit);

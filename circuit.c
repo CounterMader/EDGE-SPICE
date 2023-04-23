@@ -55,3 +55,54 @@ int get_RHS_index(CKTcircuit *circuit){
     circuit -> RHS_free_pointer++;
     return circuit -> RHS_free_pointer;
 }
+
+void update_result(ES_mat *x, HASH_TAB *htab){
+    for(int i = 0;i < htab -> n_size;i++){
+        if(htab -> n_table[i] == NULL)
+            continue;
+        NODE_TAB *node_temp = htab -> n_table[i];
+        while(node_temp){
+            if(node_temp -> number != 0){
+                node_temp -> voltage[0] = x -> data[node_temp -> number - 1][0];
+            }
+            node_temp = node_temp -> next;
+        }
+    }
+
+    for(int i = 0;i < htab -> e_size;i++){
+        if(htab -> e_table[i] == NULL)
+            continue;
+        ELM_TAB *elm_temp = htab -> e_table[i];
+        while(elm_temp){
+            if(elm_temp -> group == 2){
+                elm_temp -> current[0] = x -> data[elm_temp -> index_in_RHS - 1][0];
+            }
+            elm_temp = elm_temp -> next;
+        }
+    }
+}
+
+void print_result(HASH_TAB *htab){
+    printf("Simulation Completed!\n====================\n\n");
+    
+    for(int i = 1;i < htab -> n_numsyms;i++){
+        char buf[11];
+        sprintf(buf,"%d",i);
+        NODE_TAB *node_temp = search_node(htab, buf);
+        printf("V(%s) = %lf\n", node_temp -> key, node_temp -> voltage[0]);
+    }
+
+    for(int i = 0;i < htab -> e_size;i++){
+        if(htab -> e_table[i] == NULL)
+            continue;
+        ELM_TAB *elm_temp = htab -> e_table[i];
+        while(elm_temp){
+            if(elm_temp -> group == 2){
+                printf("I(%s) = %lf\n", elm_temp -> key, elm_temp -> current[0]);
+            }
+            elm_temp = elm_temp -> next;
+        }
+    }
+
+    printf("\n====================\n");
+}

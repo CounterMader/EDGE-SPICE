@@ -22,6 +22,8 @@ typedef struct _circuit_struct{
     double Tstop;
     double Tstep;
 
+    int step_num;
+
     int is_linear;              //flag for networks linearity
 
     int RHS_free_pointer;
@@ -32,3 +34,5 @@ CKTcircuit *makeckt();
 void free_ckt(CKTcircuit *circuit);
 void get_MNA_size(CKTcircuit *circuit, HASH_TAB *htab);
 int get_RHS_index(CKTcircuit *circuit);
+void update_result(ES_mat *x, HASH_TAB *htab);
+void print_result(HASH_TAB *htab);

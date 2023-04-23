@@ -63,6 +63,11 @@ void simulate(CKTcircuit *circuit, HASH_TAB *htab){
                 f_stamp(circuit, htab, temp);
                 temp -> is_stamped = STAMPED;
                 break;
+            case 'H':
+                log_trace("CCVS(H) detected");
+                h_stamp(circuit, htab, temp);
+                temp -> is_stamped = STAMPED;
+                break;
             default:
                 break;
             }
@@ -71,6 +76,7 @@ void simulate(CKTcircuit *circuit, HASH_TAB *htab){
     }
 }
 void r_g1_stamp(CKTcircuit *circuit, ELM_TAB *element){
+    /*
     ES_mat *MNAstamp = ES_mat_new(circuit -> MNA_size, circuit -> MNA_size);
 
     if(element -> node1 == element -> node2){
@@ -103,10 +109,21 @@ void r_g1_stamp(CKTcircuit *circuit, ELM_TAB *element){
         circuit -> MNAmat = ES_mat_add(circuit -> MNAmat, MNAstamp);
         ES_mat_free(MNAstamp);
         return;
+    }*/
+    if(element -> node1 != 0){
+        circuit -> MNAmat -> data[element -> node1 - 1][element -> node1 - 1] += 1/element -> value;
+    }
+    if(element -> node2 != 0){
+        circuit -> MNAmat -> data[element -> node2 - 1][element -> node2 - 1] += 1/element -> value;
+    }
+    if(element -> node1 != 0 && element -> node2 != 0){
+        circuit -> MNAmat -> data[element -> node1 - 1][element -> node2 - 1] += -1/element -> value;
+        circuit -> MNAmat -> data[element -> node2 - 1][element -> node1 - 1] += -1/element -> value;
     }
 }
 
 void r_g2_stamp(CKTcircuit *circuit, ELM_TAB *element){
+    /*
     ES_mat *MNAstamp = ES_mat_new(circuit -> MNA_size, circuit -> MNA_size);
 
     element -> index_in_RHS = get_RHS_index(circuit);
@@ -147,8 +164,19 @@ void r_g2_stamp(CKTcircuit *circuit, ELM_TAB *element){
         ES_mat_free(MNAstamp);
         return;
     
+    }*/
+    element -> index_in_RHS = get_RHS_index(circuit);
+
+    circuit -> MNAmat -> data[element -> index_in_RHS - 1][element -> index_in_RHS - 1] += -element -> value;
+
+    if(element -> node1 != 0){
+        circuit -> MNAmat -> data[element -> index_in_RHS - 1][element -> node1 - 1] += +1;
+        circuit -> MNAmat -> data[element -> node1 - 1][element -> index_in_RHS - 1] += +1;    
     }
-    
+    if(element -> node2 != 0){
+        circuit -> MNAmat -> data[element -> index_in_RHS - 1][element -> node2 - 1] += -1;
+        circuit -> MNAmat -> data[element -> node2 - 1][element -> index_in_RHS - 1] += -1;
+    }
     
 }
 
@@ -157,6 +185,7 @@ void r_g2_stamp(CKTcircuit *circuit, ELM_TAB *element){
         node1(+)------->node2(-)
 */
 void v_stamp(CKTcircuit *circuit, ELM_TAB *element){
+    /*
     ES_mat *MNAstamp = ES_mat_new(circuit -> MNA_size, circuit -> MNA_size);
     ES_mat *RHSstamp = ES_mat_new(circuit -> MNA_size, 1);
 
@@ -195,6 +224,18 @@ void v_stamp(CKTcircuit *circuit, ELM_TAB *element){
         circuit -> MNAmat = ES_mat_add(circuit -> MNAmat, MNAstamp);
         ES_mat_free(MNAstamp);
         return;
+    }*/
+    element -> index_in_RHS = get_RHS_index(circuit);
+
+    circuit -> RHSmat -> data[element -> index_in_RHS - 1][0] += element -> value;
+
+     if(element -> node1 != 0){
+        circuit -> MNAmat -> data[element -> index_in_RHS - 1][element -> node1 - 1] += +1;
+        circuit -> MNAmat -> data[element -> node1 - 1][element -> index_in_RHS - 1] += +1;    
+    }
+    if(element -> node2 != 0){
+        circuit -> MNAmat -> data[element -> index_in_RHS - 1][element -> node2 - 1] += -1;
+        circuit -> MNAmat -> data[element -> node2 - 1][element -> index_in_RHS - 1] += -1;
     }
 }
 
@@ -203,6 +244,7 @@ void v_stamp(CKTcircuit *circuit, ELM_TAB *element){
     node1(+)----->-----node2(-)
 */
 void i_g1_stamp(CKTcircuit *circuit, ELM_TAB *element){
+    /*
     ES_mat *RHSstamp = ES_mat_new(circuit -> MNA_size, 1);
 
     if(element -> node1 == element -> node2){
@@ -233,11 +275,18 @@ void i_g1_stamp(CKTcircuit *circuit, ELM_TAB *element){
         circuit -> RHSmat = ES_mat_add(circuit -> RHSmat, RHSstamp);
         ES_mat_free(RHSstamp);
         return;
+    }*/
+
+    if(element -> node1 != 0){
+        circuit -> RHSmat -> data[element -> node1 - 1][0] += -element -> value;    
     }
-    
+    if(element -> node2 != 0){
+        circuit -> RHSmat -> data[element -> node2 - 1][0] += element -> value;
+    }
 }
 
 void i_g2_stamp(CKTcircuit *circuit, ELM_TAB *element){
+    /*
     ES_mat *MNAstamp = ES_mat_new(circuit -> MNA_size, circuit -> MNA_size);
     ES_mat *RHSstamp = ES_mat_new(circuit -> MNA_size, 1);
 
@@ -278,10 +327,23 @@ void i_g2_stamp(CKTcircuit *circuit, ELM_TAB *element){
         circuit -> MNAmat = ES_mat_add(circuit -> MNAmat, MNAstamp);
         ES_mat_free(MNAstamp);
         return;
-    }   
+    }*/
+
+    element -> index_in_RHS = get_RHS_index(circuit);
+       
+    circuit -> RHSmat -> data[element -> index_in_RHS - 1][0] += element -> value;
+
+    if(element -> node1 != 0){
+        circuit -> MNAmat -> data[element -> node1 - 1][element -> index_in_RHS - 1] += 1;
+    }
+    if(element -> node2 != 0){
+        circuit -> MNAmat -> data[element -> node2 - 1][element -> index_in_RHS - 1] += -1;
+    }
+    circuit -> MNAmat -> data[element -> index_in_RHS - 1][element -> index_in_RHS - 1] += 1;
 }
 
 void l_dc_stamp(CKTcircuit *circuit, ELM_TAB *element){
+    /*
     ES_mat *MNAstamp = ES_mat_new(circuit -> MNA_size, circuit -> MNA_size);
 
     element -> index_in_RHS = get_RHS_index(circuit);
@@ -322,7 +384,19 @@ void l_dc_stamp(CKTcircuit *circuit, ELM_TAB *element){
         ES_mat_free(MNAstamp);
         return;
     
+    }*/
+
+    element -> index_in_RHS = get_RHS_index(circuit);
+    if(element -> node1 != 0){
+        circuit -> MNAmat -> data[element -> index_in_RHS - 1][element -> node1 - 1] += +1;
+        circuit -> MNAmat -> data[element -> node1 - 1][element -> index_in_RHS - 1] += +1;    
     }
+    if(element -> node2 != 0){
+        circuit -> MNAmat -> data[element -> index_in_RHS - 1][element -> node2 - 1] += -1;
+        circuit -> MNAmat -> data[element -> node2 - 1][element -> index_in_RHS - 1] += -1;
+    }
+    
+
 }
 
 
@@ -393,4 +467,25 @@ void f_stamp(CKTcircuit *circuit, HASH_TAB *htab, ELM_TAB *element){
     if(element -> node2 != 0){
         circuit -> MNAmat -> data[element -> node2 - 1][cvs -> index_in_RHS - 1] += -element -> value;
     }
+}
+
+void h_stamp(CKTcircuit *circuit, HASH_TAB *htab, ELM_TAB *element){
+    ELM_TAB *cvs = search_element(htab, element -> cvs);
+    if(cvs -> is_stamped == NOT_STAMPED){
+        v_stamp(circuit, cvs);
+        cvs -> is_stamped = STAMPED;
+    }
+
+    element -> index_in_RHS = get_RHS_index(circuit);
+
+    circuit -> MNAmat -> data[element -> index_in_RHS - 1][cvs -> index_in_RHS - 1] += -element -> value;
+    if(element -> node1 != 0){
+        circuit -> MNAmat -> data[element -> index_in_RHS - 1][element -> node1 - 1] += 1;
+        circuit -> MNAmat -> data[element -> node1 - 1][element -> index_in_RHS - 1] += 1;
+    }
+    if(element -> node2 != 0){
+        circuit -> MNAmat -> data[element -> index_in_RHS - 1][element -> node2 - 1] += -1;
+        circuit -> MNAmat -> data[element -> node2 - 1][element -> index_in_RHS - 1] += -1;
+    }
+
 }

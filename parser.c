@@ -99,9 +99,11 @@ void set_simultaor_tran(double Tstop, double Tstep){
     circuit -> Tstep = Tstep;
     circuit -> Tstop = Tstop;
 
-    node_voltage_initial(htab, (int)(Tstop/Tstep));
-    element_current_initial(htab, (int)(Tstop/Tstep));
-    log_trace("current and voltage allocation success! %d, Tstep = %f, Tstop = %f",(int)(Tstop/Tstep),circuit -> Tstep, circuit -> Tstop);
+    circuit -> step_num = (int)(Tstop/Tstep);
+
+    node_voltage_initial(htab, circuit -> step_num);
+    element_current_initial(htab, circuit -> step_num);
+    log_trace("current and voltage allocation success! %d, Tstep = %f, Tstop = %f",circuit -> step_num,circuit -> Tstep, circuit -> Tstop);
 
 }
 
