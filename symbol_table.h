@@ -1,4 +1,6 @@
 #define NO_NODE -1
+#define STAMPED 1
+#define NOT_STAMPED 0
 
 //Entries of DB
 typedef struct node_table {
@@ -18,13 +20,18 @@ typedef struct elm_table {
     NODE_TAB *node2;
     */
     int index_in_RHS;
+
     int node1;
     int node2;
     int node3;
     int node4;
     int group;
+
     double value;
     double *current;
+
+    int is_stamped;
+    char *cvs;          //Corresponding voltage source for current controled sources
 }ELM_TAB;
 
 typedef struct _hash_table{
@@ -51,7 +58,7 @@ void free_element(ELM_TAB *etab);
 void free_hash_table(HASH_TAB *tab);
 int node_cmp(NODE_TAB *p, NODE_TAB *q);
 int elm_cmp(ELM_TAB *p, ELM_TAB *q);
-int elm_insert(HASH_TAB *tab, char *uid, int node1, int node2, int node3, int node4, double value, int group);
+int elm_insert(HASH_TAB *tab, char *eid, char *cvs, int node1, int node2, int node3, int node4, double value, int group);
 int node_insert(HASH_TAB *tab, char *key, int number);
 ELM_TAB *search_element(HASH_TAB *tab, char *key);
 NODE_TAB *search_node(HASH_TAB *tab, char *key);

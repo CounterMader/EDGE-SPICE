@@ -7,3 +7,4 @@ void i_g2_stamp(CKTcircuit *circuit, ELM_TAB *element);
 void l_dc_stamp(CKTcircuit *circuit, ELM_TAB *element);
 void g_stamp(CKTcircuit *circuit, ELM_TAB *element);
 void e_stamp(CKTcircuit *circuit, ELM_TAB *element);
+void f_stamp(CKTcircuit *circuit, HASH_TAB *htab, ELM_TAB *element);

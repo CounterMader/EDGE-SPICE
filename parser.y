@@ -15,7 +15,7 @@
 }
 
 
-%token <sv> E_R E_C E_L E_I E_V VCCS VCVS CCVS CCCS
+%token <sv> E_R E_C E_L E_I E_V VCCS VCVS CCVS CCCS V_CONT
 %token <dv> DECIMAL T_PREFIX
 %token <iv> INTEGER
 %token END G2 DC TRAN
@@ -143,22 +143,22 @@ voltage_controled_current_source:
         free($1);
     }
 current_controled_voltage_source:
-    CCVS INTEGER INTEGER INTEGER INTEGER value {
+    CCVS INTEGER INTEGER V_CONT value {
         add_node($2);
         add_node($3);
-        add_node($4);
-        add_node($5);
-        log_trace("CCVS : %s ,control : %d --> %d ,out : %d --> %d ,value = %f",$1, $2, $3, $4, $5, $6);
+        add_CCCS($1, $4, $2, $3, $5, 2);
+        log_trace("CCVS : %s ,control : %s ,out : %d --> %d ,value = %f",$1 ,$4 ,$2 ,$3 ,$5);
         free($1);
+        free($4);
     }
 current_controled_current_source:
-    CCCS INTEGER INTEGER INTEGER INTEGER value {
+    CCCS INTEGER INTEGER V_CONT value {
         add_node($2);
         add_node($3);
-        add_node($4);
-        add_node($5);
-        log_trace("CCCS : %s ,control : %d --> %d ,out : %d --> %d ,value = %f",$1, $2, $3, $4, $5, $6);
+        add_CCCS($1, $4, $2, $3, $5, 1);
+        log_trace("CCCS : %s ,control : %s ,out : %d --> %d ,value = %f",$1 ,$4 ,$2 ,$3 ,$5);
         free($1);
+        free($4);
     }
 dc:
     DC {

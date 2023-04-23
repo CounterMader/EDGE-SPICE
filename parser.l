@@ -6,12 +6,13 @@
     #include "parser.tab.h"
     #include "log.h"
 
-    #define  RLC 1
-    #define  I_IV 2
-    #define  D_IV 3
-    #define  SIM_DC 4
-    #define  SIM_TRAN 5
-    #define  SIM_AC 6
+    #define  RLC        1
+    #define  I_IV       2
+    #define  D_IV_EG    3
+    #define  D_IV_FH    4
+    #define  SIM_DC     5
+    #define  SIM_TRAN   6
+    #define  SIM_AC     7
 
     int node_num = 0;
     int current_elm = 0;
@@ -24,6 +25,7 @@
 %s INT_INPUT
 %s DEC_INPUT
 %s PRE_INPUT
+%s ELM_INPUT
 
 WS          [ \t]
 EOL         "\n"
@@ -116,7 +118,7 @@ PREFIX      ({FEMNTO}|{PICO}|{NANO}|{MICRO}|{MILLI}|{CENTI}|{KILO}|{MEGA}|{GIGA}
                                 strcpy(yylval.sv, yytext);
                                 BEGIN INT_INPUT;
                                 node_num = 4;
-                                current_elm = D_IV;
+                                current_elm = D_IV_EG;
                                 //printf("There is a Voltage source named as : %s\n",yytext);
                                 return VCVS;
                             }
@@ -124,8 +126,8 @@ PREFIX      ({FEMNTO}|{PICO}|{NANO}|{MICRO}|{MILLI}|{CENTI}|{KILO}|{MEGA}|{GIGA}
                                 yylval.sv = malloc(yyleng * sizeof(char));
                                 strcpy(yylval.sv, yytext);
                                 BEGIN INT_INPUT;
-                                node_num = 4;
-                                current_elm = D_IV;
+                                node_num = 2;
+                                current_elm = D_IV_FH;
                                 //printf("There is a Voltage source named as : %s\n",yytext);
                                 return CCCS;
                             }
@@ -134,7 +136,7 @@ PREFIX      ({FEMNTO}|{PICO}|{NANO}|{MICRO}|{MILLI}|{CENTI}|{KILO}|{MEGA}|{GIGA}
                                 strcpy(yylval.sv, yytext);
                                 BEGIN INT_INPUT;
                                 node_num = 4;
-                                current_elm = D_IV;
+                                current_elm = D_IV_EG;
                                 //printf("There is a Voltage source named as : %s\n",yytext);
                                 return VCCS;
                             }
@@ -142,8 +144,8 @@ PREFIX      ({FEMNTO}|{PICO}|{NANO}|{MICRO}|{MILLI}|{CENTI}|{KILO}|{MEGA}|{GIGA}
                                 yylval.sv = malloc(yyleng * sizeof(char));
                                 strcpy(yylval.sv, yytext);
                                 BEGIN INT_INPUT;
-                                node_num = 4;
-                                current_elm = D_IV;
+                                node_num = 2;
+                                current_elm = D_IV_FH;
                                 //printf("There is a Voltage source named as : %s\n",yytext);
                                 return CCVS;
                             }
@@ -156,12 +158,19 @@ PREFIX      ({FEMNTO}|{PICO}|{NANO}|{MICRO}|{MILLI}|{CENTI}|{KILO}|{MEGA}|{GIGA}
                                         case RLC:
                                             BEGIN DEC_INPUT;
                                             value_num = 1;
+                                            break;
                                         case I_IV:
                                             BEGIN DEC_INPUT;
                                             value_num = 1;
-                                        case D_IV:
+                                            break;
+                                        case D_IV_EG:
                                             BEGIN DEC_INPUT;
                                             value_num = 1;
+                                            break;
+                                        case D_IV_FH:
+                                            BEGIN ELM_INPUT;
+                                            break;
+                                        
                                     }
                                 }
                                 return INTEGER;
@@ -172,11 +181,13 @@ PREFIX      ({FEMNTO}|{PICO}|{NANO}|{MICRO}|{MILLI}|{CENTI}|{KILO}|{MEGA}|{GIGA}
                                 if((--value_num) == 0){
                                     switch(current_elm){
                                         case RLC:
-                                        case D_IV:
+                                        case D_IV_EG:
+                                        case D_IV_FH:
                                         case I_IV:
                                         case SIM_TRAN:
                                             BEGIN INITIAL;
                                             current_elm = 0;
+                                            break;
                                     }
                                 }
                                 return DECIMAL;
@@ -202,6 +213,13 @@ PREFIX      ({FEMNTO}|{PICO}|{NANO}|{MICRO}|{MILLI}|{CENTI}|{KILO}|{MEGA}|{GIGA}
                                     case 'P':   yylval.dv = 1e+15; break;
                                 }
                                 return T_PREFIX;
+                            }
+<ELM_INPUT>"V"{ELM_ID}      {
+                                yylval.sv = malloc(yyleng * sizeof(char));
+                                strcpy(yylval.sv, yytext);
+                                value_num = 1;
+                                BEGIN DEC_INPUT;
+                                return V_CONT;
                             }
 <INITIAL>".DC"              {
                                 return DC;

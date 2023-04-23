@@ -106,6 +106,9 @@ ELM_TAB *create_element(char *eid, int node1, int node2, int node3, int node4, d
     etab -> value = value; 
     etab -> group = group;
 
+    etab -> is_stamped = NOT_STAMPED;
+
+    etab -> cvs = NULL;
     return etab;
 }
 
@@ -116,6 +119,9 @@ void free_node(NODE_TAB *ntab){
 
 void free_element(ELM_TAB *etab){
     free(etab -> key);
+    if(etab -> cvs != NULL){
+        free(etab -> cvs);
+    }
     free(etab);
 }
 
@@ -157,9 +163,13 @@ int elm_cmp(ELM_TAB *p, ELM_TAB*q){
 
 /*return 1 when symbol already exist in data base
   return 0 when inserting successfull*/
-int elm_insert(HASH_TAB *tab, char *eid, int node1, int node2, int node3, int node4, double value, int group){
+int elm_insert(HASH_TAB *tab, char *eid, char *cvs, int node1, int node2, int node3, int node4, double value, int group){
     ELM_TAB *elm = create_element(eid, node1, node2, node3, node4, value, group);
     
+    if(cvs != NULL){
+        elm -> cvs = malloc((strlen(cvs) + 1) * sizeof(char));
+        strcpy(elm -> cvs, cvs);
+    }
     unsigned int index = tab -> hash(eid) % tab -> e_size;
     
     if(tab -> e_table[index] == NULL){
@@ -311,9 +321,15 @@ void print_element_table(HASH_TAB *tab, FILE *fp){
             continue;
         ELM_TAB *temp = tab -> e_table[i];
         while(temp){
-            fprintf(fp,"%d\teid = %s\tnode : %d -> %d\tvalue = %f\tg:%d\n",tab -> hash(temp -> key) % tab -> e_size,
+            fprintf(fp,"%d\teid = %s\tnode : %d -> %d\tvalue = %f\tg:%d",tab -> hash(temp -> key) % tab -> e_size,
                                                                        temp -> key, temp -> node1, temp ->node2,
                                                                        temp -> value, temp -> group);
+            if(temp -> cvs == NULL){
+                fprintf(fp,"\n");
+            }
+            else{
+                fprintf(fp,", current sensor : %s\n", temp -> cvs);
+            }
             temp = temp -> next;
         }
     }

@@ -117,31 +117,32 @@ enum yysymbol_kind_t
   YYSYMBOL_VCVS = 9,                       /* VCVS  */
   YYSYMBOL_CCVS = 10,                      /* CCVS  */
   YYSYMBOL_CCCS = 11,                      /* CCCS  */
-  YYSYMBOL_DECIMAL = 12,                   /* DECIMAL  */
-  YYSYMBOL_T_PREFIX = 13,                  /* T_PREFIX  */
-  YYSYMBOL_INTEGER = 14,                   /* INTEGER  */
-  YYSYMBOL_END = 15,                       /* END  */
-  YYSYMBOL_G2 = 16,                        /* G2  */
-  YYSYMBOL_DC = 17,                        /* DC  */
-  YYSYMBOL_TRAN = 18,                      /* TRAN  */
-  YYSYMBOL_19_n_ = 19,                     /* '\n'  */
-  YYSYMBOL_YYACCEPT = 20,                  /* $accept  */
-  YYSYMBOL_netlist = 21,                   /* netlist  */
-  YYSYMBOL_statement = 22,                 /* statement  */
-  YYSYMBOL_control = 23,                   /* control  */
-  YYSYMBOL_element = 24,                   /* element  */
-  YYSYMBOL_resistor = 25,                  /* resistor  */
-  YYSYMBOL_capacitor = 26,                 /* capacitor  */
-  YYSYMBOL_inductor = 27,                  /* inductor  */
-  YYSYMBOL_current_source = 28,            /* current_source  */
-  YYSYMBOL_voltage_source = 29,            /* voltage_source  */
-  YYSYMBOL_voltage_controled_voltage_source = 30, /* voltage_controled_voltage_source  */
-  YYSYMBOL_voltage_controled_current_source = 31, /* voltage_controled_current_source  */
-  YYSYMBOL_current_controled_voltage_source = 32, /* current_controled_voltage_source  */
-  YYSYMBOL_current_controled_current_source = 33, /* current_controled_current_source  */
-  YYSYMBOL_dc = 34,                        /* dc  */
-  YYSYMBOL_tran = 35,                      /* tran  */
-  YYSYMBOL_value = 36                      /* value  */
+  YYSYMBOL_V_CONT = 12,                    /* V_CONT  */
+  YYSYMBOL_DECIMAL = 13,                   /* DECIMAL  */
+  YYSYMBOL_T_PREFIX = 14,                  /* T_PREFIX  */
+  YYSYMBOL_INTEGER = 15,                   /* INTEGER  */
+  YYSYMBOL_END = 16,                       /* END  */
+  YYSYMBOL_G2 = 17,                        /* G2  */
+  YYSYMBOL_DC = 18,                        /* DC  */
+  YYSYMBOL_TRAN = 19,                      /* TRAN  */
+  YYSYMBOL_20_n_ = 20,                     /* '\n'  */
+  YYSYMBOL_YYACCEPT = 21,                  /* $accept  */
+  YYSYMBOL_netlist = 22,                   /* netlist  */
+  YYSYMBOL_statement = 23,                 /* statement  */
+  YYSYMBOL_control = 24,                   /* control  */
+  YYSYMBOL_element = 25,                   /* element  */
+  YYSYMBOL_resistor = 26,                  /* resistor  */
+  YYSYMBOL_capacitor = 27,                 /* capacitor  */
+  YYSYMBOL_inductor = 28,                  /* inductor  */
+  YYSYMBOL_current_source = 29,            /* current_source  */
+  YYSYMBOL_voltage_source = 30,            /* voltage_source  */
+  YYSYMBOL_voltage_controled_voltage_source = 31, /* voltage_controled_voltage_source  */
+  YYSYMBOL_voltage_controled_current_source = 32, /* voltage_controled_current_source  */
+  YYSYMBOL_current_controled_voltage_source = 33, /* current_controled_voltage_source  */
+  YYSYMBOL_current_controled_current_source = 34, /* current_controled_current_source  */
+  YYSYMBOL_dc = 35,                        /* dc  */
+  YYSYMBOL_tran = 36,                      /* tran  */
+  YYSYMBOL_value = 37                      /* value  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -469,19 +470,19 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   61
+#define YYLAST   57
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  20
+#define YYNTOKENS  21
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  17
 /* YYNRULES -- Number of rules.  */
 #define YYNRULES  36
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  75
+#define YYNSTATES  73
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   273
+#define YYMAXUTOK   274
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -496,7 +497,7 @@ union yyalloc
 static const yytype_int8 yytranslate[] =
 {
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      19,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+      20,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -522,7 +523,7 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18
+      15,    16,    17,    18,    19
 };
 
 #if YYDEBUG
@@ -549,12 +550,13 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
 static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "E_R", "E_C", "E_L",
-  "E_I", "E_V", "VCCS", "VCVS", "CCVS", "CCCS", "DECIMAL", "T_PREFIX",
-  "INTEGER", "END", "G2", "DC", "TRAN", "'\\n'", "$accept", "netlist",
-  "statement", "control", "element", "resistor", "capacitor", "inductor",
-  "current_source", "voltage_source", "voltage_controled_voltage_source",
-  "voltage_controled_current_source", "current_controled_voltage_source",
-  "current_controled_current_source", "dc", "tran", "value", YY_NULLPTR
+  "E_I", "E_V", "VCCS", "VCVS", "CCVS", "CCCS", "V_CONT", "DECIMAL",
+  "T_PREFIX", "INTEGER", "END", "G2", "DC", "TRAN", "'\\n'", "$accept",
+  "netlist", "statement", "control", "element", "resistor", "capacitor",
+  "inductor", "current_source", "voltage_source",
+  "voltage_controled_voltage_source", "voltage_controled_current_source",
+  "current_controled_voltage_source", "current_controled_current_source",
+  "dc", "tran", "value", YY_NULLPTR
 };
 
 static const char *
@@ -578,14 +580,14 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -41,    31,   -41,   -12,   -11,    -5,    -4,    -3,    -2,    -1,
-       0,     2,   -41,   -41,     3,   -41,   -41,     4,     1,   -41,
+     -41,    26,   -41,   -13,   -12,    -6,    -5,    -4,    -3,    -2,
+      -1,     0,   -41,   -41,     3,   -41,   -41,     4,     1,   -41,
      -41,   -41,   -41,   -41,   -41,   -41,   -41,   -41,   -41,   -41,
-       5,     7,     8,    10,    11,    12,    18,    19,    29,    32,
-       3,   -41,   -41,   -41,     3,     3,     3,     3,     3,    30,
-      33,    37,    38,   -41,   -41,    39,    40,   -41,    41,   -41,
-      44,    45,    46,    47,   -41,   -41,   -41,     3,     3,     3,
-       3,   -41,   -41,   -41,   -41
+       2,     5,    10,    23,    24,    25,    28,    32,    33,    27,
+       3,   -41,   -41,   -41,     3,     3,     3,     3,     3,    34,
+      35,     6,     7,   -41,   -41,    36,    37,   -41,    38,   -41,
+      41,    42,     3,     3,   -41,   -41,   -41,     3,     3,   -41,
+     -41,   -41,   -41
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -599,8 +601,8 @@ static const yytype_int8 yydefact[] =
        0,     0,     0,     0,     0,     0,     0,     0,     0,    35,
        0,     7,     8,     6,     0,     0,     0,     0,     0,     0,
        0,     0,     0,    36,    34,    21,    23,    25,    26,    28,
-       0,     0,     0,     0,    22,    24,    27,     0,     0,     0,
-       0,    30,    29,    31,    32
+       0,     0,     0,     0,    22,    24,    27,     0,     0,    31,
+      32,    30,    29
 };
 
 /* YYPGOTO[NTERM-NUM].  */
@@ -623,46 +625,44 @@ static const yytype_int8 yydefgoto[] =
 static const yytype_int8 yytable[] =
 {
       54,    42,    30,    31,    55,    56,    57,    58,    59,    32,
-      33,    34,    35,    36,    37,    39,    38,     0,     0,    44,
-      43,    45,    46,    41,    47,    48,    49,    71,    72,    73,
-      74,     2,    50,    51,     3,     4,     5,     6,     7,     8,
-       9,    10,    11,    52,    60,    53,    12,    61,    13,    14,
-      15,    62,    63,     0,     0,    64,    65,    66,    67,    68,
-      69,    70
+      33,    34,    35,    36,    37,    38,    39,    44,    62,    63,
+      45,    43,    69,    70,    41,    46,     2,    71,    72,     3,
+       4,     5,     6,     7,     8,     9,    10,    11,    47,    48,
+      49,    53,    12,    50,    13,    14,    15,    51,    52,    60,
+      61,     0,     0,    64,    65,    66,    67,    68
 };
 
 static const yytype_int8 yycheck[] =
 {
-      40,     0,    14,    14,    44,    45,    46,    47,    48,    14,
-      14,    14,    14,    14,    14,    12,    14,    -1,    -1,    14,
-      19,    14,    14,    19,    14,    14,    14,    67,    68,    69,
-      70,     0,    14,    14,     3,     4,     5,     6,     7,     8,
-       9,    10,    11,    14,    14,    13,    15,    14,    17,    18,
-      19,    14,    14,    -1,    -1,    16,    16,    16,    14,    14,
-      14,    14
+      40,     0,    15,    15,    44,    45,    46,    47,    48,    15,
+      15,    15,    15,    15,    15,    15,    13,    15,    12,    12,
+      15,    20,    62,    63,    20,    15,     0,    67,    68,     3,
+       4,     5,     6,     7,     8,     9,    10,    11,    15,    15,
+      15,    14,    16,    15,    18,    19,    20,    15,    15,    15,
+      15,    -1,    -1,    17,    17,    17,    15,    15
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    21,     0,     3,     4,     5,     6,     7,     8,     9,
-      10,    11,    15,    17,    18,    19,    22,    23,    24,    25,
-      26,    27,    28,    29,    30,    31,    32,    33,    34,    35,
-      14,    14,    14,    14,    14,    14,    14,    14,    14,    12,
-      36,    19,     0,    19,    14,    14,    14,    14,    14,    14,
-      14,    14,    14,    13,    36,    36,    36,    36,    36,    36,
-      14,    14,    14,    14,    16,    16,    16,    14,    14,    14,
-      14,    36,    36,    36,    36
+       0,    22,     0,     3,     4,     5,     6,     7,     8,     9,
+      10,    11,    16,    18,    19,    20,    23,    24,    25,    26,
+      27,    28,    29,    30,    31,    32,    33,    34,    35,    36,
+      15,    15,    15,    15,    15,    15,    15,    15,    15,    13,
+      37,    20,     0,    20,    15,    15,    15,    15,    15,    15,
+      15,    15,    15,    14,    37,    37,    37,    37,    37,    37,
+      15,    15,    12,    12,    17,    17,    17,    15,    15,    37,
+      37,    37,    37
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    20,    21,    21,    21,    22,    22,    22,    22,    22,
-      23,    23,    24,    24,    24,    24,    24,    24,    24,    24,
-      24,    25,    25,    26,    26,    27,    28,    28,    29,    30,
-      31,    32,    33,    34,    35,    36,    36
+       0,    21,    22,    22,    22,    23,    23,    23,    23,    23,
+      24,    24,    25,    25,    25,    25,    25,    25,    25,    25,
+      25,    26,    26,    27,    27,    28,    29,    29,    30,    31,
+      32,    33,    34,    35,    36,    37,    37
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -671,7 +671,7 @@ static const yytype_int8 yyr2[] =
        0,     2,     0,     2,     2,     0,     2,     2,     2,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
        1,     4,     5,     4,     5,     4,     4,     5,     4,     6,
-       6,     6,     6,     1,     3,     1,     2
+       6,     5,     5,     1,     3,     1,     2
 };
 
 
@@ -1528,28 +1528,28 @@ yyreduce:
 #line 1529 "parser.tab.c"
     break;
 
-  case 31: /* current_controled_voltage_source: CCVS INTEGER INTEGER INTEGER INTEGER value  */
+  case 31: /* current_controled_voltage_source: CCVS INTEGER INTEGER V_CONT value  */
 #line 146 "parser.y"
-                                               {
-        add_node((yyvsp[-4].iv));
+                                      {
         add_node((yyvsp[-3].iv));
         add_node((yyvsp[-2].iv));
-        add_node((yyvsp[-1].iv));
-        log_trace("CCVS : %s ,control : %d --> %d ,out : %d --> %d ,value = %f",(yyvsp[-5].sv), (yyvsp[-4].iv), (yyvsp[-3].iv), (yyvsp[-2].iv), (yyvsp[-1].iv), (yyvsp[0].dv));
-        free((yyvsp[-5].sv));
+        add_CCCS((yyvsp[-4].sv), (yyvsp[-1].sv), (yyvsp[-3].iv), (yyvsp[-2].iv), (yyvsp[0].dv), 2);
+        log_trace("CCVS : %s ,control : %s ,out : %d --> %d ,value = %f",(yyvsp[-4].sv) ,(yyvsp[-1].sv) ,(yyvsp[-3].iv) ,(yyvsp[-2].iv) ,(yyvsp[0].dv));
+        free((yyvsp[-4].sv));
+        free((yyvsp[-1].sv));
     }
 #line 1542 "parser.tab.c"
     break;
 
-  case 32: /* current_controled_current_source: CCCS INTEGER INTEGER INTEGER INTEGER value  */
+  case 32: /* current_controled_current_source: CCCS INTEGER INTEGER V_CONT value  */
 #line 155 "parser.y"
-                                               {
-        add_node((yyvsp[-4].iv));
+                                      {
         add_node((yyvsp[-3].iv));
         add_node((yyvsp[-2].iv));
-        add_node((yyvsp[-1].iv));
-        log_trace("CCCS : %s ,control : %d --> %d ,out : %d --> %d ,value = %f",(yyvsp[-5].sv), (yyvsp[-4].iv), (yyvsp[-3].iv), (yyvsp[-2].iv), (yyvsp[-1].iv), (yyvsp[0].dv));
-        free((yyvsp[-5].sv));
+        add_CCCS((yyvsp[-4].sv), (yyvsp[-1].sv), (yyvsp[-3].iv), (yyvsp[-2].iv), (yyvsp[0].dv), 1);
+        log_trace("CCCS : %s ,control : %s ,out : %d --> %d ,value = %f",(yyvsp[-4].sv) ,(yyvsp[-1].sv) ,(yyvsp[-3].iv) ,(yyvsp[-2].iv) ,(yyvsp[0].dv));
+        free((yyvsp[-4].sv));
+        free((yyvsp[-1].sv));
     }
 #line 1555 "parser.tab.c"
     break;

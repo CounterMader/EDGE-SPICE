@@ -21,7 +21,7 @@ int parse(const char *file_name){
 }
 
 void add_RLC(char *eid, int node1, int node2, double value,int group){
-    if(elm_insert(htab, eid, node1, node2, NO_NODE, NO_NODE, value, group)){
+    if(elm_insert(htab, eid, NULL, node1, node2, NO_NODE, NO_NODE, value, group)){
         log_error("Duplicated Element %s in line %d",eid, (yylineno - 1));
         exit(EXIT_FAILURE);
     }
@@ -32,7 +32,7 @@ void add_V(char *eid, int node1, int node2, double value){
         log_error("Consistency Requirement ERROR! SHORTED VOLTAGE SOURCE : %s in Line %d", eid, (yylineno - 1));
         exit(EXIT_FAILURE);
     }
-    if(elm_insert(htab, eid, node1, node2, NO_NODE, NO_NODE, value, 2)){
+    if(elm_insert(htab, eid, NULL, node1, node2, NO_NODE, NO_NODE, value, 2)){
         log_error("Duplicated Voltage Source : %s in line %d",eid, (yylineno - 1));
         exit(EXIT_FAILURE);
     }
@@ -40,26 +40,33 @@ void add_V(char *eid, int node1, int node2, double value){
 
 void add_I(char *eid, int node1, int node2, double value, int group){
     //Consistency Requirement check FUTURE!
-    if(elm_insert(htab, eid, node1, node2, NO_NODE, NO_NODE, value, group)){
+    if(elm_insert(htab, eid, NULL, node1, node2, NO_NODE, NO_NODE, value, group)){
         log_error("Duplicated Current Source : %s in line %d",eid, (yylineno - 1));
         exit(EXIT_FAILURE);
     }
 }
 
 void add_VCCS(char *eid, int node1, int node2, int node3, int node4, double value, int group){
-    if(elm_insert(htab, eid, node1, node2, node3, node4, value, group)){
+    if(elm_insert(htab, eid, NULL, node1, node2, node3, node4, value, group)){
         log_error("Duplicated VCCS : %s in line %d",eid, (yylineno - 1));
         exit(EXIT_FAILURE);
     }
 }
 
 void add_VCVS(char *eid, int node1, int node2, int node3, int node4, double value, int group){
-    if(elm_insert(htab, eid, node1, node2, node3, node4, value, group)){
+    if(elm_insert(htab, eid, NULL, node1, node2, node3, node4, value, group)){
         log_error("Duplicated VCVS : %s in line %d",eid, (yylineno - 1));
         exit(EXIT_FAILURE);
     }
 }
 
+void add_CCCS(char *eid, char *cvs, int node1, int node2, double value, int group){
+    if(elm_insert(htab, eid, cvs, node1, node2, NO_NODE, NO_NODE, value, group)){
+        log_error("Duplicated CCCS : %s in line %d",eid, (yylineno - 1));
+        exit(EXIT_FAILURE);
+    }
+
+}
 void add_node(int num){
     char buf[5];
     sprintf(buf,"%d",num);
