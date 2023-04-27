@@ -31,7 +31,7 @@ typedef struct elm_table {
     double *current;
 
     int is_stamped;
-    char *cvs;          //Corresponding voltage source for current controled sources
+    char *cvs;             //Corresponding voltage source for current controled sources
 }ELM_TAB;
 
 typedef struct _hash_table{

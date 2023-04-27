@@ -51,7 +51,7 @@ int main(int argc, char **argv){
         log_set_level(LOG_ERROR);
 
         //symbol table and circuit structure initial
-        htab = maketab(53, 5, symtab_hash_pjw, node_cmp, elm_cmp);
+        htab = maketab(53, 127, symtab_hash_pjw, node_cmp, elm_cmp);
         circuit = makeckt();
         log_trace("SPICE initialization SUCCESS!");
 
@@ -73,20 +73,32 @@ int main(int argc, char **argv){
         circuit -> RHSmat_prev = ES_mat_new(circuit -> MNA_size, 1);
     
         //simulate
-        simulate(circuit, htab);
+        switch (circuit -> simulate_type){
+        case DC_SYM:
+            simulate_DC(circuit, htab, log);
+            break;
+        case TRAN_SYM:
+            simulate_TRAN(circuit, htab, log);
+            break;
+        case AC_SYM:
 
+            break;
+        default:
+            log_fatal("Undefined Type Simulator!");
+            break;
+        }
+        
         ES_mat_print(circuit -> MNAmat, log);
         ES_mat_print(circuit -> RHSmat, log);
         ES_mat_print(circuit -> RHSmat_prev, log);
         
-        //result print
-        ES_mat_lup *lup = ES_mat_lup_solve(circuit -> MNAmat);
-        ES_mat *x = ES_ls_solve(lup, circuit -> RHSmat);
-        ES_mat_print(x, log);
-
-        update_result(x, htab);
-        print_result(htab);
         
+        FILE *out = fopen("out.dat","w");
+        NODE_TAB *c = search_node(htab, "2");
+        for(int i = 1;i <= circuit -> step_num;i++){
+            fprintf(out,"%.16lf  %.16lf\n",circuit -> Tstep * (i - 1) ,c -> voltage[i]);
+        }
+        //result print
         free_hash_table(htab);
         free_ckt(circuit);
         fclose(log);

@@ -73,7 +73,7 @@ void ES_mat_free(ES_mat *mat){
     }
     free(mat -> data);
     free(mat);
-    log_trace("Matrix free SUCCESS!");
+    //log_trace("Matrix free SUCCESS!");
 }
 
 /*
@@ -108,7 +108,7 @@ int ES_mat_eq(ES_mat *m1, ES_mat *m2, double tolerance){
 */
 
 void ES_mat_print(ES_mat *matrix, FILE *fp){
-    ES_mat_printf(matrix, "%lf\t\t", fp);
+    ES_mat_printf(matrix, "%.16lf\t\t", fp);
 }
 
 void ES_mat_printf(ES_mat *mat, const char *d_fmt, FILE *fp){

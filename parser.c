@@ -89,7 +89,7 @@ void set_simultaor_dc(){
 }
 
 void set_simultaor_tran(double Tstop, double Tstep){
-    if(!(circuit -> simulate_type == NULL_SYM)){
+    if(circuit -> simulate_type != NULL_SYM){
         log_error("SIMULATOR Already SET!");
         return;
     }
@@ -101,8 +101,8 @@ void set_simultaor_tran(double Tstop, double Tstep){
 
     circuit -> step_num = (int)(Tstop/Tstep);
 
-    node_voltage_initial(htab, circuit -> step_num);
-    element_current_initial(htab, circuit -> step_num);
+    node_voltage_initial(htab, circuit -> step_num + 1);
+    element_current_initial(htab, circuit -> step_num + 1);
     log_trace("current and voltage allocation success! %d, Tstep = %f, Tstop = %f",circuit -> step_num,circuit -> Tstep, circuit -> Tstop);
 
 }

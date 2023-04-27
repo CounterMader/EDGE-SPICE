@@ -34,5 +34,5 @@ CKTcircuit *makeckt();
 void free_ckt(CKTcircuit *circuit);
 void get_MNA_size(CKTcircuit *circuit, HASH_TAB *htab);
 int get_RHS_index(CKTcircuit *circuit);
-void update_result(ES_mat *x, HASH_TAB *htab);
+void update_result(ES_mat *x, HASH_TAB *htab, int step);
 void print_result(HASH_TAB *htab);
