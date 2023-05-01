@@ -35,8 +35,8 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_PARSER_TAB_H_INCLUDED
-# define YY_YY_PARSER_TAB_H_INCLUDED
+#ifndef YY_YY_INCLUDE_PARSER_TAB_H_INCLUDED
+# define YY_YY_INCLUDE_PARSER_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -54,23 +54,30 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    E_R = 258,                     /* E_R  */
-    E_C = 259,                     /* E_C  */
-    E_L = 260,                     /* E_L  */
-    E_I = 261,                     /* E_I  */
-    E_V = 262,                     /* E_V  */
-    VCCS = 263,                    /* VCCS  */
-    VCVS = 264,                    /* VCVS  */
-    CCVS = 265,                    /* CCVS  */
-    CCCS = 266,                    /* CCCS  */
-    V_CONT = 267,                  /* V_CONT  */
-    DECIMAL = 268,                 /* DECIMAL  */
-    T_PREFIX = 269,                /* T_PREFIX  */
-    INTEGER = 270,                 /* INTEGER  */
-    END = 271,                     /* END  */
-    G2 = 272,                      /* G2  */
-    DC = 273,                      /* DC  */
-    TRAN = 274                     /* TRAN  */
+    RE_T = 258,                    /* RE_T  */
+    CE_T = 259,                    /* CE_T  */
+    LE_T = 260,                    /* LE_T  */
+    EE_T = 261,                    /* EE_T  */
+    FE_T = 262,                    /* FE_T  */
+    GE_T = 263,                    /* GE_T  */
+    HE_T = 264,                    /* HE_T  */
+    VE_T = 265,                    /* VE_T  */
+    IE_T = 266,                    /* IE_T  */
+    CVS_T = 267,                   /* CVS_T  */
+    INT_T = 268,                   /* INT_T  */
+    DEC_T = 269,                   /* DEC_T  */
+    PREF_T = 270,                  /* PREF_T  */
+    TS_T = 271,                    /* TS_T  */
+    DS_T = 272,                    /* DS_T  */
+    AS_T = 273,                    /* AS_T  */
+    G2_T = 274,                    /* G2_T  */
+    END_T = 275,                   /* END_T  */
+    DC_T = 276,                    /* DC_T  */
+    AC_T = 277,                    /* AC_T  */
+    SINE_T = 278,                  /* SINE_T  */
+    PULSE_T = 279,                 /* PULSE_T  */
+    RAMP_T = 280,                  /* RAMP_T  */
+    STEP_T = 281                   /* STEP_T  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -85,7 +92,7 @@ union YYSTYPE
     double dv;
     int iv;
 
-#line 89 "parser.tab.h"
+#line 96 "./include/parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -100,4 +107,4 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-#endif /* !YY_YY_PARSER_TAB_H_INCLUDED  */
+#endif /* !YY_YY_INCLUDE_PARSER_TAB_H_INCLUDED  */

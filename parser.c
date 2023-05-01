@@ -4,6 +4,7 @@
 #include "circuit.h"
 #include "log.h"
 #include "hash.h"
+#include "source.h"
 
 extern FILE* yyin;
 extern int yyparse();
@@ -36,11 +37,26 @@ void add_V(char *eid, int node1, int node2, double value){
         log_error("Duplicated Voltage Source : %s in line %d",eid, (yylineno - 1));
         exit(EXIT_FAILURE);
     }
+
+    //new routine
+    SRC_TAB *stab = create_src(eid, search_node_by_num(htab, node1), search_node_by_num(htab, node2), NULL, NULL, TIME_DOMAIN, DC, 2);
+    stab -> dc_src = create_dc_s(value);
+     if(src_insert(htab, stab)){
+        log_error("Duplicated Voltage Source : %s in line %d",eid, (yylineno - 1));
+        exit(EXIT_FAILURE);
+    }
 }
 
 void add_I(char *eid, int node1, int node2, double value, int group){
     //Consistency Requirement check FUTURE!
     if(elm_insert(htab, eid, NULL, node1, node2, NO_NODE, NO_NODE, value, group)){
+        log_error("Duplicated Current Source : %s in line %d",eid, (yylineno - 1));
+        exit(EXIT_FAILURE);
+    }
+
+    SRC_TAB *stab = create_src(eid, search_node_by_num(htab, node1), search_node_by_num(htab, node2), NULL, NULL, TIME_DOMAIN, DC, group);
+    stab -> dc_src = create_dc_s(value);
+     if(src_insert(htab, stab)){
         log_error("Duplicated Current Source : %s in line %d",eid, (yylineno - 1));
         exit(EXIT_FAILURE);
     }
@@ -67,14 +83,14 @@ void add_CCCS(char *eid, char *cvs, int node1, int node2, double value, int grou
     }
 
 }
+
 void add_node(int num){
-    char buf[5];
+    char buf[11];
     sprintf(buf,"%d",num);
-    if(node_exist(htab, buf)){
+     if(node_exist(htab, buf)){
         node_insert(htab,buf,num);
     }
 }
-
 void set_simultaor_dc(){
     if(!(circuit -> simulate_type == NULL_SYM)){
         log_error("SIMULATOR Already SET!");

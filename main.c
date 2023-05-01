@@ -9,6 +9,7 @@
 #include "simulator.h"
 
 
+
 /*
     Work Flow:
         1)  Initializing Simulator:
@@ -51,7 +52,7 @@ int main(int argc, char **argv){
         log_set_level(LOG_ERROR);
 
         //symbol table and circuit structure initial
-        htab = maketab(53, 127, symtab_hash_pjw, node_cmp, elm_cmp);
+        htab = maketab(53, 127, 50, symtab_hash_pjw, node_cmp, elm_cmp, src_cmp);
         circuit = makeckt();
         log_trace("SPICE initialization SUCCESS!");
 
@@ -59,6 +60,7 @@ int main(int argc, char **argv){
         parse(argv[1]);
         print_element_table(htab, log);
         print_node_table(htab, log);
+        print_src_table(htab, log);
 
         //Set RHS pointer
         circuit -> RHS_free_pointer = htab -> n_numsyms - 1;        //Because of GND node
@@ -92,12 +94,13 @@ int main(int argc, char **argv){
         ES_mat_print(circuit -> RHSmat, log);
         ES_mat_print(circuit -> RHSmat_prev, log);
         
-        
+        /*
         FILE *out = fopen("out.dat","w");
-        NODE_TAB *c = search_node(htab, "2");
+        ELM_TAB *c = search_element(htab, "C1");
         for(int i = 1;i <= circuit -> step_num;i++){
-            fprintf(out,"%.16lf  %.16lf\n",circuit -> Tstep * (i - 1) ,c -> voltage[i]);
+            fprintf(out,"%.16lf  %.16lf\n",circuit -> Tstep * (i - 1) ,c -> current[i]);
         }
+        */
         //result print
         free_hash_table(htab);
         free_ckt(circuit);

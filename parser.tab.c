@@ -108,41 +108,50 @@ enum yysymbol_kind_t
   YYSYMBOL_YYEOF = 0,                      /* "end of file"  */
   YYSYMBOL_YYerror = 1,                    /* error  */
   YYSYMBOL_YYUNDEF = 2,                    /* "invalid token"  */
-  YYSYMBOL_E_R = 3,                        /* E_R  */
-  YYSYMBOL_E_C = 4,                        /* E_C  */
-  YYSYMBOL_E_L = 5,                        /* E_L  */
-  YYSYMBOL_E_I = 6,                        /* E_I  */
-  YYSYMBOL_E_V = 7,                        /* E_V  */
-  YYSYMBOL_VCCS = 8,                       /* VCCS  */
-  YYSYMBOL_VCVS = 9,                       /* VCVS  */
-  YYSYMBOL_CCVS = 10,                      /* CCVS  */
-  YYSYMBOL_CCCS = 11,                      /* CCCS  */
-  YYSYMBOL_V_CONT = 12,                    /* V_CONT  */
-  YYSYMBOL_DECIMAL = 13,                   /* DECIMAL  */
-  YYSYMBOL_T_PREFIX = 14,                  /* T_PREFIX  */
-  YYSYMBOL_INTEGER = 15,                   /* INTEGER  */
-  YYSYMBOL_END = 16,                       /* END  */
-  YYSYMBOL_G2 = 17,                        /* G2  */
-  YYSYMBOL_DC = 18,                        /* DC  */
-  YYSYMBOL_TRAN = 19,                      /* TRAN  */
-  YYSYMBOL_20_n_ = 20,                     /* '\n'  */
-  YYSYMBOL_YYACCEPT = 21,                  /* $accept  */
-  YYSYMBOL_netlist = 22,                   /* netlist  */
-  YYSYMBOL_statement = 23,                 /* statement  */
-  YYSYMBOL_control = 24,                   /* control  */
-  YYSYMBOL_element = 25,                   /* element  */
-  YYSYMBOL_resistor = 26,                  /* resistor  */
-  YYSYMBOL_capacitor = 27,                 /* capacitor  */
-  YYSYMBOL_inductor = 28,                  /* inductor  */
-  YYSYMBOL_current_source = 29,            /* current_source  */
-  YYSYMBOL_voltage_source = 30,            /* voltage_source  */
-  YYSYMBOL_voltage_controled_voltage_source = 31, /* voltage_controled_voltage_source  */
-  YYSYMBOL_voltage_controled_current_source = 32, /* voltage_controled_current_source  */
-  YYSYMBOL_current_controled_voltage_source = 33, /* current_controled_voltage_source  */
-  YYSYMBOL_current_controled_current_source = 34, /* current_controled_current_source  */
-  YYSYMBOL_dc = 35,                        /* dc  */
-  YYSYMBOL_tran = 36,                      /* tran  */
-  YYSYMBOL_value = 37                      /* value  */
+  YYSYMBOL_RE_T = 3,                       /* RE_T  */
+  YYSYMBOL_CE_T = 4,                       /* CE_T  */
+  YYSYMBOL_LE_T = 5,                       /* LE_T  */
+  YYSYMBOL_EE_T = 6,                       /* EE_T  */
+  YYSYMBOL_FE_T = 7,                       /* FE_T  */
+  YYSYMBOL_GE_T = 8,                       /* GE_T  */
+  YYSYMBOL_HE_T = 9,                       /* HE_T  */
+  YYSYMBOL_VE_T = 10,                      /* VE_T  */
+  YYSYMBOL_IE_T = 11,                      /* IE_T  */
+  YYSYMBOL_CVS_T = 12,                     /* CVS_T  */
+  YYSYMBOL_INT_T = 13,                     /* INT_T  */
+  YYSYMBOL_DEC_T = 14,                     /* DEC_T  */
+  YYSYMBOL_PREF_T = 15,                    /* PREF_T  */
+  YYSYMBOL_TS_T = 16,                      /* TS_T  */
+  YYSYMBOL_DS_T = 17,                      /* DS_T  */
+  YYSYMBOL_AS_T = 18,                      /* AS_T  */
+  YYSYMBOL_G2_T = 19,                      /* G2_T  */
+  YYSYMBOL_END_T = 20,                     /* END_T  */
+  YYSYMBOL_DC_T = 21,                      /* DC_T  */
+  YYSYMBOL_AC_T = 22,                      /* AC_T  */
+  YYSYMBOL_SINE_T = 23,                    /* SINE_T  */
+  YYSYMBOL_PULSE_T = 24,                   /* PULSE_T  */
+  YYSYMBOL_RAMP_T = 25,                    /* RAMP_T  */
+  YYSYMBOL_STEP_T = 26,                    /* STEP_T  */
+  YYSYMBOL_27_n_ = 27,                     /* '\n'  */
+  YYSYMBOL_28_ = 28,                       /* '('  */
+  YYSYMBOL_29_ = 29,                       /* ')'  */
+  YYSYMBOL_YYACCEPT = 30,                  /* $accept  */
+  YYSYMBOL_netlist = 31,                   /* netlist  */
+  YYSYMBOL_statement = 32,                 /* statement  */
+  YYSYMBOL_control = 33,                   /* control  */
+  YYSYMBOL_element = 34,                   /* element  */
+  YYSYMBOL_resistor = 35,                  /* resistor  */
+  YYSYMBOL_capacitor = 36,                 /* capacitor  */
+  YYSYMBOL_inductor = 37,                  /* inductor  */
+  YYSYMBOL_current_source = 38,            /* current_source  */
+  YYSYMBOL_voltage_source = 39,            /* voltage_source  */
+  YYSYMBOL_voltage_controled_voltage_source = 40, /* voltage_controled_voltage_source  */
+  YYSYMBOL_voltage_controled_current_source = 41, /* voltage_controled_current_source  */
+  YYSYMBOL_current_controled_voltage_source = 42, /* current_controled_voltage_source  */
+  YYSYMBOL_current_controled_current_source = 43, /* current_controled_current_source  */
+  YYSYMBOL_dc = 44,                        /* dc  */
+  YYSYMBOL_tran = 45,                      /* tran  */
+  YYSYMBOL_value = 46                      /* value  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -259,7 +268,7 @@ typedef int yytype_uint16;
 
 
 /* Stored state numbers (used for stacks). */
-typedef yytype_int8 yy_state_t;
+typedef yytype_uint8 yy_state_t;
 
 /* State numbers in computations.  */
 typedef int yy_state_fast_t;
@@ -470,19 +479,19 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   57
+#define YYLAST   127
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  21
+#define YYNTOKENS  30
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  17
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  36
+#define YYNRULES  55
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  73
+#define YYNSTATES  140
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   274
+#define YYMAXUTOK   281
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -497,10 +506,10 @@ union yyalloc
 static const yytype_int8 yytranslate[] =
 {
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      20,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+      27,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+      28,    29,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -523,17 +532,20 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      25,    26
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_int16 yyrline[] =
 {
-       0,    27,    27,    28,    29,    31,    32,    33,    34,    35,
-      39,    40,    44,    45,    46,    47,    48,    49,    50,    51,
-      52,    56,    63,    73,    80,    90,   100,   107,   117,   126,
-     136,   146,   155,   164,   170,   175,   176
+       0,    26,    26,    27,    28,    30,    31,    32,    33,    34,
+      38,    39,    43,    44,    45,    46,    47,    48,    49,    50,
+      51,    55,    62,    72,    79,    89,    99,   106,   113,   117,
+     121,   125,   129,   133,   140,   147,   151,   155,   159,   163,
+     170,   177,   184,   188,   192,   196,   200,   206,   216,   226,
+     235,   244,   250,   255,   256,   257
 };
 #endif
 
@@ -549,11 +561,12 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "\"end of file\"", "error", "\"invalid token\"", "E_R", "E_C", "E_L",
-  "E_I", "E_V", "VCCS", "VCVS", "CCVS", "CCCS", "V_CONT", "DECIMAL",
-  "T_PREFIX", "INTEGER", "END", "G2", "DC", "TRAN", "'\\n'", "$accept",
-  "netlist", "statement", "control", "element", "resistor", "capacitor",
-  "inductor", "current_source", "voltage_source",
+  "\"end of file\"", "error", "\"invalid token\"", "RE_T", "CE_T", "LE_T",
+  "EE_T", "FE_T", "GE_T", "HE_T", "VE_T", "IE_T", "CVS_T", "INT_T",
+  "DEC_T", "PREF_T", "TS_T", "DS_T", "AS_T", "G2_T", "END_T", "DC_T",
+  "AC_T", "SINE_T", "PULSE_T", "RAMP_T", "STEP_T", "'\\n'", "'('", "')'",
+  "$accept", "netlist", "statement", "control", "element", "resistor",
+  "capacitor", "inductor", "current_source", "voltage_source",
   "voltage_controled_voltage_source", "voltage_controled_current_source",
   "current_controled_voltage_source", "current_controled_current_source",
   "dc", "tran", "value", YY_NULLPTR
@@ -566,7 +579,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-41)
+#define YYPACT_NINF (-42)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -580,14 +593,20 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -41,    26,   -41,   -13,   -12,    -6,    -5,    -4,    -3,    -2,
-      -1,     0,   -41,   -41,     3,   -41,   -41,     4,     1,   -41,
-     -41,   -41,   -41,   -41,   -41,   -41,   -41,   -41,   -41,   -41,
-       2,     5,    10,    23,    24,    25,    28,    32,    33,    27,
-       3,   -41,   -41,   -41,     3,     3,     3,     3,     3,    34,
-      35,     6,     7,   -41,   -41,    36,    37,   -41,    38,   -41,
-      41,    42,     3,     3,   -41,   -41,   -41,     3,     3,   -41,
-     -41,   -41,   -41
+     -42,    88,   -42,    -6,    -5,    -4,    -3,     0,     2,     3,
+       4,     5,   -11,   -42,   -42,   -42,   -42,   -13,     1,   -42,
+     -42,   -42,   -42,   -42,   -42,   -42,   -42,   -42,   -42,   -42,
+       7,    13,    14,    18,    26,    28,    29,    35,    41,   -42,
+      40,   -11,   -42,   -42,   -42,   -11,   -11,   -11,    43,    45,
+      47,    50,    11,    96,   -42,   -42,    44,    51,   -42,    53,
+     -11,    58,   -11,   -11,   -11,    48,    54,    55,    61,   -42,
+     -11,   -11,    62,    72,    73,    74,    56,   -42,   -42,   -11,
+     -42,   -11,   -42,   -42,   -11,   -11,   -11,   -11,   -11,    60,
+     -11,   -11,   -11,   -11,   -11,   -42,   -42,   -42,   -42,   -11,
+     -11,    77,   -11,   -42,    84,   -11,   -11,    78,   -11,   -11,
+     -11,   -42,    82,   -42,   -11,   -11,    93,    85,   -11,   -11,
+     -42,   -11,   -11,   -42,    94,   -11,   -11,   -11,   -11,   -42,
+      87,    95,    97,    98,   -42,   -42,   104,   106,   -42,   -42
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -596,73 +615,101 @@ static const yytype_int8 yypact[] =
 static const yytype_int8 yydefact[] =
 {
        2,     0,     1,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     4,    33,     0,     9,     3,     0,     0,    12,
+       0,     0,     0,    51,     4,     9,     3,     0,     0,    12,
       13,    14,    15,    16,    17,    18,    19,    20,    10,    11,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,    35,
-       0,     7,     8,     6,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,    36,    34,    21,    23,    25,    26,    28,
-       0,     0,     0,     0,    22,    24,    27,     0,     0,    31,
-      32,    30,    29
+       0,     0,     0,     0,     0,     0,     0,     0,     0,    53,
+      54,     0,     7,     8,     6,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,    55,    52,    21,    23,    25,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,    40,
+       0,     0,     0,     0,     0,     0,    26,    22,    24,     0,
+      50,     0,    49,    41,     0,     0,     0,     0,     0,    27,
+       0,     0,     0,     0,     0,    33,    47,    48,    42,     0,
+       0,     0,     0,    34,    28,     0,     0,     0,     0,     0,
+       0,    45,     0,    35,     0,     0,    31,     0,     0,     0,
+      46,     0,     0,    38,    32,     0,     0,     0,     0,    39,
+       0,     0,     0,     0,    43,    44,    29,    30,    36,    37
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -41,   -41,   -41,   -41,   -41,   -41,   -41,   -41,   -41,   -41,
-     -41,   -41,   -41,   -41,   -41,   -41,   -40
+     -42,   -42,   -42,   -42,   -42,   -42,   -42,   -42,   -42,   -42,
+     -42,   -42,   -42,   -42,   -42,   -42,   -41
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
        0,     1,    16,    17,    18,    19,    20,    21,    22,    23,
-      24,    25,    26,    27,    28,    29,    40
+      24,    25,    26,    27,    28,    29,    41
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule whose
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
-static const yytype_int8 yytable[] =
+static const yytype_uint8 yytable[] =
 {
-      54,    42,    30,    31,    55,    56,    57,    58,    59,    32,
-      33,    34,    35,    36,    37,    38,    39,    44,    62,    63,
-      45,    43,    69,    70,    41,    46,     2,    71,    72,     3,
-       4,     5,     6,     7,     8,     9,    10,    11,    47,    48,
-      49,    53,    12,    50,    13,    14,    15,    51,    52,    60,
-      61,     0,     0,    64,    65,    66,    67,    68
+      55,    43,    39,    40,    56,    57,    58,    30,    31,    32,
+      33,    69,    76,    34,    42,    35,    36,    37,    38,    80,
+      45,    82,    83,    84,    39,    40,    46,    47,    44,    89,
+      90,    48,    63,    64,    65,    66,    67,    68,    96,    49,
+      97,    50,    51,    98,    99,   100,   101,   102,    52,   104,
+     105,   106,   107,   108,    53,    54,    59,    60,   109,   110,
+      61,   112,    62,    77,   114,   115,    79,   117,   118,   119,
+      78,    81,     0,   121,   122,    95,    85,   125,   126,   103,
+     127,   128,    86,    87,   130,   131,   132,   133,     2,    88,
+      91,     3,     4,     5,     6,     7,     8,     9,    10,    11,
+      92,    93,    94,   113,    12,    13,   111,   116,    14,    39,
+      40,   120,   123,   129,   124,    15,   134,    70,    71,    72,
+      73,    74,    75,   138,   135,   139,   136,   137
 };
 
-static const yytype_int8 yycheck[] =
+static const yytype_int16 yycheck[] =
 {
-      40,     0,    15,    15,    44,    45,    46,    47,    48,    15,
-      15,    15,    15,    15,    15,    15,    13,    15,    12,    12,
-      15,    20,    62,    63,    20,    15,     0,    67,    68,     3,
-       4,     5,     6,     7,     8,     9,    10,    11,    15,    15,
-      15,    14,    16,    15,    18,    19,    20,    15,    15,    15,
-      15,    -1,    -1,    17,    17,    17,    15,    15
+      41,     0,    13,    14,    45,    46,    47,    13,    13,    13,
+      13,    52,    53,    13,    27,    13,    13,    13,    13,    60,
+      13,    62,    63,    64,    13,    14,    13,    13,    27,    70,
+      71,    13,    21,    22,    23,    24,    25,    26,    79,    13,
+      81,    13,    13,    84,    85,    86,    87,    88,    13,    90,
+      91,    92,    93,    94,    13,    15,    13,    12,    99,   100,
+      13,   102,    12,    19,   105,   106,    13,   108,   109,   110,
+      19,    13,    -1,   114,   115,    19,    28,   118,   119,    19,
+     121,   122,    28,    28,   125,   126,   127,   128,     0,    28,
+      28,     3,     4,     5,     6,     7,     8,     9,    10,    11,
+      28,    28,    28,    19,    16,    17,    29,    29,    20,    13,
+      14,    29,    19,    19,    29,    27,    29,    21,    22,    23,
+      24,    25,    26,    19,    29,    19,    29,    29
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    22,     0,     3,     4,     5,     6,     7,     8,     9,
-      10,    11,    16,    18,    19,    20,    23,    24,    25,    26,
-      27,    28,    29,    30,    31,    32,    33,    34,    35,    36,
-      15,    15,    15,    15,    15,    15,    15,    15,    15,    13,
-      37,    20,     0,    20,    15,    15,    15,    15,    15,    15,
-      15,    15,    15,    14,    37,    37,    37,    37,    37,    37,
-      15,    15,    12,    12,    17,    17,    17,    15,    15,    37,
-      37,    37,    37
+       0,    31,     0,     3,     4,     5,     6,     7,     8,     9,
+      10,    11,    16,    17,    20,    27,    32,    33,    34,    35,
+      36,    37,    38,    39,    40,    41,    42,    43,    44,    45,
+      13,    13,    13,    13,    13,    13,    13,    13,    13,    13,
+      14,    46,    27,     0,    27,    13,    13,    13,    13,    13,
+      13,    13,    13,    13,    15,    46,    46,    46,    46,    13,
+      12,    13,    12,    21,    22,    23,    24,    25,    26,    46,
+      21,    22,    23,    24,    25,    26,    46,    19,    19,    13,
+      46,    13,    46,    46,    46,    28,    28,    28,    28,    46,
+      46,    28,    28,    28,    28,    19,    46,    46,    46,    46,
+      46,    46,    46,    19,    46,    46,    46,    46,    46,    46,
+      46,    29,    46,    19,    46,    46,    29,    46,    46,    46,
+      29,    46,    46,    19,    29,    46,    46,    46,    46,    19,
+      46,    46,    46,    46,    29,    29,    29,    29,    19,    19
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    21,    22,    22,    22,    23,    23,    23,    23,    23,
-      24,    24,    25,    25,    25,    25,    25,    25,    25,    25,
-      25,    26,    26,    27,    27,    28,    29,    29,    30,    31,
-      32,    33,    34,    35,    36,    37,    37
+       0,    30,    31,    31,    31,    32,    32,    32,    32,    32,
+      33,    33,    34,    34,    34,    34,    34,    34,    34,    34,
+      34,    35,    35,    36,    36,    37,    38,    38,    38,    38,
+      38,    38,    38,    38,    38,    38,    38,    38,    38,    38,
+      39,    39,    39,    39,    39,    39,    39,    40,    41,    42,
+      43,    44,    45,    46,    46,    46
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -670,8 +717,10 @@ static const yytype_int8 yyr2[] =
 {
        0,     2,     0,     2,     2,     0,     2,     2,     2,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     4,     5,     4,     5,     4,     4,     5,     4,     6,
-       6,     5,     5,     1,     3,     1,     2
+       1,     4,     5,     4,     5,     4,     4,     5,     6,    11,
+      11,     7,     8,     5,     6,     7,    12,    12,     8,     9,
+       4,     5,     6,    11,    11,     7,     8,     6,     6,     5,
+       5,     1,     3,     1,     1,     2
 };
 
 
@@ -1404,182 +1453,359 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 21: /* resistor: E_R INTEGER INTEGER value  */
-#line 56 "parser.y"
-                                {
+  case 21: /* resistor: RE_T INT_T INT_T value  */
+#line 55 "parser.y"
+                             {
         add_node((yyvsp[-2].iv));
         add_node((yyvsp[-1].iv));
         add_RLC((yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv),1);
-        log_trace("Resistor : %s ,node %d --> %d ,value = %f OHM.",(yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv));
+        log_trace("Resistor : %s ,node %d --> %d ,value = %.16f OHM.",(yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv));
         free((yyvsp[-3].sv));   //DeAllocating sv memory which we allocatd in lexer
     }
-#line 1417 "parser.tab.c"
+#line 1466 "parser.tab.c"
     break;
 
-  case 22: /* resistor: E_R INTEGER INTEGER value G2  */
-#line 63 "parser.y"
-                                   {
+  case 22: /* resistor: RE_T INT_T INT_T value G2_T  */
+#line 62 "parser.y"
+                                  {
         add_node((yyvsp[-3].iv));
         add_node((yyvsp[-2].iv));
         add_RLC((yyvsp[-4].sv),(yyvsp[-3].iv),(yyvsp[-2].iv),(yyvsp[-1].dv),2);
-        log_trace("Resistor : %s ,node %d --> %d ,value = %f OHM.",(yyvsp[-4].sv),(yyvsp[-3].iv),(yyvsp[-2].iv),(yyvsp[-1].dv));
+        log_trace("Resistor : %s ,node %d --> %d ,value = %.16f OHM.",(yyvsp[-4].sv),(yyvsp[-3].iv),(yyvsp[-2].iv),(yyvsp[-1].dv));
         free((yyvsp[-4].sv));   //DeAllocating sv memory which we allocatd in lexer
     }
-#line 1429 "parser.tab.c"
+#line 1478 "parser.tab.c"
     break;
 
-  case 23: /* capacitor: E_C INTEGER INTEGER value  */
-#line 73 "parser.y"
-                                {
+  case 23: /* capacitor: CE_T INT_T INT_T value  */
+#line 72 "parser.y"
+                             {
         add_node((yyvsp[-2].iv));
         add_node((yyvsp[-1].iv));
         add_RLC((yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv),1);
-        log_trace("Capacitor : %s ,node %d --> %d ,value = %f FARAD.",(yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv));
+        log_trace("Capacitor : %s ,node %d --> %d ,value = %.16f FARAD.",(yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv));
         free((yyvsp[-3].sv));   //DeAllocating sv memory which we allocatd in lexer
     }
-#line 1441 "parser.tab.c"
+#line 1490 "parser.tab.c"
     break;
 
-  case 24: /* capacitor: E_C INTEGER INTEGER value G2  */
-#line 80 "parser.y"
-                                   {
+  case 24: /* capacitor: CE_T INT_T INT_T value G2_T  */
+#line 79 "parser.y"
+                                  {
         add_node((yyvsp[-3].iv));
         add_node((yyvsp[-2].iv));
         add_RLC((yyvsp[-4].sv),(yyvsp[-3].iv),(yyvsp[-2].iv),(yyvsp[-1].dv),2);
-        log_trace("Capacitor : %s ,node %d --> %d ,value = %f FARAD.",(yyvsp[-4].sv),(yyvsp[-3].iv),(yyvsp[-2].iv),(yyvsp[-1].dv));
+        log_trace("Capacitor : %s ,node %d --> %d ,value = %.16f FARAD.",(yyvsp[-4].sv),(yyvsp[-3].iv),(yyvsp[-2].iv),(yyvsp[-1].dv));
         free((yyvsp[-4].sv));   //DeAllocating sv memory which we allocatd in lexer
     }
-#line 1453 "parser.tab.c"
+#line 1502 "parser.tab.c"
     break;
 
-  case 25: /* inductor: E_L INTEGER INTEGER value  */
-#line 90 "parser.y"
-                                {
+  case 25: /* inductor: LE_T INT_T INT_T value  */
+#line 89 "parser.y"
+                             {
         add_node((yyvsp[-2].iv));
         add_node((yyvsp[-1].iv));
         add_RLC((yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv),2);
-        log_trace("Inductor : %s ,node %d --> %d ,value = %f Henry.",(yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv));
+        log_trace("Inductor : %s ,node %d --> %d ,value = %.16f Henry.",(yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv));
         free((yyvsp[-3].sv));   //DeAllocating sv memory which we allocatd in lexer
     }
-#line 1465 "parser.tab.c"
+#line 1514 "parser.tab.c"
     break;
 
-  case 26: /* current_source: E_I INTEGER INTEGER value  */
-#line 100 "parser.y"
-                                {
-        add_node((yyvsp[-2].iv));
-        add_node((yyvsp[-1].iv));
-        add_I((yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv),1);
-        log_trace("Current Source : %s ,node %d --> %d ,value = %f A.",(yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv));
-        free((yyvsp[-3].sv));   //DeAllocating sv memory which we allocatd in lexer
-    }
-#line 1477 "parser.tab.c"
+  case 26: /* current_source: IE_T INT_T INT_T value  */
+#line 99 "parser.y"
+                               {
+            add_node((yyvsp[-2].iv));
+            add_node((yyvsp[-1].iv));
+            add_I((yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv),1);
+            log_trace("DC Current Source : %s ,node %d --> %d ,value = %.16f A.",(yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv));
+            free((yyvsp[-3].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1526 "parser.tab.c"
     break;
 
-  case 27: /* current_source: E_I INTEGER INTEGER value G2  */
-#line 107 "parser.y"
-                                   {
-        add_node((yyvsp[-3].iv));
-        add_node((yyvsp[-2].iv));
-        add_I((yyvsp[-4].sv),(yyvsp[-3].iv),(yyvsp[-2].iv),(yyvsp[-1].dv),2); 
-        log_trace("Current Source : %s ,node %d --> %d ,value = %f A.",(yyvsp[-4].sv),(yyvsp[-3].iv),(yyvsp[-2].iv),(yyvsp[-1].dv));
-        free((yyvsp[-4].sv));   //DeAllocating sv memory which we allocatd in lexer
-    }
-#line 1489 "parser.tab.c"
+  case 27: /* current_source: IE_T INT_T INT_T DC_T value  */
+#line 106 "parser.y"
+                                    {
+            add_node((yyvsp[-3].iv));
+            add_node((yyvsp[-2].iv));
+            add_I((yyvsp[-4].sv),(yyvsp[-3].iv),(yyvsp[-2].iv),(yyvsp[0].dv),1);
+            log_trace("DC Current Source : %s ,node %d --> %d ,value = %.16f A.",(yyvsp[-4].sv),(yyvsp[-3].iv),(yyvsp[-2].iv),(yyvsp[0].dv));
+            free((yyvsp[-4].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1538 "parser.tab.c"
     break;
 
-  case 28: /* voltage_source: E_V INTEGER INTEGER value  */
+  case 28: /* current_source: IE_T INT_T INT_T AC_T value value  */
+#line 113 "parser.y"
+                                          {
+            log_trace("AC Current Source : %s ,node %d --> %d ,amp = %f A, phase = %f deg.",(yyvsp[-5].sv),(yyvsp[-4].iv),(yyvsp[-3].iv),(yyvsp[-1].dv),(yyvsp[0].dv));
+            free((yyvsp[-5].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1547 "parser.tab.c"
+    break;
+
+  case 29: /* current_source: IE_T INT_T INT_T SINE_T '(' value value value value value ')'  */
 #line 117 "parser.y"
-                              {
-        add_node((yyvsp[-2].iv));
-        add_node((yyvsp[-1].iv));
-        add_V((yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv));
-        log_trace("Voltage Source : %s ,node %d --> %d ,value = %f V.",(yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv));
-        free((yyvsp[-3].sv));   //DeAllocating sv memory which we allocatd in lexer
-    }
-#line 1501 "parser.tab.c"
+                                                                      {
+            log_trace("SINE Current Source : %s ,node %d --> %d ,freq = %f, amp = %f, offset = %f, phase = %f, delay = %f A.",(yyvsp[-10].sv),(yyvsp[-9].iv),(yyvsp[-8].iv),(yyvsp[-5].dv),(yyvsp[-4].dv),(yyvsp[-3].dv),(yyvsp[-2].dv),(yyvsp[-1].dv));
+            free((yyvsp[-10].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1556 "parser.tab.c"
     break;
 
-  case 29: /* voltage_controled_voltage_source: VCVS INTEGER INTEGER INTEGER INTEGER value  */
-#line 126 "parser.y"
+  case 30: /* current_source: IE_T INT_T INT_T PULSE_T '(' value value value value value ')'  */
+#line 121 "parser.y"
+                                                                       {
+            log_trace("PULSE Current Source : %s ,node %d --> %d ,Voff = %f, Von = %f, Ton = %f, Tperiod = %f, delay = %f A.",(yyvsp[-10].sv),(yyvsp[-9].iv),(yyvsp[-8].iv),(yyvsp[-5].dv),(yyvsp[-4].dv),(yyvsp[-3].dv),(yyvsp[-2].dv),(yyvsp[-1].dv));
+            free((yyvsp[-10].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1565 "parser.tab.c"
+    break;
+
+  case 31: /* current_source: IE_T INT_T INT_T RAMP_T '(' value ')'  */
+#line 125 "parser.y"
+                                              {
+            log_trace("RAMP Current Source : %s ,node %d --> %d ,delay = %f s.",(yyvsp[-6].sv),(yyvsp[-5].iv),(yyvsp[-4].iv),(yyvsp[-1].dv));
+            free((yyvsp[-6].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1574 "parser.tab.c"
+    break;
+
+  case 32: /* current_source: IE_T INT_T INT_T STEP_T '(' value value ')'  */
+#line 129 "parser.y"
+                                                    {
+            log_trace("DC Current Source : %s ,node %d --> %d ,Von = %f A, delay = %f s.",(yyvsp[-7].sv),(yyvsp[-6].iv),(yyvsp[-5].iv),(yyvsp[-2].dv),(yyvsp[-1].dv));
+            free((yyvsp[-7].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1583 "parser.tab.c"
+    break;
+
+  case 33: /* current_source: IE_T INT_T INT_T value G2_T  */
+#line 133 "parser.y"
+                                    {
+            add_node((yyvsp[-3].iv));
+            add_node((yyvsp[-2].iv));
+            add_I((yyvsp[-4].sv),(yyvsp[-3].iv),(yyvsp[-2].iv),(yyvsp[-1].dv),2);
+            log_trace("DC Current Source : %s ,node %d --> %d ,value = %.16f A.",(yyvsp[-4].sv),(yyvsp[-3].iv),(yyvsp[-2].iv),(yyvsp[-1].dv));
+            free((yyvsp[-4].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1595 "parser.tab.c"
+    break;
+
+  case 34: /* current_source: IE_T INT_T INT_T DC_T value G2_T  */
+#line 140 "parser.y"
+                                         {
+            add_node((yyvsp[-4].iv));
+            add_node((yyvsp[-3].iv));
+            add_I((yyvsp[-5].sv),(yyvsp[-4].iv),(yyvsp[-3].iv),(yyvsp[-1].dv),2);
+            log_trace("DC Current Source : %s ,node %d --> %d ,value = %.16f A.",(yyvsp[-5].sv),(yyvsp[-4].iv),(yyvsp[-3].iv),(yyvsp[-1].dv));
+            free((yyvsp[-5].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1607 "parser.tab.c"
+    break;
+
+  case 35: /* current_source: IE_T INT_T INT_T AC_T value value G2_T  */
+#line 147 "parser.y"
                                                {
+            log_trace("AC Current Source : %s ,node %d --> %d ,amp = %f A, phase = %f deg.",(yyvsp[-6].sv),(yyvsp[-5].iv),(yyvsp[-4].iv),(yyvsp[-2].dv),(yyvsp[-1].dv));
+            free((yyvsp[-6].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1616 "parser.tab.c"
+    break;
+
+  case 36: /* current_source: IE_T INT_T INT_T SINE_T '(' value value value value value ')' G2_T  */
+#line 151 "parser.y"
+                                                                           {
+            log_trace("SINE Current Source : %s ,node %d --> %d ,freq = %f, amp = %f, offset = %f, phase = %f, delay = %f A.",(yyvsp[-11].sv),(yyvsp[-10].iv),(yyvsp[-9].iv),(yyvsp[-6].dv),(yyvsp[-5].dv),(yyvsp[-4].dv),(yyvsp[-3].dv),(yyvsp[-2].dv));
+            free((yyvsp[-11].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1625 "parser.tab.c"
+    break;
+
+  case 37: /* current_source: IE_T INT_T INT_T PULSE_T '(' value value value value value ')' G2_T  */
+#line 155 "parser.y"
+                                                                           {
+            log_trace("PULSE Current Source : %s ,node %d --> %d ,Voff = %f, Von = %f, Ton = %f, Tperiod = %f, delay = %f A.",(yyvsp[-11].sv),(yyvsp[-10].iv),(yyvsp[-9].iv),(yyvsp[-6].dv),(yyvsp[-5].dv),(yyvsp[-4].dv),(yyvsp[-3].dv),(yyvsp[-2].dv));
+            free((yyvsp[-11].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1634 "parser.tab.c"
+    break;
+
+  case 38: /* current_source: IE_T INT_T INT_T RAMP_T '(' value ')' G2_T  */
+#line 159 "parser.y"
+                                                   {
+            log_trace("RAMP Current Source : %s ,node %d --> %d ,delay = %f s.",(yyvsp[-7].sv),(yyvsp[-6].iv),(yyvsp[-5].iv),(yyvsp[-2].dv));
+            free((yyvsp[-7].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1643 "parser.tab.c"
+    break;
+
+  case 39: /* current_source: IE_T INT_T INT_T STEP_T '(' value value ')' G2_T  */
+#line 163 "parser.y"
+                                                         {
+            log_trace("DC Current Source : %s ,node %d --> %d ,Von = %f A, delay = %f s.",(yyvsp[-8].sv),(yyvsp[-7].iv),(yyvsp[-6].iv),(yyvsp[-3].dv),(yyvsp[-2].dv));
+            free((yyvsp[-8].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1652 "parser.tab.c"
+    break;
+
+  case 40: /* voltage_source: VE_T INT_T INT_T value  */
+#line 170 "parser.y"
+                               {
+            add_node((yyvsp[-2].iv));
+            add_node((yyvsp[-1].iv));
+            add_V((yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv));
+            log_trace("DC Voltage Source : %s ,node %d --> %d ,value = %.16f V.",(yyvsp[-3].sv),(yyvsp[-2].iv),(yyvsp[-1].iv),(yyvsp[0].dv));
+            free((yyvsp[-3].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1664 "parser.tab.c"
+    break;
+
+  case 41: /* voltage_source: VE_T INT_T INT_T DC_T value  */
+#line 177 "parser.y"
+                                    {
+            add_node((yyvsp[-3].iv));
+            add_node((yyvsp[-2].iv));
+            add_V((yyvsp[-4].sv),(yyvsp[-3].iv),(yyvsp[-2].iv),(yyvsp[0].dv));
+            log_trace("DC Voltage Source : %s ,node %d --> %d ,value = %.16f V.",(yyvsp[-4].sv),(yyvsp[-3].iv),(yyvsp[-2].iv),(yyvsp[0].dv));
+            free((yyvsp[-4].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1676 "parser.tab.c"
+    break;
+
+  case 42: /* voltage_source: VE_T INT_T INT_T AC_T value value  */
+#line 184 "parser.y"
+                                          {
+            log_trace("AC Voltage Source : %s ,node %d --> %d ,amp = %f V, phase = %f deg.",(yyvsp[-5].sv),(yyvsp[-4].iv),(yyvsp[-3].iv),(yyvsp[-1].dv),(yyvsp[0].dv));
+            free((yyvsp[-5].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1685 "parser.tab.c"
+    break;
+
+  case 43: /* voltage_source: VE_T INT_T INT_T SINE_T '(' value value value value value ')'  */
+#line 188 "parser.y"
+                                                                      {
+            log_trace("SINE Voltage Source : %s ,node %d --> %d ,freq = %f, amp = %f, offset = %f, phase = %f, delay = %f V.",(yyvsp[-10].sv),(yyvsp[-9].iv),(yyvsp[-8].iv),(yyvsp[-5].dv),(yyvsp[-4].dv),(yyvsp[-3].dv),(yyvsp[-2].dv),(yyvsp[-1].dv));
+            free((yyvsp[-10].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1694 "parser.tab.c"
+    break;
+
+  case 44: /* voltage_source: VE_T INT_T INT_T PULSE_T '(' value value value value value ')'  */
+#line 192 "parser.y"
+                                                                       {
+            log_trace("PULSE Voltage Source : %s ,node %d --> %d ,Voff = %f, Von = %f, Ton = %f, Tperiod = %f, delay = %f V.",(yyvsp[-10].sv),(yyvsp[-9].iv),(yyvsp[-8].iv),(yyvsp[-5].dv),(yyvsp[-4].dv),(yyvsp[-3].dv),(yyvsp[-2].dv),(yyvsp[-1].dv));
+            free((yyvsp[-10].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1703 "parser.tab.c"
+    break;
+
+  case 45: /* voltage_source: VE_T INT_T INT_T RAMP_T '(' value ')'  */
+#line 196 "parser.y"
+                                              {
+            log_trace("RAMP Voltage Source : %s ,node %d --> %d ,delay = %f s.",(yyvsp[-6].sv),(yyvsp[-5].iv),(yyvsp[-4].iv),(yyvsp[-1].dv));
+            free((yyvsp[-6].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1712 "parser.tab.c"
+    break;
+
+  case 46: /* voltage_source: VE_T INT_T INT_T STEP_T '(' value value ')'  */
+#line 200 "parser.y"
+                                                    {
+            log_trace("DC Voltage Source : %s ,node %d --> %d ,Von = %f V, delay = %f s.",(yyvsp[-7].sv),(yyvsp[-6].iv),(yyvsp[-5].iv),(yyvsp[-2].dv),(yyvsp[-1].dv));
+            free((yyvsp[-7].sv));   //DeAllocating sv memory which we allocatd in lexer
+        }
+#line 1721 "parser.tab.c"
+    break;
+
+  case 47: /* voltage_controled_voltage_source: EE_T INT_T INT_T INT_T INT_T value  */
+#line 206 "parser.y"
+                                       {
         add_node((yyvsp[-4].iv));
         add_node((yyvsp[-3].iv));
         add_node((yyvsp[-2].iv));
         add_node((yyvsp[-1].iv));
         add_VCVS((yyvsp[-5].sv), (yyvsp[-4].iv), (yyvsp[-3].iv), (yyvsp[-2].iv), (yyvsp[-1].iv), (yyvsp[0].dv), 2);
-        log_trace("VCVS : %s ,control : %d --> %d ,out : %d --> %d ,value = %f",(yyvsp[-5].sv), (yyvsp[-4].iv), (yyvsp[-3].iv), (yyvsp[-2].iv), (yyvsp[-1].iv), (yyvsp[0].dv));
+        log_trace("VCVS : %s ,control : %d --> %d ,out : %d --> %d ,value = %.16f",(yyvsp[-5].sv), (yyvsp[-4].iv), (yyvsp[-3].iv), (yyvsp[-2].iv), (yyvsp[-1].iv), (yyvsp[0].dv));
         free((yyvsp[-5].sv));
     }
-#line 1515 "parser.tab.c"
+#line 1735 "parser.tab.c"
     break;
 
-  case 30: /* voltage_controled_current_source: VCCS INTEGER INTEGER INTEGER INTEGER value  */
-#line 136 "parser.y"
-                                               {
+  case 48: /* voltage_controled_current_source: GE_T INT_T INT_T INT_T INT_T value  */
+#line 216 "parser.y"
+                                       {
         add_node((yyvsp[-4].iv));
         add_node((yyvsp[-3].iv));
         add_node((yyvsp[-2].iv));
         add_node((yyvsp[-1].iv));
         add_VCCS((yyvsp[-5].sv), (yyvsp[-4].iv), (yyvsp[-3].iv), (yyvsp[-2].iv), (yyvsp[-1].iv), (yyvsp[0].dv), 1);
-        log_trace("VCCS : %s ,control : %d --> %d ,out : %d --> %d ,value = %f",(yyvsp[-5].sv), (yyvsp[-4].iv), (yyvsp[-3].iv), (yyvsp[-2].iv), (yyvsp[-1].iv), (yyvsp[0].dv));
+        log_trace("VCCS : %s ,control : %d --> %d ,out : %d --> %d ,value = %.16f",(yyvsp[-5].sv), (yyvsp[-4].iv), (yyvsp[-3].iv), (yyvsp[-2].iv), (yyvsp[-1].iv), (yyvsp[0].dv));
         free((yyvsp[-5].sv));
     }
-#line 1529 "parser.tab.c"
+#line 1749 "parser.tab.c"
     break;
 
-  case 31: /* current_controled_voltage_source: CCVS INTEGER INTEGER V_CONT value  */
-#line 146 "parser.y"
-                                      {
+  case 49: /* current_controled_voltage_source: HE_T INT_T INT_T CVS_T value  */
+#line 226 "parser.y"
+                                 {
         add_node((yyvsp[-3].iv));
         add_node((yyvsp[-2].iv));
         add_CCCS((yyvsp[-4].sv), (yyvsp[-1].sv), (yyvsp[-3].iv), (yyvsp[-2].iv), (yyvsp[0].dv), 2);
-        log_trace("CCVS : %s ,control : %s ,out : %d --> %d ,value = %f",(yyvsp[-4].sv) ,(yyvsp[-1].sv) ,(yyvsp[-3].iv) ,(yyvsp[-2].iv) ,(yyvsp[0].dv));
+        log_trace("CCVS : %s ,control : %s ,out : %d --> %d ,value = %.16f",(yyvsp[-4].sv) ,(yyvsp[-1].sv) ,(yyvsp[-3].iv) ,(yyvsp[-2].iv) ,(yyvsp[0].dv));
         free((yyvsp[-4].sv));
         free((yyvsp[-1].sv));
     }
-#line 1542 "parser.tab.c"
+#line 1762 "parser.tab.c"
     break;
 
-  case 32: /* current_controled_current_source: CCCS INTEGER INTEGER V_CONT value  */
-#line 155 "parser.y"
-                                      {
+  case 50: /* current_controled_current_source: FE_T INT_T INT_T CVS_T value  */
+#line 235 "parser.y"
+                                 {
         add_node((yyvsp[-3].iv));
         add_node((yyvsp[-2].iv));
         add_CCCS((yyvsp[-4].sv), (yyvsp[-1].sv), (yyvsp[-3].iv), (yyvsp[-2].iv), (yyvsp[0].dv), 1);
-        log_trace("CCCS : %s ,control : %s ,out : %d --> %d ,value = %f",(yyvsp[-4].sv) ,(yyvsp[-1].sv) ,(yyvsp[-3].iv) ,(yyvsp[-2].iv) ,(yyvsp[0].dv));
+        log_trace("CCCS : %s ,control : %s ,out : %d --> %d ,value = %.16f",(yyvsp[-4].sv) ,(yyvsp[-1].sv) ,(yyvsp[-3].iv) ,(yyvsp[-2].iv) ,(yyvsp[0].dv));
         free((yyvsp[-4].sv));
         free((yyvsp[-1].sv));
     }
-#line 1555 "parser.tab.c"
+#line 1775 "parser.tab.c"
     break;
 
-  case 33: /* dc: DC  */
-#line 164 "parser.y"
-       {
+  case 51: /* dc: DS_T  */
+#line 244 "parser.y"
+         {
         log_trace("DC Analysis Detected!");
         set_simultaor_dc();
     }
-#line 1564 "parser.tab.c"
+#line 1784 "parser.tab.c"
     break;
 
-  case 34: /* tran: TRAN value value  */
-#line 170 "parser.y"
+  case 52: /* tran: TS_T value value  */
+#line 250 "parser.y"
                      {
-        log_trace("Transient Analysis Detected!,stop time = %lf, step = %lf", (yyvsp[-1].dv), (yyvsp[0].dv));
+        log_trace("Transient Analysis Detected!,stop time = %.16f, step = %.16f", (yyvsp[-1].dv), (yyvsp[0].dv));
         set_simultaor_tran((yyvsp[-1].dv), (yyvsp[0].dv));
     }
-#line 1573 "parser.tab.c"
+#line 1793 "parser.tab.c"
     break;
 
-  case 36: /* value: DECIMAL T_PREFIX  */
-#line 176 "parser.y"
-                        {(yyval.dv) = (yyvsp[-1].dv) * (yyvsp[0].dv);}
-#line 1579 "parser.tab.c"
+  case 53: /* value: INT_T  */
+#line 255 "parser.y"
+                    {(yyval.dv) = (double)(yyvsp[0].iv);}
+#line 1799 "parser.tab.c"
+    break;
+
+  case 55: /* value: DEC_T PREF_T  */
+#line 257 "parser.y"
+                    {(yyval.dv) = (yyvsp[-1].dv) * (yyvsp[0].dv);}
+#line 1805 "parser.tab.c"
     break;
 
 
-#line 1583 "parser.tab.c"
+#line 1809 "parser.tab.c"
 
       default: break;
     }
@@ -1803,4 +2029,4 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 178 "parser.y"
+#line 259 "parser.y"

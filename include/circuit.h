@@ -1,7 +1,6 @@
 /*
     circuit structure
 */
-
 #include "ESmat.h"
 
 #define NULL_SYM 0
