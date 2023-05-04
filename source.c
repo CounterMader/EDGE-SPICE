@@ -4,137 +4,135 @@
 #include "circuit.h"
 #include "log.h"
 #include "source.h"
+#include <math.h>
+#define PI 3.14159265358979323846
 
-struct SINE_s *create_sine_s(double offset, double amplitude, double phase, double freq, double delay){
+void pulse_src_update(CKTcircuit *circuit, SRC_TAB *stab){
+    // Vo -> initial voltage
+    // V1 -> peak voltage
+    // Td -> initial delay time
+    // Tr -> rise time
+    // Tf -> fall time
+    // Tw -> pulse-width
+    // To -> period of wave
+    stab -> value = (double *)calloc(circuit -> step_num, sizeof(double));
+    double time = 0;
+    double	V1, V2, TD, TR, TF, PW, PER;
 
-    struct SINE_s *sine = NULL;
+    V1 = stab -> src_coefficient[pulse_Vo];
+    V2 = stab -> src_coefficient[pulse_V1];
+    TD = stab -> src_coefficient[pulse_Td];
+    TR = stab -> src_coefficient[pulse_Tr];
+    TF = stab -> src_coefficient[pulse_Tf];
+    PW = stab -> src_coefficient[pulse_Tw];
+    PER = stab -> src_coefficient[pulse_To];
 
-    sine = (struct SINE_s *)malloc(sizeof(struct SINE_s));
-    if(sine == NULL){
-        log_fatal("SINE source allocaton faield!");
-        //safe exit
-        exit(EXIT_FAILURE);
+    double	basetime = 0;
+    time -= TD;
+    for(int i = 0;i < circuit -> step_num;i++,time += circuit -> Tstep){
+        if(time > PER){
+            /* repeating signal - figure out where we are */
+            /* in period */
+            basetime = PER * floor(time/PER);
+            time -= basetime;
+        }
+        if(time <= 0 || time >= TR + PW + TF){
+            stab -> value[i] = V1;
+        }
+        else if (time >= TR && time <= TR + PW){
+            stab -> value[i] = V2;
+        }
+        else if (time > 0 && time < TR){
+            stab -> value[i] = V1 + (V2 - V1) * (time) / TR;
+        }
+        else{ /* time > TR + PW && < TR + PW + TF */
+            stab -> value[i] = V2 + (V1 - V2) * (time - (TR + PW)) / TF;
+        }
     }
-
-    sine -> offset = offset;
-    sine -> amplitude = amplitude;
-    sine -> phase = phase;
-    sine -> freq = freq;
-    sine -> delay = delay;
-
-    return sine;
 }
 
-struct PULSE_s *create_pulse_s(double v_on, double v_off, double t_on, double t_period, double delay){
-
-    struct PULSE_s *pulse = NULL;
-
-    pulse = (struct PULSE_s *)malloc(sizeof(struct PULSE_s));
-    if(pulse == NULL){
-        log_fatal("PULSE source allocaton faield!");
-        //safe exit
-        exit(EXIT_FAILURE);
+void sine_src_update(CKTcircuit *circuit, SRC_TAB *stab){
+    stab -> value = (double *)calloc(circuit -> step_num, sizeof(double));
+    #define VO stab -> src_coefficient[sine_Vo]
+    #define VA stab -> src_coefficient[sine_Va]
+    #define FREQ stab -> src_coefficient[sine_Fo]
+    #define TD stab -> src_coefficient[sine_Td]
+    #define THETA stab -> src_coefficient[sine_a]
+    #define PHI stab -> src_coefficient[sine_phi]
+    double time = 0;
+    time -= stab -> src_coefficient[sine_Td];
+    for(int i = 0;i < circuit -> step_num;i++,time += circuit -> Tstep){
+        if(time <= 0){
+            stab -> value[i] = VO;
+        }
+        else{
+            stab -> value[i] = VO + VA * sin(2.0 * PI * FREQ * time + PHI) * exp(-(THETA * time));
+        }
     }
-
-    pulse -> v_on = v_on;
-    pulse -> v_off = v_off;
-    pulse -> t_on = t_on;
-    pulse -> t_period = t_period;
-    pulse -> delay = delay;
-
-    return pulse;
-}
-
-struct STEP_s *create_step_s(double v_on, double delay){
-
-    struct STEP_s *step = NULL;
-
-    step = (struct STEP_s *)malloc(sizeof(struct STEP_s));
-    if(step == NULL){
-        log_fatal("STEP source allocaton faield!");
-        //safe exit
-        exit(EXIT_FAILURE);
-    }
-
-    step -> v_on = v_on;
-    step -> delay = delay;
-
-    return step;
-}
-
-struct RAMP_s *create_ramp_s(double delay){
-
-    struct RAMP_s *ramp = NULL;
-
-    ramp = (struct RAMP_s *)malloc(sizeof(struct RAMP_s));
-    if(ramp == NULL){
-        log_fatal("RAMP source allocaton faield!");
-        //safe exit
-        exit(EXIT_FAILURE);
-    }
-
-    ramp -> delay = delay;
-
-    return ramp;
-}
-
-struct DC_s *create_dc_s(double value){
-
-    struct DC_s *dc = NULL;
-
-    dc = (struct DC_s *)malloc(sizeof(struct DC_s));
-    if(dc == NULL){
-        log_fatal("DC source allocaton faield!");
-        //safe exit
-        exit(EXIT_FAILURE);
-    }
-
-    dc -> value = value;
-
-    return dc;
-}
-
-struct AC_s *create(double amplitude, double phase){
-
-    struct AC_s *ac = NULL;
-
-    ac = (struct AC_s *)malloc(sizeof(struct AC_s));
-    if(ac == NULL){
-        log_fatal("AC source allocaton faield!");
-        //safe exit
-        exit(EXIT_FAILURE);
-    }
-
-    ac -> phase = phase;
-    ac -> amplitude = amplitude;
-
-    return ac;
-}
-
-struct DEPENDENT_s *create_dep_s(double value){
-
-    struct DEPENDENT_s *dep = NULL;
-
-    dep = (struct DEPENDENT_s *)malloc(sizeof(struct DEPENDENT_s));
-    if(dep == NULL){
-        log_fatal("DEPENDENT source allocaton faield!");
-        //safe exit
-        exit(EXIT_FAILURE);
-    }
-
-    dep -> value = value;
-
-    return dep;
 }
 
 void step_src_update(CKTcircuit *circuit, SRC_TAB *stab){
-    double tic = 0;
-
     stab -> value = (double *)calloc(circuit -> step_num, sizeof(double));
+    double time = 0;
+    time -= stab -> src_coefficient[step_Td];
+    for(int i = 0;i < circuit -> step_num;i++,time += circuit -> Tstep){
+        if(time <= 0){
+            stab -> value[i] = 0;
+        }
+        else{
+            stab -> value[i] = stab -> src_coefficient[step_V1];
+        }
+    }
+}
 
-    for(int i = 0;i <= circuit -> simulate_type;i++, tic += circuit -> Tstep){
-        if(tic >= stab -> step_src -> delay){
-            stab -> value[i] = stab -> step_src -> v_on;
+void dc_src_update(CKTcircuit *circuit, SRC_TAB *stab){
+    stab -> value = (double *)calloc(circuit -> step_num, sizeof(double));
+    for(int i = 0;i < circuit -> step_num;i++){
+        stab -> value[i] = stab -> src_coefficient[dc_V1];
+    }
+}
+
+void ramp_src_update(CKTcircuit *circuit, SRC_TAB *stab){
+    stab -> value = (double *)calloc(circuit -> step_num, sizeof(double));
+    double time = 0;
+    time -= stab -> src_coefficient[ramp_Td];
+    for (int i = 0; i < circuit -> step_num; i++, time += circuit -> Tstep){
+        if(time <= 0){
+            stab -> value[i] = 0;
+        }
+        else{
+            stab -> value[i] = time;
+        }
+    }
+    
+}
+
+void transient_source_update(CKTcircuit *circuit, HASH_TAB *htab){
+    for(int i = 0;i < htab -> s_size;i++){
+        if(htab -> s_table[i] == NULL)
+            continue;
+        SRC_TAB *temp = htab -> s_table[i];
+        while(temp){
+            switch(temp -> src_type){
+                case SINE:
+                    sine_src_update(circuit, temp);
+                    break;
+                case PULSE:
+                    pulse_src_update(circuit, temp);
+                    break;
+                case RAMP:
+                    ramp_src_update(circuit, temp);
+                    break;
+                case STEP:
+                    step_src_update(circuit, temp);
+                    break;
+                case DC:
+                    dc_src_update(circuit, temp);
+                    break;
+                default:
+                    break;
+            }
+            temp = temp -> next;
         }
     }
 }

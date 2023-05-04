@@ -15,19 +15,26 @@
         |__ hash function
         |__ compare function
         |__ hash table
-            |    |__ node symbol(BUCKET) 0
-            |         |__ Entrie
+            |    |    |__ node symbol(BUCKET) 0
+            |    |         |__ Entries
+            |    |    :
+            |    |    :
+            |    |    |__ node symbol(BUCKET) n
+            |    |         |__ Entries
+            |    |
+            |    |__ element symbol 0
+            |            |__ Entries
             |    :
             |    :
-            |    |__ node symbol(BUCKET) n
-            |         |__ Entrie
+            |    |__ element symbol n
+            |            |__ Entries
             |
-            |__ element symbol 0
-                    |__ Entrie
+            |__source symbol 0
+                    |__Entries
             :
             :
-            |__ element symbol n
-                    |__ Entrie
+            |__source symbol n
+                    |__Entries
 */
 
 
@@ -429,13 +436,7 @@ SRC_TAB *create_src(char *sid, NODE_TAB *node1, NODE_TAB *node2, NODE_TAB *node3
     stab -> value = NULL;
     stab -> cvs = NULL;
 
-    stab -> ac_src = NULL;
-    stab -> dc_src = NULL;
-    stab -> ramp_src = NULL;
-    stab -> step_src = NULL;
-    stab -> sine_src = NULL;
-    stab -> pulse_src = NULL;
-    stab -> dep_src = NULL;
+    stab -> src_coefficient = NULL;
 
     stab -> is_stamped = NOT_STAMPED;
 
@@ -449,28 +450,7 @@ void free_src(SRC_TAB *stab){
     if(stab -> cvs != NULL){
         free(stab -> cvs);
     }
-
-    if(stab -> pulse_src != NULL){
-        free(stab -> pulse_src);
-    }
-    else if(stab -> sine_src != NULL){
-        free(stab -> sine_src);
-    }
-    else if(stab -> ramp_src != NULL){
-        free(stab -> ramp_src);
-    }
-    else if(stab -> step_src != NULL){
-        free(stab -> step_src);
-    }
-    else if(stab -> dc_src != NULL){
-        free(stab -> dc_src);
-    }
-    else if(stab -> ac_src != NULL){
-        free(stab -> ac_src);
-    }
-    else if(stab -> dep_src != NULL){
-        free(stab -> dep_src);
-    }
+    free(stab -> src_coefficient);
     free(stab);
 }
 
@@ -532,99 +512,101 @@ void print_src_table(HASH_TAB *htab, FILE *fp){
             switch(temp -> src_type){
             case SINE:
                 if(temp -> sid[0] == 'V'){
-                    fprintf(fp, "%d\tSine Voltage source:sid = %s, node:%d --> %d, offset:%f, phase:%f, freq:%f, Amp :%f, delay:%f\n", htab -> hash(temp -> sid) % htab -> s_size,
+                    fprintf(fp, "%d\tSine Voltage source:sid = %s, node:%d --> %d, offset:%f, phase:%f, freq:%f, Amp :%f, delay:%f, damping factor:%f\n", htab -> hash(temp -> sid) % htab -> s_size,
                                                                                           temp -> sid, temp -> node1 -> number, temp -> node2 -> number,
-                                                                                          temp -> sine_src -> offset, temp -> sine_src -> phase,
-                                                                                          temp -> sine_src -> freq, temp -> sine_src -> amplitude,
-                                                                                          temp -> sine_src -> delay);
+                                                                                          temp -> src_coefficient[sine_Vo], temp -> src_coefficient[sine_phi],
+                                                                                          temp -> src_coefficient[sine_Fo], temp -> src_coefficient[sine_Va],
+                                                                                          temp -> src_coefficient[sine_Td], temp -> src_coefficient[sine_a]);
                 }
                 else{
-                    fprintf(fp, "%d\tSine Current source:sid = %s, node:%d --> %d, offset:%f, phase:%f, freq:%f, Amp :%f, delay:%f\n", htab -> hash(temp -> sid) % htab -> s_size,
+                    fprintf(fp, "%d\tSine Current source:sid = %s, node:%d --> %d, offset:%f, phase:%f, freq:%f, Amp :%f, delay:%f, damping factor:%f\n", htab -> hash(temp -> sid) % htab -> s_size,
                                                                                           temp -> sid, temp -> node1 -> number, temp -> node2 -> number,
-                                                                                          temp -> sine_src -> offset, temp -> sine_src -> phase,
-                                                                                          temp -> sine_src -> freq, temp -> sine_src -> amplitude,
-                                                                                          temp -> sine_src -> delay);
+                                                                                          temp -> src_coefficient[sine_Vo], temp -> src_coefficient[sine_phi],
+                                                                                          temp -> src_coefficient[sine_Fo], temp -> src_coefficient[sine_Va],
+                                                                                          temp -> src_coefficient[sine_Td], temp -> src_coefficient[sine_a]);
                 }
                 break;
             case PULSE:
                 if(temp -> sid[0] == 'V'){
-                    fprintf(fp, "%d\tPulse Voltage source:sid = %s, node:%d --> %d, Von:%f, Voff:%f, Ton:%f, Tperiod:%f, delay:%f\n", htab -> hash(temp -> sid) % htab -> s_size,
+                    fprintf(fp, "%d\tPulse Voltage source:sid = %s, node:%d --> %d, Von:%f, Voff:%f, Ton:%f, Tperiod:%f, delay:%f, Tr = %f, Tf = %f\n", htab -> hash(temp -> sid) % htab -> s_size,
                                                                                           temp -> sid, temp -> node1 -> number, temp -> node2 -> number,
-                                                                                          temp -> pulse_src -> v_on, temp -> pulse_src -> v_off,
-                                                                                          temp -> pulse_src -> t_on, temp -> pulse_src -> t_period,
-                                                                                          temp -> pulse_src -> delay);
+                                                                                          temp -> src_coefficient[pulse_V1], temp -> src_coefficient[pulse_Vo],
+                                                                                          temp -> src_coefficient[pulse_Tw], temp -> src_coefficient[pulse_To],
+                                                                                          temp -> src_coefficient[pulse_Td], temp -> src_coefficient[pulse_Tr],
+                                                                                          temp -> src_coefficient[pulse_Tf]);
                 }
                 else{
-                    fprintf(fp, "%d\tPulse Current source:sid = %s, node:%d --> %d, Von:%f, Voff:%f, Ton:%f, Tperiod:%f, delay:%f\n", htab -> hash(temp -> sid) % htab -> s_size,
+                    fprintf(fp, "%d\tPulse Current source:sid = %s, node:%d --> %d, Von:%f, Voff:%f, Ton:%f, Tperiod:%f, delay:%f, Tr = %f, Tf = %f\n", htab -> hash(temp -> sid) % htab -> s_size,
                                                                                           temp -> sid, temp -> node1 -> number, temp -> node2 -> number,
-                                                                                          temp -> pulse_src -> v_on, temp -> pulse_src -> v_off,
-                                                                                          temp -> pulse_src -> t_on, temp -> pulse_src -> t_period,
-                                                                                          temp -> pulse_src -> delay);
+                                                                                          temp -> src_coefficient[pulse_V1], temp -> src_coefficient[pulse_Vo],
+                                                                                          temp -> src_coefficient[pulse_Tw], temp -> src_coefficient[pulse_To],
+                                                                                          temp -> src_coefficient[pulse_Td], temp -> src_coefficient[pulse_Tr],
+                                                                                          temp -> src_coefficient[pulse_Tf]);
                 }
                 break;
             case RAMP:
                 if(temp -> sid[0] == 'V'){
                     fprintf(fp, "%d\tRamp Voltage source:sid = %s, node:%d --> %d, delay:%f\n", htab -> hash(temp -> sid) % htab -> s_size,
                                                                                           temp -> sid, temp -> node1 -> number, temp -> node2 -> number,
-                                                                                          temp -> ramp_src -> delay);
+                                                                                          temp -> src_coefficient[ramp_Td]);
                 }
                 else{
                     fprintf(fp, "%d\tRamp Currnet source:sid = %s, node:%d --> %d, delay:%f\n", htab -> hash(temp -> sid) % htab -> s_size,
                                                                                           temp -> sid, temp -> node1 -> number, temp -> node2 -> number,
-                                                                                          temp -> ramp_src -> delay);
+                                                                                          temp -> src_coefficient[ramp_Td]);
                 }
                 break;
             case STEP:
                 if(temp -> sid[0] == 'V'){
                     fprintf(fp, "%d\tStep Voltage source:sid = %s, node:%d --> %d, Von:%f, delay:%f\n", htab -> hash(temp -> sid) % htab -> s_size,
                                                                                           temp -> sid, temp -> node1 -> number, temp -> node2 -> number,
-                                                                                          temp -> step_src -> v_on, temp -> step_src -> delay);
+                                                                                          temp -> src_coefficient[step_V1], temp -> src_coefficient[step_Td]);
                 }
                 else{
                     fprintf(fp, "%d\tStep Current source:sid = %s, node:%d --> %d, Von:%f, delay:%f\n", htab -> hash(temp -> sid) % htab -> s_size,
                                                                                           temp -> sid, temp -> node1 -> number, temp -> node2 -> number,
-                                                                                          temp -> step_src -> v_on, temp -> step_src -> delay);
+                                                                                          temp -> src_coefficient[step_V1], temp -> src_coefficient[step_Td]);
                 }
                 break;
             case DC:
                 if(temp -> sid[0] == 'V'){
                     fprintf(fp, "%d\tDC Voltage source:sid = %s, node:%d --> %d, Value:%f\n", htab -> hash(temp -> sid) % htab -> s_size,
                                                                                           temp -> sid, temp -> node1 -> number, temp -> node2 -> number,
-                                                                                          temp -> dc_src -> value);
+                                                                                          temp -> src_coefficient[dc_V1]);
                 }
                 else{
                     fprintf(fp, "%d\tDC Current source:sid = %s, node:%d --> %d, Value:%f\n", htab -> hash(temp -> sid) % htab -> s_size,
                                                                                           temp -> sid, temp -> node1 -> number, temp -> node2 -> number,
-                                                                                          temp -> dc_src -> value);
+                                                                                          temp -> src_coefficient[dc_V1]);
                 }
                 break;
             case AC:
                 fprintf(fp, "%d\tAC source:sid = %s, node:%d --> %d, Amp:%f, phase:%f\n", htab -> hash(temp -> sid) % htab -> s_size,
                                                                                           temp -> sid, temp -> node1 -> number, temp -> node2 -> number,
-                                                                                          temp -> ac_src -> amplitude, temp -> ac_src -> phase);
+                                                                                          temp -> src_coefficient[ac_amp], temp -> src_coefficient[ac_phi]);
                 break;
             case DEPENDENT:
                 if(temp -> sid[0] == 'F'){
                     fprintf(fp, "%d\tCCCS:sid = %s, node:%d --> %d, Current sesnsor:%s, Value:%f\n", htab -> hash(temp -> sid) % htab -> s_size,
                                                                                         temp -> sid, temp -> node1 -> number, temp -> node2 -> number,
-                                                                                        temp -> cvs, temp -> dep_src -> value);
+                                                                                        temp -> cvs, temp -> src_coefficient[dep_value]);
                 }
                 else if(temp -> sid[0] == 'H'){
                     fprintf(fp, "%d\tCCVS:sid = %s, node:%d --> %d, Current sesnsor:%s, Value:%f\n", htab -> hash(temp -> sid) % htab -> s_size,
                                                                                         temp -> sid, temp -> node1 -> number, temp -> node2 -> number,
-                                                                                        temp -> cvs, temp -> dep_src -> value);
+                                                                                        temp -> cvs, temp -> src_coefficient[dep_value]);
                 }
                 else if(temp -> sid[0] == 'G'){
                     fprintf(fp, "%d\tVCCS:sid = %s, out node:%d --> %d, sense nodes:%d --> %d, Value:%f\n", htab -> hash(temp -> sid) % htab -> s_size,
                                                                                                             temp -> sid, temp -> node1 -> number, temp -> node2 -> number,
                                                                                                             temp -> node3 -> number, temp -> node4 -> number,
-                                                                                                            temp -> dep_src -> value);
+                                                                                                            temp -> src_coefficient[dep_value]);
                 }
                 else if(temp -> sid[0] == 'E'){
                     fprintf(fp, "%d\tVCVS:sid = %s, out node:%d --> %d, sense nodes:%d --> %d, Value:%f\n", htab -> hash(temp -> sid) % htab -> s_size,
                                                                                                             temp -> sid, temp -> node1 -> number, temp -> node2 -> number,
                                                                                                             temp -> node3 -> number, temp -> node4 -> number,
-                                                                                                            temp -> dep_src -> value);
+                                                                                                            temp -> src_coefficient[dep_value]);
                 }
                 break;
             default:

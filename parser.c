@@ -40,9 +40,106 @@ void add_V(char *eid, int node1, int node2, double value){
 
     //new routine
     SRC_TAB *stab = create_src(eid, search_node_by_num(htab, node1), search_node_by_num(htab, node2), NULL, NULL, TIME_DOMAIN, DC, 2);
-    stab -> dc_src = create_dc_s(value);
-     if(src_insert(htab, stab)){
+
+    stab -> src_coefficient = (double *)calloc(1, sizeof(double));
+    stab -> src_coefficient[dc_V1] = value;
+
+    if(src_insert(htab, stab)){
         log_error("Duplicated Voltage Source : %s in line %d",eid, (yylineno - 1));
+        exit(EXIT_FAILURE);
+    }
+}
+
+void add_sine_v(char *sid, int node1, int node2, double offset, double amp, double freq, double delay, double d_factor, double phase){
+    if(node1 == node2){
+        log_error("Consistency Requirement ERROR! SHORTED VOLTAGE SOURCE : %s in Line %d", sid, (yylineno - 1));
+        exit(EXIT_FAILURE);
+    }
+
+    SRC_TAB *stab = create_src(sid, search_node_by_num(htab, node1), search_node_by_num(htab, node2), NULL, NULL, TIME_DOMAIN, SINE, 2);
+
+    stab -> src_coefficient = (double *)calloc(6, sizeof(double));
+    stab -> src_coefficient[sine_a] = d_factor;
+    stab -> src_coefficient[sine_Fo] = freq;
+    stab -> src_coefficient[sine_phi] = phase;
+    stab -> src_coefficient[sine_Td] = delay;
+    stab -> src_coefficient[sine_Va] = amp;
+    stab -> src_coefficient[sine_Vo] = offset;
+    
+    if(src_insert(htab, stab)){
+        log_error("Duplicated Voltage Source : %s in line %d",sid, (yylineno - 1));
+        exit(EXIT_FAILURE);
+    }
+}
+
+void add_pulse_v(char *sid, int node1, int node2, double v_off, double v_on, double delay, double Tr, double Tf, double t_on, double t_period){
+    if(node1 == node2){
+        log_error("Consistency Requirement ERROR! SHORTED VOLTAGE SOURCE : %s in Line %d", sid, (yylineno - 1));
+        exit(EXIT_FAILURE);
+    }
+    SRC_TAB *stab = create_src(sid, search_node_by_num(htab, node1), search_node_by_num(htab, node2), NULL, NULL, TIME_DOMAIN, PULSE, 2);
+    
+    stab -> src_coefficient = (double *)calloc(7, sizeof(double));
+    stab -> src_coefficient[pulse_Td] = delay;
+    stab -> src_coefficient[pulse_Tf] = Tf;
+    stab -> src_coefficient[pulse_To] = t_period; 
+    stab -> src_coefficient[pulse_Tr] = Tr;
+    stab -> src_coefficient[pulse_Tw] = t_on; 
+    stab -> src_coefficient[pulse_V1] = v_on;
+    stab -> src_coefficient[pulse_Vo] = v_off;
+
+    if(src_insert(htab, stab)){
+        log_error("Duplicated Voltage Source : %s in line %d",sid, (yylineno - 1));
+        exit(EXIT_FAILURE);
+    }
+}
+
+void add_ramp_v(char *sid, int node1, int node2, double delay){
+    if(node1 == node2){
+        log_error("Consistency Requirement ERROR! SHORTED VOLTAGE SOURCE : %s in Line %d", sid, (yylineno - 1));
+        exit(EXIT_FAILURE);
+    }
+    SRC_TAB *stab = create_src(sid, search_node_by_num(htab, node1), search_node_by_num(htab, node2), NULL, NULL, TIME_DOMAIN, RAMP, 2);
+
+    stab -> src_coefficient = (double *)calloc(1, sizeof(double));
+    stab -> src_coefficient[ramp_Td] = delay;
+    
+    if(src_insert(htab, stab)){
+        log_error("Duplicated Voltage Source : %s in line %d",sid, (yylineno - 1));
+        exit(EXIT_FAILURE);
+    }
+}
+
+void add_step_v(char *sid, int node1, int node2, double v_on, double delay){
+    if(node1 == node2){
+        log_error("Consistency Requirement ERROR! SHORTED VOLTAGE SOURCE : %s in Line %d", sid, (yylineno - 1));
+        exit(EXIT_FAILURE);
+    }
+    SRC_TAB *stab = create_src(sid, search_node_by_num(htab, node1), search_node_by_num(htab, node2), NULL, NULL, TIME_DOMAIN, STEP, 2);
+
+    stab -> src_coefficient = (double *)calloc(2, sizeof(double));
+    stab -> src_coefficient[step_Td] = delay;
+    stab -> src_coefficient[step_V1] = v_on;
+
+    if(src_insert(htab, stab)){
+        log_error("Duplicated Voltage Source : %s in line %d",sid, (yylineno - 1));
+        exit(EXIT_FAILURE);
+    }
+}
+
+void add_ac_v(char *sid, int node1, int node2, double amp, double phase){
+    if(node1 == node2){
+        log_error("Consistency Requirement ERROR! SHORTED VOLTAGE SOURCE : %s in Line %d", sid, (yylineno - 1));
+        exit(EXIT_FAILURE);
+    }
+    SRC_TAB *stab = create_src(sid, search_node_by_num(htab, node1), search_node_by_num(htab, node2), NULL, NULL, FREQ_DOMAIN, AC, 2);
+
+    stab -> src_coefficient = (double *)calloc(2, sizeof(double));
+    stab -> src_coefficient[ac_amp] = amp;
+    stab -> src_coefficient[ac_phi] = phase;
+
+    if(src_insert(htab, stab)){
+        log_error("Duplicated Voltage Source : %s in line %d",sid, (yylineno - 1));
         exit(EXIT_FAILURE);
     }
 }
@@ -55,8 +152,9 @@ void add_I(char *eid, int node1, int node2, double value, int group){
     }
 
     SRC_TAB *stab = create_src(eid, search_node_by_num(htab, node1), search_node_by_num(htab, node2), NULL, NULL, TIME_DOMAIN, DC, group);
-    stab -> dc_src = create_dc_s(value);
-     if(src_insert(htab, stab)){
+    stab -> src_coefficient = (double *)calloc(1, sizeof(double));
+    stab -> src_coefficient[dc_V1] = value;
+    if(src_insert(htab, stab)){
         log_error("Duplicated Current Source : %s in line %d",eid, (yylineno - 1));
         exit(EXIT_FAILURE);
     }

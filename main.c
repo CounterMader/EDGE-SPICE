@@ -7,6 +7,7 @@
 #include "hash.h"
 #include "defs.h"
 #include "simulator.h"
+#include "source.h"
 
 
 
@@ -80,6 +81,8 @@ int main(int argc, char **argv){
             simulate_DC(circuit, htab, log);
             break;
         case TRAN_SYM:
+            //update sources
+            transient_source_update(circuit, htab);
             simulate_TRAN(circuit, htab, log);
             break;
         case AC_SYM:
@@ -99,6 +102,14 @@ int main(int argc, char **argv){
         ELM_TAB *c = search_element(htab, "C1");
         for(int i = 1;i <= circuit -> step_num;i++){
             fprintf(out,"%.16lf  %.16lf\n",circuit -> Tstep * (i - 1) ,c -> current[i]);
+        }
+        */
+       /*
+        FILE *out = fopen("out.dat","w");
+        SRC_TAB *c = search_src(htab, "V2");
+        double time = 0;
+        for(int i = 0;i < circuit -> step_num;i++,time += circuit -> Tstep){
+            fprintf(out,"%.16lf  %.16lf\n",time ,c -> value[i]);
         }
         */
         //result print

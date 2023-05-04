@@ -13,51 +13,46 @@
 //Frequency Domain source type
 #define AC          8
 
-//Source Type structures
-struct SINE_s{
-    double offset;
-    double amplitude;
-    double phase;
-    double freq;
-    double delay;
-};
+//Source coefficient map(index in src_coefficient array)
+//Pulse source
+#define pulse_Vo          0        //v_off
+#define pulse_V1          1        //v_on
+#define pulse_Td          2        //delay 
+#define pulse_Tr          3        //raise time
+#define pulse_Tf          4        //fall time
+#define pulse_Tw          5        //pulse width
+#define pulse_To          6        //pulse period
 
-struct PULSE_s{
-    double v_on;
-    double v_off;
-    double t_on;
-    double t_period;
-    double delay;
-};
+//Sine source
+#define sine_Vo           0       //offset voltage
+#define sine_Va           1       //amplitude voltage
+#define sine_Fo           2       //frequency
+#define sine_Td           3       //delay
+#define sine_a            4       //damping factor
+#define sine_phi          5       //phase
 
-struct STEP_s{
-    double v_on;
-    double delay;
-};
+//step source
+#define step_Td           0       //delay
+#define step_V1           1       //v_on
 
-struct RAMP_s{
-    double delay;
-};
+//ramp source
+#define ramp_Td           0       //delay
 
-struct DC_s{
-    double value;
-};
+//dc source
+#define dc_V1             0       //dc value
 
-struct AC_s{
-    double amplitude;
-    double phase;
-};
+//ac source
+#define ac_amp            0       //ac amplitude
+#define ac_phi            1       //ac phase
 
-struct DEPENDENT_s{
-    double value;
-};
+//dependent source
+#define dep_value         0       //dependent source value
 
 
-struct SINE_s *create_sine_s(double offset, double amplitude, double phase, double freq, double delay);
-struct PULSE_s *create_pulse_s(double v_on, double v_off, double t_on, double t_period, double delay);
-struct STEP_s *create_step_s(double v_on, double delay);
-struct RAMP_s *create_ramp_s(double delay);
-struct DC_s *create_dc_s(double value);
-struct AC_s *create(double amplitude, double phase);
-struct DEPENDENT_s *create_dep_s(double value);
+//Function Prototype
+void pulse_src_update(CKTcircuit *circuit, SRC_TAB *stab);
+void sine_src_update(CKTcircuit *circuit, SRC_TAB *stab);
 void step_src_update(CKTcircuit *circuit, SRC_TAB *stab);
+void dc_src_update(CKTcircuit *circuit, SRC_TAB *stab);
+void ramp_src_update(CKTcircuit *circuit, SRC_TAB *stab);
+void transient_source_update(CKTcircuit *circuit, HASH_TAB *htab);

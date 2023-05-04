@@ -51,13 +51,7 @@ typedef struct src_table{
     double *value;
     double *current;
 
-    struct AC_s *ac_src;
-    struct DC_s *dc_src;
-    struct RAMP_s *ramp_src;
-    struct STEP_s *step_src;
-    struct SINE_s *sine_src;
-    struct PULSE_s *pulse_src;
-    struct DEPENDENT_s *dep_src;
+    double *src_coefficient;
 
     char *cvs;              //Corresponding voltage source for current controled sources
 

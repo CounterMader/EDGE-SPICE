@@ -182,23 +182,38 @@ voltage_source:
             free($1);   //DeAllocating sv memory which we allocatd in lexer
         }
     |   VE_T INT_T INT_T AC_T value value {
+            add_node($2);
+            add_node($3);
+            add_ac_v($1,$2,$3,$5,$6);
             log_trace("AC Voltage Source : %s ,node %d --> %d ,amp = %f V, phase = %f deg.",$1,$2,$3,$5,$6);
             free($1);   //DeAllocating sv memory which we allocatd in lexer
         }
-    |   VE_T INT_T INT_T SINE_T '(' value value value value value ')' {
+    |   VE_T INT_T INT_T SINE_T '(' value value value value value value ')' {
+            add_node($2);
+            add_node($3);
+            add_sine_v($1,$2,$3,$6,$7,$8,$9,$10,$11);
             log_trace("SINE Voltage Source : %s ,node %d --> %d ,freq = %f, amp = %f, offset = %f, phase = %f, delay = %f V.",$1,$2,$3,$6,$7,$8,$9,$10);
             free($1);   //DeAllocating sv memory which we allocatd in lexer
         }
-    |   VE_T INT_T INT_T PULSE_T '(' value value value value value ')' {
+    |   VE_T INT_T INT_T PULSE_T '(' value value value value value value value ')' {
+            add_node($2);
+            add_node($3);
+            add_pulse_v($1,$2,$3,$6,$7,$8,$9,$10,$11,$12);
             log_trace("PULSE Voltage Source : %s ,node %d --> %d ,Voff = %f, Von = %f, Ton = %f, Tperiod = %f, delay = %f V.",$1,$2,$3,$6,$7,$8,$9,$10);
             free($1);   //DeAllocating sv memory which we allocatd in lexer
         }
     |   VE_T INT_T INT_T RAMP_T '(' value ')' {
+            add_node($2);
+            add_node($3);
+            add_ramp_v($1,$2,$3,$6);
             log_trace("RAMP Voltage Source : %s ,node %d --> %d ,delay = %f s.",$1,$2,$3,$6);
             free($1);   //DeAllocating sv memory which we allocatd in lexer
         }
     |   VE_T INT_T INT_T STEP_T '(' value value ')' {
-            log_trace("DC Voltage Source : %s ,node %d --> %d ,Von = %f V, delay = %f s.",$1,$2,$3,$6,$7);
+            add_node($2);
+            add_node($3);
+            add_step_v($1,$2,$3,$6,$7);
+            log_trace("STEP Voltage Source : %s ,node %d --> %d ,Von = %f V, delay = %f s.",$1,$2,$3,$6,$7);
             free($1);   //DeAllocating sv memory which we allocatd in lexer
         }
     ;

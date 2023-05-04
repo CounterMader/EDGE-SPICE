@@ -5,6 +5,7 @@
 #include "simulator.h"
 #include "log.h"
 #include "stamps.h"
+#include "source.h"
 
 void r_g1_stamp(CKTcircuit *circuit, ELM_TAB *element){
     /*
@@ -160,13 +161,28 @@ void v_stamp(CKTcircuit *circuit, ELM_TAB *element){
 
     circuit -> RHSmat -> data[element -> index_in_RHS - 1][0] += element -> value;
 
-     if(element -> node1 != 0){
+    if(element -> node1 != 0){
         circuit -> MNAmat -> data[element -> index_in_RHS - 1][element -> node1 - 1] += +1;
         circuit -> MNAmat -> data[element -> node1 - 1][element -> index_in_RHS - 1] += +1;    
     }
     if(element -> node2 != 0){
         circuit -> MNAmat -> data[element -> index_in_RHS - 1][element -> node2 - 1] += -1;
         circuit -> MNAmat -> data[element -> node2 - 1][element -> index_in_RHS - 1] += -1;
+    }
+}
+
+void v_n_stamp(CKTcircuit *circuit, SRC_TAB *source){
+    source -> index_in_RHS = get_RHS_index(circuit);
+
+    circuit -> RHSmat -> data[source -> index_in_RHS - 1][0] += source -> src_coefficient[dc_V1];
+
+    if(source -> node1 != 0){
+        circuit -> MNAmat -> data[source -> index_in_RHS - 1][source -> node1 -> number - 1] += +1;
+        circuit -> MNAmat -> data[source -> node1 -> number - 1][source -> index_in_RHS - 1] += +1;    
+    }
+    if(source -> node2 != 0){
+        circuit -> MNAmat -> data[source -> index_in_RHS - 1][source -> node2 -> number - 1] += -1;
+        circuit -> MNAmat -> data[source -> node2 -> number - 1][source -> index_in_RHS - 1] += -1;
     }
 }
 
