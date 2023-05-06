@@ -35,16 +35,27 @@ void free_ckt(CKTcircuit *circuit){
 void get_MNA_size(CKTcircuit *circuit, HASH_TAB *htab){
     unsigned int size = htab -> n_numsyms - 1;          //Number of nodes(minus GND node)
 
-    ELM_TAB *temp = NULL;
     for(int i = 0;i < htab -> e_size;i++){
         if(htab -> e_table[i] == NULL)
             continue;
-        temp = htab -> e_table[i];
+        ELM_TAB *temp = htab -> e_table[i];
         while(temp){
             if(temp -> group == 2){
                 size++;
             }
             temp = temp -> next;
+        }
+    }
+
+    for(int i = 0;i < htab -> s_size;i++){
+        if(htab -> s_table[i] == NULL)
+            continue;
+        SRC_TAB *stemp = htab -> s_table[i];
+        while(stemp){
+            if(stemp -> group == 2){
+                size++;
+            }
+            stemp = stemp -> next;
         }
     }
 
@@ -54,6 +65,20 @@ void get_MNA_size(CKTcircuit *circuit, HASH_TAB *htab){
 int get_RHS_index(CKTcircuit *circuit){
     circuit -> RHS_free_pointer++;
     return circuit -> RHS_free_pointer;
+}
+
+double get_element_voltage(HASH_TAB *htab, ELM_TAB *element, int step){
+
+    double voltage = 0;
+
+    if(element -> node1 -> number != 0){
+        voltage += (element -> node1 -> voltage[step]); 
+    }
+    if(element -> node2 -> number != 0){
+        voltage += -(element -> node2 -> voltage[step]);
+    }
+
+    return voltage;
 }
 
 void update_result(ES_mat *x, HASH_TAB *htab, int step){

@@ -23,23 +23,6 @@ void simulate_DC(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
                 }
                 temp -> is_stamped = STAMPED;
                 break;
-            case 'V':
-                if(temp -> is_stamped == NOT_STAMPED){
-                    log_trace("V detected");
-                    v_stamp(circuit, temp);
-                    temp -> is_stamped = STAMPED;
-                }
-                break;
-            case 'I':
-                log_trace("I detected");
-                if(temp -> group == 2){
-                    i_g2_stamp(circuit, temp);
-                }
-                else{
-                    i_g1_stamp(circuit, temp);
-                }
-                temp -> is_stamped = STAMPED;
-                break;
             case 'L':
                 log_trace("L detected");
                 l_dc_stamp(circuit, temp);
@@ -49,32 +32,63 @@ void simulate_DC(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
                 log_trace("C detected but NADIDAM!");
                 temp -> is_stamped = STAMPED;
                 break;
-            case 'G':
-                log_trace("VCCS(G) detected");
-                g_stamp(circuit, temp);
-                temp -> is_stamped = STAMPED;
-                break;
-            case 'E':
-                log_trace("VCVS(E) detected");
-                e_stamp(circuit, temp);
-                temp -> is_stamped = STAMPED;
-                break;
-            case 'F':
-                log_trace("CCCS(F) detected");
-                f_stamp(circuit, htab, temp);
-                temp -> is_stamped = STAMPED;
-                break;
-            case 'H':
-                log_trace("CCVS(H) detected");
-                h_stamp(circuit, htab, temp);
-                temp -> is_stamped = STAMPED;
-                break;
             default:
                 break;
             }
             temp = temp -> next;
         }
     }
+
+    for(int j = 0;j < htab -> s_size;j++){
+        if(htab -> s_table[j] == NULL)
+            continue;
+        SRC_TAB *stemp = htab -> s_table[j];
+        while(stemp != NULL){
+            switch(stemp -> sid[0]){
+            case 'V':
+                if(stemp -> is_stamped == NOT_STAMPED){
+                    log_trace("V detected");
+                    v_stamp(circuit, stemp);
+                    stemp -> is_stamped = STAMPED;
+                }
+                break;
+            case 'I':
+                log_trace("I detected");
+                if(stemp -> group == 2){
+                    i_g2_stamp(circuit, stemp);
+                }
+                else{
+                    i_g1_stamp(circuit, stemp);
+                }
+                stemp -> is_stamped = STAMPED;
+                break;
+            case 'G':
+                log_trace("VCCS(G) detected");
+                g_stamp(circuit, stemp);
+                stemp -> is_stamped = STAMPED;
+                break;
+            case 'E':
+                log_trace("VCVS(E) detected");
+                e_stamp(circuit, stemp);
+                stemp -> is_stamped = STAMPED;
+                break;
+            case 'F':
+                log_trace("CCCS(F) detected");
+                f_stamp(circuit, htab, stemp);
+                stemp -> is_stamped = STAMPED;
+                break;
+            case 'H':
+                log_trace("CCVS(H) detected");
+                h_stamp(circuit, htab, stemp);
+                stemp -> is_stamped = STAMPED;
+                break;
+            default:
+                break;
+            }
+            stemp = stemp -> next;
+        }
+    }
+   
     ES_mat_lup *lup = ES_mat_lup_solve(circuit -> MNAmat);
     ES_mat *x = ES_ls_solve(lup, circuit -> RHSmat);
     ES_mat_print(x, log);
@@ -101,57 +115,75 @@ void simulate_TRAN(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
                 }
                 temp -> is_stamped = STAMPED;
                 break;
-            case 'V':
-                if(temp -> is_stamped == NOT_STAMPED){
-                    log_trace("V detected");
-                    v_stamp(circuit, temp);
-                    temp -> is_stamped = STAMPED;
-                }
-                break;
-            case 'I':
-                log_trace("I detected");
-                if(temp -> group == 2){
-                    i_g2_stamp(circuit, temp);
-                }
-                else{
-                    i_g1_stamp(circuit, temp);
-                }
-                temp -> is_stamped = STAMPED;
-                break;
             case 'L':
                 log_trace("L detected");
-                l_tran_stamp(circuit, temp);
+                l_tran_MNA_stamp(circuit, temp);
                 temp -> is_stamped = STAMPED;
                 break;
             case 'C':
                 log_trace("C detected");
-                c_g2_tran_stamp(circuit, temp);
-                temp -> is_stamped = STAMPED;
-                break;
-            case 'G':
-                log_trace("VCCS(G) detected");
-                g_stamp(circuit, temp);
-                temp -> is_stamped = STAMPED;
-                break;
-            case 'E':
-                log_trace("VCVS(E) detected");
-                e_stamp(circuit, temp);
-                temp -> is_stamped = STAMPED;
-                break;
-            case 'F':
-                log_trace("CCCS(F) detected");
-                f_stamp(circuit, htab, temp);
-                temp -> is_stamped = STAMPED;
-                break;
-            case 'H':
-                log_trace("CCVS(H) detected");
-                h_stamp(circuit, htab, temp);
+                if(temp -> group == 2){
+                    c_g2_tran_MNA_stamp(circuit, temp);
+                }
+                else{
+                    c_g1_tran_MNA_stamp(circuit, temp);
+                }
                 temp -> is_stamped = STAMPED;
                 break;
             default:
                 break;
             }
             temp = temp -> next;
+        }
+    }
+
+    for(int j = 0;j < htab -> s_size;j++){
+        if(htab -> s_table[j] == NULL)
+            continue;
+        SRC_TAB *stemp = htab -> s_table[j];
+        while(stemp != NULL){
+            switch(stemp -> sid[0]){
+            case 'V':
+                if(stemp -> is_stamped == NOT_STAMPED){
+                    log_trace("V detected");
+                    v_stamp(circuit, stemp);
+                    stemp -> is_stamped = STAMPED;
+                }
+                break;
+            case 'I':
+                log_trace("I detected");
+                if(stemp -> group == 2){
+                    i_g2_stamp(circuit, stemp);
+                }
+                else{
+                    i_g1_stamp(circuit, stemp);
+                }
+                stemp -> is_stamped = STAMPED;
+                break;
+            case 'G':
+                log_trace("VCCS(G) detected");
+                g_stamp(circuit, stemp);
+                stemp -> is_stamped = STAMPED;
+                break;
+            case 'E':
+                log_trace("VCVS(E) detected");
+                e_stamp(circuit, stemp);
+                stemp -> is_stamped = STAMPED;
+                break;
+            case 'F':
+                log_trace("CCCS(F) detected");
+                f_stamp(circuit, htab, stemp);
+                stemp -> is_stamped = STAMPED;
+                break;
+            case 'H':
+                log_trace("CCVS(H) detected");
+                h_stamp(circuit, htab, stemp);
+                stemp -> is_stamped = STAMPED;
+                break;
+            default:
+                break;
+            }
+            stemp = stemp -> next;
         }
     }
     ES_mat_lup *lup = ES_mat_lup_solve(circuit -> MNAmat);
@@ -193,6 +225,10 @@ void simulate_TRAN(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
 }
 
 void RHS_update_tran(CKTcircuit *circuit, HASH_TAB *htab, int step, FILE *log){
+    ES_mat_free(circuit -> RHSmat_prev);
+    circuit -> RHSmat_prev = circuit -> RHSmat;
+    circuit -> RHSmat = ES_mat_new(circuit -> MNA_size, 0);
+
     for(int i = 0;i < htab -> e_size;i++){
         if(htab -> e_table[i] == NULL)
                 continue;
@@ -216,25 +252,4 @@ void RHS_update_tran(CKTcircuit *circuit, HASH_TAB *htab, int step, FILE *log){
                 temp = temp -> next;
             }
         }
-}
-
-double get_element_voltage(HASH_TAB *htab, ELM_TAB *element, int step){
-
-    double voltage = 0;
-
-    char node1_buf[11];
-    char node2_buf[11];
-    sprintf(node1_buf, "%d", element -> node1);
-    sprintf(node2_buf, "%d", element -> node2);
-
-    if(element -> node1 != 0){
-        NODE_TAB *node1 = search_node(htab, node1_buf);
-        voltage += (node1 -> voltage[step]); 
-    }
-    if(element -> node2 != 0){
-        NODE_TAB *node2 = search_node(htab, node2_buf);
-        voltage += -(node2 -> voltage[step]);
-    }
-
-    return voltage;
 }

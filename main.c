@@ -61,7 +61,7 @@ int main(int argc, char **argv){
         parse(argv[1]);
         print_element_table(htab, log);
         print_node_table(htab, log);
-        print_src_table(htab, log);
+        //print_src_table(htab, log);
 
         //Set RHS pointer
         circuit -> RHS_free_pointer = htab -> n_numsyms - 1;        //Because of GND node
@@ -74,23 +74,23 @@ int main(int argc, char **argv){
         circuit -> MNAmat = ES_mat_new(circuit -> MNA_size, circuit -> MNA_size);
         circuit -> RHSmat = ES_mat_new(circuit -> MNA_size, 1);
         circuit -> RHSmat_prev = ES_mat_new(circuit -> MNA_size, 1);
-    
+
         //simulate
         switch (circuit -> simulate_type){
-        case DC_SYM:
-            simulate_DC(circuit, htab, log);
-            break;
-        case TRAN_SYM:
-            //update sources
-            transient_source_update(circuit, htab);
-            simulate_TRAN(circuit, htab, log);
-            break;
-        case AC_SYM:
+            case DC_SYM:
+                simulate_DC(circuit, htab, log);
+                break;
+            case TRAN_SYM:
+                //update sources
+                transient_source_update(circuit, htab);
+                simulate_TRAN(circuit, htab, log);
+                break;
+            case AC_SYM:
 
-            break;
-        default:
-            log_fatal("Undefined Type Simulator!");
-            break;
+                break;
+            default:
+                log_fatal("Undefined Type Simulator!");
+                break;
         }
         
         ES_mat_print(circuit -> MNAmat, log);

@@ -112,7 +112,7 @@ NODE_TAB *create_node(char *key,int number){
     return ntab;
 }
 
-ELM_TAB *create_element(char *eid, int node1, int node2, int node3, int node4, double value, int group){
+ELM_TAB *create_element(char *eid, NODE_TAB *node1, NODE_TAB *node2, NODE_TAB *node3, NODE_TAB *node4, double value, int group){
     ELM_TAB *etab = NULL;
     etab = (ELM_TAB*)malloc(sizeof(ELM_TAB));
 
@@ -199,7 +199,7 @@ int elm_cmp(ELM_TAB *p, ELM_TAB*q){
 
 /*return 1 when symbol already exist in data base
   return 0 when inserting successfull*/
-int elm_insert(HASH_TAB *tab, char *eid, char *cvs, int node1, int node2, int node3, int node4, double value, int group){
+int elm_insert(HASH_TAB *tab, char *eid, char *cvs, NODE_TAB *node1, NODE_TAB *node2, NODE_TAB *node3, NODE_TAB *node4, double value, int group){
     ELM_TAB *elm = create_element(eid, node1, node2, node3, node4, value, group);
     
     if(cvs != NULL){
@@ -338,14 +338,8 @@ void print_element_table(HASH_TAB *tab, FILE *fp){
         ELM_TAB *temp = tab -> e_table[i];
         while(temp){
             fprintf(fp,"%d\teid = %s\tnode : %d -> %d\tvalue = %f\tg:%d",tab -> hash(temp -> key) % tab -> e_size,
-                                                                       temp -> key, temp -> node1, temp ->node2,
+                                                                       temp -> key, temp -> node1 -> number, temp ->node2 -> number,
                                                                        temp -> value, temp -> group);
-            if(temp -> cvs == NULL){
-                fprintf(fp,"\n");
-            }
-            else{
-                fprintf(fp,", current sensor : %s\n", temp -> cvs);
-            }
             temp = temp -> next;
         }
     }
@@ -408,15 +402,16 @@ void element_current_initial(HASH_TAB *htab, int step_num){
 
 SRC_TAB *create_src(char *sid, NODE_TAB *node1, NODE_TAB *node2, NODE_TAB *node3, NODE_TAB *node4, int source_domain, int source_type, int group){
     SRC_TAB *stab = NULL;
-    stab = (SRC_TAB*)malloc(sizeof(SRC_TAB));
+    stab = (SRC_TAB *)malloc(sizeof(SRC_TAB));
     if(stab == NULL){
         log_fatal("Source Allocation Failed!");
         //safe exit
         exit(EXIT_FAILURE);
     }
 
-    stab -> sid = (char*)malloc((strlen(sid) + 1) * sizeof(char));
+    stab -> sid = (char *)malloc(strlen(sid) + 1);
     strcpy(stab -> sid, sid);
+    
     if(stab -> sid == NULL){
         log_fatal("Source ID Allocation Failed!");
         //safe exit
@@ -436,8 +431,10 @@ SRC_TAB *create_src(char *sid, NODE_TAB *node1, NODE_TAB *node2, NODE_TAB *node3
     stab -> value = NULL;
     stab -> cvs = NULL;
 
+    stab -> next = NULL; // :||||||||||||||||||
+    
     stab -> src_coefficient = NULL;
-
+    
     stab -> is_stamped = NOT_STAMPED;
 
     return stab;
