@@ -248,6 +248,7 @@ void set_simultaor_dc(){
 
     node_voltage_initial(htab, 1);
     element_current_initial(htab, 1);
+    src_current_initial(htab, 1);
     log_trace("current and voltage allocation success!");
 }
 
@@ -264,9 +265,10 @@ void set_simultaor_tran(double Tstop, double Tstep){
 
     circuit -> step_num = (int)(Tstop/Tstep);
 
-    node_voltage_initial(htab, circuit -> step_num + 1);
-    element_current_initial(htab, circuit -> step_num + 1);
-    log_trace("current and voltage allocation success! %d, Tstep = %f, Tstop = %f",circuit -> step_num,circuit -> Tstep, circuit -> Tstop);
+    node_voltage_initial(htab, circuit -> step_num);
+    element_current_initial(htab, circuit -> step_num);
+    src_current_initial(htab, circuit -> step_num);
+    log_trace("current and voltage allocation success! step number =  %d, Tstep = %f, Tstop = %f",circuit -> step_num,circuit -> Tstep, circuit -> Tstop);
 
 }
 

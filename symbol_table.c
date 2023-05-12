@@ -175,9 +175,6 @@ void free_hash_table(HASH_TAB *tab){
     for (int i = 0; i < tab->s_size; i++){
         SRC_TAB *p = tab -> s_table[i];
         if(p != NULL){
-            if(p -> current != NULL){
-                free(p -> current);
-            }
             free_src(p);
         }
     }
@@ -337,7 +334,7 @@ void print_element_table(HASH_TAB *tab, FILE *fp){
             continue;
         ELM_TAB *temp = tab -> e_table[i];
         while(temp){
-            fprintf(fp,"%d\teid = %s\tnode : %d -> %d\tvalue = %f\tg:%d",tab -> hash(temp -> key) % tab -> e_size,
+            fprintf(fp,"%d\teid = %s\tnode : %d -> %d\tvalue = %f\tg:%d\n",tab -> hash(temp -> key) % tab -> e_size,
                                                                        temp -> key, temp -> node1 -> number, temp ->node2 -> number,
                                                                        temp -> value, temp -> group);
             temp = temp -> next;
@@ -617,13 +614,13 @@ void print_src_table(HASH_TAB *htab, FILE *fp){
 }
 
 void src_current_initial(HASH_TAB *htab, int step_num){
-    for(int i = 0;i < htab -> e_size;i++){
+    for(int i = 0;i < htab -> s_size;i++){
         if(htab -> s_table[i] == NULL)
             continue;
         SRC_TAB *temp = htab -> s_table[i];
         while(temp){
             if(temp -> group == 2){
-                temp -> current = (double*)calloc(step_num, sizeof(double));
+                temp -> current = (double *)calloc(step_num, sizeof(double));
                 if(temp -> current == NULL){
                     //safe exit routibe
                     log_fatal("element current allocation faild!");
@@ -633,6 +630,7 @@ void src_current_initial(HASH_TAB *htab, int step_num){
             temp = temp -> next;
         }
     }
+    log_trace("src_current_initial done!");
 }
 
 

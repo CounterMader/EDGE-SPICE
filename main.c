@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <lapacke.h>
 #include "symbol_table.h"
 #include "circuit.h"
 #include "parser.h"
@@ -61,7 +62,7 @@ int main(int argc, char **argv){
         parse(argv[1]);
         print_element_table(htab, log);
         print_node_table(htab, log);
-        //print_src_table(htab, log);
+        print_src_table(htab, log);
 
         //Set RHS pointer
         circuit -> RHS_free_pointer = htab -> n_numsyms - 1;        //Because of GND node
@@ -74,6 +75,8 @@ int main(int argc, char **argv){
         circuit -> MNAmat = ES_mat_new(circuit -> MNA_size, circuit -> MNA_size);
         circuit -> RHSmat = ES_mat_new(circuit -> MNA_size, 1);
         circuit -> RHSmat_prev = ES_mat_new(circuit -> MNA_size, 1);
+        circuit -> RESmat = ES_mat_new(circuit -> MNA_size, 1);
+        circuit -> RESmat_prev = ES_mat_new(circuit -> MNA_size, 1);
 
         //simulate
         switch (circuit -> simulate_type){
@@ -92,26 +95,29 @@ int main(int argc, char **argv){
                 log_fatal("Undefined Type Simulator!");
                 break;
         }
-        
+
         ES_mat_print(circuit -> MNAmat, log);
         ES_mat_print(circuit -> RHSmat, log);
         ES_mat_print(circuit -> RHSmat_prev, log);
         
-        /*
+         /*
         FILE *out = fopen("out.dat","w");
-        ELM_TAB *c = search_element(htab, "C1");
-        for(int i = 1;i <= circuit -> step_num;i++){
-            fprintf(out,"%.16lf  %.16lf\n",circuit -> Tstep * (i - 1) ,c -> current[i]);
-        }
-        */
-       /*
+        ELM_TAB *ce = search_element(htab, "C1");
+        //printf("\n%f\n", c->current[3]);
+        //NODE_TAB *c = search_node_by_num(htab,2);
+        
+        for(int i = 0;i < circuit -> step_num;i++){
+            fprintf(out,"%f  %f\n",circuit -> Tstep * i ,ce -> current[i]);
+        }*/
+        
+       
         FILE *out = fopen("out.dat","w");
-        SRC_TAB *c = search_src(htab, "V2");
-        double time = 0;
-        for(int i = 0;i < circuit -> step_num;i++,time += circuit -> Tstep){
-            fprintf(out,"%.16lf  %.16lf\n",time ,c -> value[i]);
+       
+        SRC_TAB *c = search_src(htab, "V1");
+        for(int i = 0;i < circuit -> step_num;i++){
+            fprintf(out,"%f  %f\n",circuit -> Tstep * i ,c -> current[i]);
         }
-        */
+        
         //result print
         free_hash_table(htab);
         free_ckt(circuit);

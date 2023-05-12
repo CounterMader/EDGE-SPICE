@@ -12,6 +12,9 @@ typedef struct _circuit_struct{
     ES_mat *MNAmat;             //Circuit MNA matrix
     ES_mat *RHSmat;             //Circuit RHS matrix
     ES_mat *RHSmat_prev;        //Circuit Previus RHS
+    ES_mat *RESmat;
+    ES_mat *RESmat_prev;
+
 
     unsigned int MNA_size;
     int simulate_type;

@@ -105,6 +105,18 @@ void update_result(ES_mat *x, HASH_TAB *htab, int step){
             elm_temp = elm_temp -> next;
         }
     }
+
+    for(int i = 0;i < htab -> s_size;i++){
+        if(htab -> s_table[i] == NULL)
+            continue;
+        SRC_TAB *src_temp = htab -> s_table[i];
+        while(src_temp){
+            if(src_temp -> group == 2){
+                src_temp -> current[step] = x -> data[src_temp -> index_in_RHS - 1][0];
+            }
+            src_temp = src_temp -> next;
+        }
+    }
 }
 
 void print_result(HASH_TAB *htab){
@@ -126,6 +138,18 @@ void print_result(HASH_TAB *htab){
                 printf("I(%s)\t=\t%lf\n", elm_temp -> key, elm_temp -> current[0]);
             }
             elm_temp = elm_temp -> next;
+        }
+    }
+
+    for(int j = 0;j < htab -> s_size;j++){
+        if(htab -> s_table[j] == NULL)
+            continue;
+        SRC_TAB *stemp = htab -> s_table[j];
+        while(stemp){
+            if(stemp -> group == 2){
+                printf("I(%s)\t=\t%lf\n", stemp -> sid, stemp -> current[0]);
+            }
+            stemp = stemp -> next;
         }
     }
 
