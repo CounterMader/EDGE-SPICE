@@ -63,7 +63,7 @@ extern int yydebug;
     HE_T = 264,                    /* HE_T  */
     VE_T = 265,                    /* VE_T  */
     IE_T = 266,                    /* IE_T  */
-    CVS_T = 267,                   /* CVS_T  */
+    ELM_T = 267,                   /* ELM_T  */
     INT_T = 268,                   /* INT_T  */
     DEC_T = 269,                   /* DEC_T  */
     PREF_T = 270,                  /* PREF_T  */
@@ -77,7 +77,8 @@ extern int yydebug;
     SINE_T = 278,                  /* SINE_T  */
     PULSE_T = 279,                 /* PULSE_T  */
     RAMP_T = 280,                  /* RAMP_T  */
-    STEP_T = 281                   /* STEP_T  */
+    STEP_T = 281,                  /* STEP_T  */
+    PLT_T = 282                    /* PLT_T  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -86,13 +87,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 11 "parser.y"
+#line 10 "parser.y"
 
     char *sv;
     double dv;
     int iv;
 
-#line 96 "./include/parser.tab.h"
+#line 97 "./include/parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

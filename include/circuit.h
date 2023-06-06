@@ -8,6 +8,11 @@
 #define AC_SYM 2
 #define TRAN_SYM 3
 
+typedef struct _simulate_output_s{
+    char *id;
+    int index_in_RHS;
+}SIM_OUT;
+
 typedef struct _circuit_struct{
     ES_mat *MNAmat;             //Circuit MNA matrix
     ES_mat *RHSmat;             //Circuit RHS matrix
@@ -15,7 +20,7 @@ typedef struct _circuit_struct{
     ES_mat *RESmat;
     ES_mat *RESmat_prev;
 
-
+    SIM_OUT out;
     unsigned int MNA_size;
     int simulate_type;
 

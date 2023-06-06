@@ -1,0 +1,7 @@
+V1 1 0 STEP(1 0)
+R1 2 0 1k g2
+C1 1 2 1u g2
+
+.TRAN 10m 10n
+.PLOT C1
+.END

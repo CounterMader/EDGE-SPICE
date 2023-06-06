@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "symbol_table.h"
 #include "circuit.h"
 #include "simulator.h"
@@ -100,19 +101,51 @@ void simulate_DC(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
 void simulate_TRAN(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
     MNA_update_tran(circuit, htab, log);
 
+    char fname[20];
+    FILE *fp;
+
+    if(isdigit(circuit -> out.id[0])){
+        circuit -> out.index_in_RHS = search_node(htab, circuit -> out.id) -> number - 1;    
+        sprintf(fname, "%s.dat",circuit -> out.id);
+        fp = fopen(fname, "w");
+    }
+    else{
+        if(circuit -> out.id[0] == 'R' || circuit -> out.id[0] == 'L' || circuit -> out.id[0] == 'C'){
+            circuit -> out.index_in_RHS = search_element(htab, circuit -> out.id) -> index_in_RHS - 1;
+            sprintf(fname, "%s.dat",circuit -> out.id);
+            fp = fopen(fname, "w");
+        }
+        else{
+            circuit -> out.index_in_RHS = search_src(htab, circuit -> out.id) -> index_in_RHS - 1;    
+            sprintf(fname, "%s.dat",circuit -> out.id);
+            fp = fopen(fname, "w");
+        }
+    }
     ES_mat_lup *lup = ES_mat_lup_solve(circuit -> MNAmat);
 
-    for(int step = 0;step < circuit -> step_num;step++){ 
+    //First Step
+    RHS_update_tran(circuit, htab, 0, log);
+    circuit -> RESmat = ES_ls_solve(lup, circuit -> RHSmat);
+
+    for(int step = 1;step < circuit -> step_num;step++){ 
         RHS_update_tran(circuit, htab, step, log);
         circuit -> RESmat = ES_ls_solve(lup, circuit -> RHSmat);
-        update_result(circuit -> RESmat, htab, step);
+        fprintf(fp,"%.10lf  %.10lf\n",circuit -> Tstep * step, circuit -> RESmat -> data[circuit -> out.index_in_RHS][0]);
+        //update_result(circuit -> RESmat, htab, step);
     }
+    fclose(fp);
 }
 
 void RHS_update_tran(CKTcircuit *circuit, HASH_TAB *htab, int step, FILE *log){
-    ES_mat_free(circuit -> RHSmat_prev);
-    circuit -> RHSmat_prev = circuit -> RHSmat;
+    //ES_mat_free(circuit -> RHSmat_prev);
+    //circuit -> RHSmat_prev = circuit -> RHSmat;
+    //circuit -> RHSmat = ES_mat_new(circuit -> MNA_size, 1);
+
+    ES_mat_free(circuit -> RHSmat);
     circuit -> RHSmat = ES_mat_new(circuit -> MNA_size, 1);
+
+    ES_mat_free(circuit -> RESmat_prev);
+    circuit -> RESmat_prev = circuit -> RESmat;
 
     for(int i = 0;i < htab -> e_size;i++){
         if(htab -> e_table[i] == NULL){

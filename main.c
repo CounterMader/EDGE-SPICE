@@ -54,7 +54,7 @@ int main(int argc, char **argv){
         log_set_level(LOG_ERROR);
 
         //symbol table and circuit structure initial
-        htab = maketab(53, 127, 50, symtab_hash_pjw, node_cmp, elm_cmp, src_cmp);
+        htab = maketab(53, 127, 53, symtab_hash_pjw, node_cmp, elm_cmp, src_cmp);
         circuit = makeckt();
         log_trace("SPICE initialization SUCCESS!");
 
@@ -100,25 +100,6 @@ int main(int argc, char **argv){
         ES_mat_print(circuit -> RHSmat, log);
         ES_mat_print(circuit -> RHSmat_prev, log);
         
-         /*
-        FILE *out = fopen("out.dat","w");
-        ELM_TAB *ce = search_element(htab, "C1");
-        //printf("\n%f\n", c->current[3]);
-        //NODE_TAB *c = search_node_by_num(htab,2);
-        
-        for(int i = 0;i < circuit -> step_num;i++){
-            fprintf(out,"%f  %f\n",circuit -> Tstep * i ,ce -> current[i]);
-        }*/
-        
-       
-        FILE *out = fopen("out.dat","w");
-       
-        SRC_TAB *c = search_src(htab, "V1");
-        for(int i = 0;i < circuit -> step_num;i++){
-            fprintf(out,"%f  %f\n",circuit -> Tstep * i ,c -> current[i]);
-        }
-        
-        //result print
         free_hash_table(htab);
         free_ckt(circuit);
         fclose(log);

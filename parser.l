@@ -57,6 +57,10 @@ PULSE_S     "PULSE"
 RAMP_S      "RAMP"
 STEP_S      "STEP"
 
+ //Output tokens
+PLOT        ^".PLOT"
+ELEMENT      ("I"{ELM_ID}|"V"{ELM_ID}|"E"{ELM_ID}|"F"{ELM_ID}|"G"{ELM_ID}|"H"{ELM_ID}|"R"{ELM_ID}|"L"{ELM_ID}|"C"{ELM_ID})
+
 %%
 "%".*$                  {/*Comment*/}
 {WS}                    {/*Ignore*/}
@@ -124,12 +128,11 @@ STEP_S      "STEP"
                             strcpy(yylval.sv, yytext);
                             return IE_T;
                         }
-"V"{ELM_ID}             {
+{ELEMENT}               {
                             yylval.sv = (char *)malloc(yyleng * sizeof(char));
                             strcpy(yylval.sv, yytext);
-                            return CVS_T;
+                            return ELM_T;
                         }
-
 {NUM}+                  {
                             yylval.iv = atoi(yytext);
                             return INT_T;
@@ -207,7 +210,9 @@ STEP_S      "STEP"
 {AC}                        {
                                 return AS_T;
                             }
-                           
+{PLOT}                      {
+                                return PLT_T;
+                            }
 {END}                       {
                                 return END_T;
                             }

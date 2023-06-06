@@ -274,12 +274,12 @@ void c_g2_tran_MNA_stamp(CKTcircuit *circuit, ELM_TAB *element){
 void c_g2_tran_RHS_stamp(CKTcircuit *circuit, HASH_TAB *htab, ELM_TAB *element, int step){
     double p_voltage = 0;
     if(element -> node1 -> number != 0){
-        p_voltage += circuit -> RESmat -> data[element -> node1 -> number - 1][0]; 
+        p_voltage += circuit -> RESmat_prev -> data[element -> node1 -> number - 1][0]; 
     }
     if(element -> node2 -> number != 0){
-        p_voltage += -circuit -> RESmat -> data[element -> node2 -> number - 1][0];
+        p_voltage -= circuit -> RESmat_prev -> data[element -> node2 -> number - 1][0];
     }
-    circuit -> RHSmat -> data[element -> index_in_RHS - 1][0] = (element -> value/circuit -> Tstep) *  p_voltage;
+    circuit -> RHSmat -> data[element -> index_in_RHS - 1][0] += (element -> value/circuit -> Tstep) *  p_voltage;
 }
 
 
@@ -302,5 +302,5 @@ void l_tran_MNA_stamp(CKTcircuit *circuit, ELM_TAB *element){
 }
 
 void l_tran_RHS_stamp(CKTcircuit *circuit, ELM_TAB *element, int step){
-    circuit -> RHSmat -> data[element -> index_in_RHS - 1][0] = -(element -> value / circuit -> Tstep) * circuit -> RESmat -> data[element -> index_in_RHS - 1][0];
+    circuit -> RHSmat -> data[element -> index_in_RHS - 1][0] += -(element -> value / circuit -> Tstep) * circuit -> RESmat_prev -> data[element -> index_in_RHS - 1][0];
 }

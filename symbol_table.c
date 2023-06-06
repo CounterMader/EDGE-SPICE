@@ -439,7 +439,9 @@ SRC_TAB *create_src(char *sid, NODE_TAB *node1, NODE_TAB *node2, NODE_TAB *node3
 
 void free_src(SRC_TAB *stab){
     free(stab -> sid);
-    free(stab -> current);
+    if(stab -> current != NULL){
+        free(stab -> current);
+    }
     free(stab -> value);
     if(stab -> cvs != NULL){
         free(stab -> cvs);

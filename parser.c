@@ -73,6 +73,24 @@ void add_sine_v(char *sid, int node1, int node2, double offset, double amp, doub
     }
 }
 
+void add_sine_i(char *sid, int node1, int node2, double offset, double amp, double freq, double delay, double d_factor, double phase, int group){
+
+    SRC_TAB *stab = create_src(sid, search_node_by_num(htab, node1), search_node_by_num(htab, node2), NULL, NULL, TIME_DOMAIN, SINE, group);
+
+    stab -> src_coefficient = (double *)calloc(6, sizeof(double));
+    stab -> src_coefficient[sine_a] = d_factor;
+    stab -> src_coefficient[sine_Fo] = freq;
+    stab -> src_coefficient[sine_phi] = phase;
+    stab -> src_coefficient[sine_Td] = delay;
+    stab -> src_coefficient[sine_Va] = amp;
+    stab -> src_coefficient[sine_Vo] = offset;
+    
+    if(src_insert(htab, stab)){
+        log_error("Duplicated Current Source : %s in line %d",sid, (yylineno - 1));
+        exit(EXIT_FAILURE);
+    }
+}
+
 void add_pulse_v(char *sid, int node1, int node2, double v_off, double v_on, double delay, double Tr, double Tf, double t_on, double t_period){
     if(node1 == node2){
         log_error("Consistency Requirement ERROR! SHORTED VOLTAGE SOURCE : %s in Line %d", sid, (yylineno - 1));
@@ -95,6 +113,25 @@ void add_pulse_v(char *sid, int node1, int node2, double v_off, double v_on, dou
     }
 }
 
+void add_pulse_i(char *sid, int node1, int node2, double v_off, double v_on, double delay, double Tr, double Tf, double t_on, double t_period, int group){
+
+    SRC_TAB *stab = create_src(sid, search_node_by_num(htab, node1), search_node_by_num(htab, node2), NULL, NULL, TIME_DOMAIN, PULSE, group);
+    
+    stab -> src_coefficient = (double *)calloc(7, sizeof(double));
+    stab -> src_coefficient[pulse_Td] = delay;
+    stab -> src_coefficient[pulse_Tf] = Tf;
+    stab -> src_coefficient[pulse_To] = t_period; 
+    stab -> src_coefficient[pulse_Tr] = Tr;
+    stab -> src_coefficient[pulse_Tw] = t_on; 
+    stab -> src_coefficient[pulse_V1] = v_on;
+    stab -> src_coefficient[pulse_Vo] = v_off;
+
+    if(src_insert(htab, stab)){
+        log_error("Duplicated Current Source : %s in line %d",sid, (yylineno - 1));
+        exit(EXIT_FAILURE);
+    }
+}
+
 void add_ramp_v(char *sid, int node1, int node2, double delay){
     if(node1 == node2){
         log_error("Consistency Requirement ERROR! SHORTED VOLTAGE SOURCE : %s in Line %d", sid, (yylineno - 1));
@@ -107,6 +144,19 @@ void add_ramp_v(char *sid, int node1, int node2, double delay){
     
     if(src_insert(htab, stab)){
         log_error("Duplicated Voltage Source : %s in line %d",sid, (yylineno - 1));
+        exit(EXIT_FAILURE);
+    }
+}
+
+void add_ramp_i(char *sid, int node1, int node2, double delay, int group){
+
+    SRC_TAB *stab = create_src(sid, search_node_by_num(htab, node1), search_node_by_num(htab, node2), NULL, NULL, TIME_DOMAIN, RAMP, group);
+
+    stab -> src_coefficient = (double *)calloc(1, sizeof(double));
+    stab -> src_coefficient[ramp_Td] = delay;
+    
+    if(src_insert(htab, stab)){
+        log_error("Duplicated Current Source : %s in line %d",sid, (yylineno - 1));
         exit(EXIT_FAILURE);
     }
 }
@@ -128,6 +178,20 @@ void add_step_v(char *sid, int node1, int node2, double v_on, double delay){
     }
 }
 
+void add_step_i(char *sid, int node1, int node2, double v_on, double delay, int group){
+    
+    SRC_TAB *stab = create_src(sid, search_node_by_num(htab, node1), search_node_by_num(htab, node2), NULL, NULL, TIME_DOMAIN, STEP, group);
+
+    stab -> src_coefficient = (double *)calloc(2, sizeof(double));
+    stab -> src_coefficient[step_Td] = delay;
+    stab -> src_coefficient[step_V1] = v_on;
+
+    if(src_insert(htab, stab)){
+        log_error("Duplicated Current Source : %s in line %d",sid, (yylineno - 1));
+        exit(EXIT_FAILURE);
+    }
+}
+
 void add_ac_v(char *sid, int node1, int node2, double amp, double phase){
     if(node1 == node2){
         log_error("Consistency Requirement ERROR! SHORTED VOLTAGE SOURCE : %s in Line %d", sid, (yylineno - 1));
@@ -145,16 +209,27 @@ void add_ac_v(char *sid, int node1, int node2, double amp, double phase){
     }
 }
 
+void add_ac_i(char *sid, int node1, int node2, double amp, double phase, int group){
+    
+    SRC_TAB *stab = create_src(sid, search_node_by_num(htab, node1), search_node_by_num(htab, node2), NULL, NULL, FREQ_DOMAIN, AC, group);
+
+    stab -> src_coefficient = (double *)calloc(2, sizeof(double));
+    stab -> src_coefficient[ac_amp] = amp;
+    stab -> src_coefficient[ac_phi] = phase;
+
+    if(src_insert(htab, stab)){
+        log_error("Duplicated Current Source : %s in line %d",sid, (yylineno - 1));
+        exit(EXIT_FAILURE);
+    }
+}
+
 void add_I(char *eid, int node1, int node2, double value, int group){
-    //Consistency Requirement check FUTURE!
-    //if(elm_insert(htab, eid, NULL, node1, node2, NO_NODE, NO_NODE, value, group)){
-    //    log_error("Duplicated Current Source : %s in line %d",eid, (yylineno - 1));
-    //    exit(EXIT_FAILURE);
-    //}
 
     SRC_TAB *stab = create_src(eid, search_node_by_num(htab, node1), search_node_by_num(htab, node2), NULL, NULL, TIME_DOMAIN, DC, group);
+
     stab -> src_coefficient = (double *)calloc(1, sizeof(double));
     stab -> src_coefficient[dc_V1] = value;
+
     if(src_insert(htab, stab)){
         log_error("Duplicated Current Source : %s in line %d",eid, (yylineno - 1));
         exit(EXIT_FAILURE);
@@ -162,10 +237,7 @@ void add_I(char *eid, int node1, int node2, double value, int group){
 }
 
 void add_VCCS(char *eid, int node1, int node2, int node3, int node4, double value, int group){
-    //if(elm_insert(htab, eid, NULL, node1, node2, node3, node4, value, group)){
-    //    log_error("Duplicated VCCS : %s in line %d",eid, (yylineno - 1));
-    //    exit(EXIT_FAILURE);
-    //}
+    
     SRC_TAB *stab = create_src(eid, search_node_by_num(htab, node1), search_node_by_num(htab, node2), search_node_by_num(htab, node3), search_node_by_num(htab, node4), TIME_DOMAIN, DEPENDENT, group);
     stab -> src_coefficient = (double *)calloc(1, sizeof(double));
     stab -> src_coefficient[dep_value] = value;
@@ -190,10 +262,7 @@ void add_VCVS(char *eid, int node1, int node2, int node3, int node4, double valu
 }
 
 void add_CCCS(char *eid, char *cvs, int node1, int node2, double value, int group){
-    //if(elm_insert(htab, eid, cvs, node1, node2, NO_NODE, NO_NODE, value, group)){
-    //    log_error("Duplicated CCCS : %s in line %d",eid, (yylineno - 1));
-    //    exit(EXIT_FAILURE);
-    //}
+    
     SRC_TAB *stab = create_src(eid, search_node_by_num(htab, node1), search_node_by_num(htab, node2), NULL, NULL, TIME_DOMAIN, DEPENDENT, group);
     stab -> src_coefficient = (double *)calloc(1, sizeof(double));
     stab -> src_coefficient[dep_value] = value;
@@ -265,13 +334,22 @@ void set_simultaor_tran(double Tstop, double Tstep){
 
     circuit -> step_num = (int)(Tstop/Tstep);
 
-    node_voltage_initial(htab, circuit -> step_num);
-    element_current_initial(htab, circuit -> step_num);
-    src_current_initial(htab, circuit -> step_num);
+    //node_voltage_initial(htab, circuit -> step_num);
+    //element_current_initial(htab, circuit -> step_num);
+    //src_current_initial(htab, circuit -> step_num);
     log_trace("current and voltage allocation success! step number =  %d, Tstep = %f, Tstop = %f",circuit -> step_num,circuit -> Tstep, circuit -> Tstop);
 
 }
 
+void set_output(char *out){
+    if(circuit -> out.id == NULL){
+        circuit -> out.id = (char *)malloc((strlen(out) + 1) * sizeof(char));
+        strcpy(circuit -> out.id, out);
+    }
+    else{
+        log_error("Output Already set!");
+    }
+}
 void yyerror(char *msg){
     log_fatal("%s in line %d", msg, yylineno);
 }
