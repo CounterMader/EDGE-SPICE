@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "symbol_table.h"
 #include "circuit.h"
 #include "simulator.h"
@@ -304,3 +305,102 @@ void l_tran_MNA_stamp(CKTcircuit *circuit, ELM_TAB *element){
 void l_tran_RHS_stamp(CKTcircuit *circuit, ELM_TAB *element, int step){
     circuit -> RHSmat -> data[element -> index_in_RHS - 1][0] += -(element -> value / circuit -> Tstep) * circuit -> RESmat_prev -> data[element -> index_in_RHS - 1][0];
 }
+
+void r_ac_g1_stamp(CKTcircuit *circuit, ELM_TAB *element){
+    if(element -> node1 -> number != 0){
+        circuit -> MNAmat_comp -> data[element -> node1 -> number - 1][element -> node1 -> number - 1] += 1/element -> value;
+    }
+    if(element -> node2 -> number != 0){
+        circuit -> MNAmat_comp -> data[element -> node2 -> number - 1][element -> node2 -> number - 1] += 1/element -> value;
+    }
+    if(element -> node1 -> number != 0 && element -> node2 -> number != 0){
+        circuit -> MNAmat_comp -> data[element -> node1 -> number - 1][element -> node2 -> number - 1] += -1/element -> value;
+        circuit -> MNAmat_comp -> data[element -> node2 -> number - 1][element -> node1 -> number - 1] += -1/element -> value;
+    }
+}
+
+void r_ac_g2_stamp(CKTcircuit *circuit, ELM_TAB *element){
+    element -> index_in_RHS = get_RHS_index(circuit);
+
+    circuit -> MNAmat_comp -> data[element -> index_in_RHS - 1][element -> index_in_RHS - 1] += -element -> value;
+
+    if(element -> node1 -> number != 0){
+        circuit -> MNAmat_comp -> data[element -> index_in_RHS - 1][element -> node1 -> number - 1] += +1;
+        circuit -> MNAmat_comp -> data[element -> node1 -> number - 1][element -> index_in_RHS - 1] += +1;    
+    }
+    if(element -> node2 -> number != 0){
+        circuit -> MNAmat_comp -> data[element -> index_in_RHS - 1][element -> node2 -> number - 1] += -1;
+        circuit -> MNAmat_comp -> data[element -> node2 -> number - 1][element -> index_in_RHS - 1] += -1;
+    }
+    
+}
+
+void c_ac_g1_stamp(CKTcircuit *circuit, ELM_TAB *element){
+    if(element -> node1 -> number != 0){
+        circuit -> MNAmat_comp -> data[element -> node1 -> number - 1][element -> node1 -> number - 1] += circuit -> omega * element -> value * I;
+    }
+    if(element -> node2 -> number != 0){
+        circuit -> MNAmat_comp -> data[element -> node2 -> number - 1][element -> node2 -> number - 1] += circuit -> omega * element -> value * I;
+    }
+    if(element -> node1 -> number != 0 && element -> node2 -> number != 0){
+        circuit -> MNAmat_comp -> data[element -> node1 -> number - 1][element -> node2 -> number - 1] += -circuit -> omega * element -> value * I;
+        circuit -> MNAmat_comp -> data[element -> node2 -> number - 1][element -> node1 -> number - 1] += -circuit -> omega * element -> value * I;
+    }
+}
+
+void l_ac_g2_stamp(CKTcircuit *circuit, ELM_TAB *element){
+    element -> index_in_RHS = get_RHS_index(circuit);
+    //MNA stamp
+    circuit -> MNAmat_comp -> data[element -> index_in_RHS - 1][element -> index_in_RHS - 1] = -circuit -> omega * element -> value * I;
+
+    if(element -> node1 -> number != 0){
+        circuit -> MNAmat_comp -> data[element -> index_in_RHS - 1][element -> node1 -> number - 1] = 1;
+        circuit -> MNAmat_comp -> data[element -> node1 -> number - 1][element -> index_in_RHS - 1] = 1;
+    }
+    if(element -> node2 -> number != 0){
+        circuit -> MNAmat_comp -> data[element -> index_in_RHS - 1][element -> node2 -> number - 1] = -1;
+        circuit -> MNAmat_comp -> data[element -> node2 -> number - 1][element -> index_in_RHS - 1] = -1;
+    }
+}
+
+void v_ac_stamp(CKTcircuit *circuit, SRC_TAB *source){
+    source -> index_in_RHS = get_RHS_index(circuit);
+
+    circuit -> RHSmat_comp -> data[source -> index_in_RHS - 1][0] += source -> src_coefficient[ac_amp] * cos(source -> src_coefficient[ac_phi]*PI/180) + I * source -> src_coefficient[ac_amp] * sin(source -> src_coefficient[ac_phi]*PI/180);
+
+    if(source -> node1 -> number != 0){
+        circuit -> MNAmat_comp -> data[source -> index_in_RHS - 1][source -> node1 -> number - 1] += +1;
+        circuit -> MNAmat_comp -> data[source -> node1 -> number - 1][source -> index_in_RHS - 1] += +1;    
+    }
+    if(source -> node2 -> number != 0){
+        circuit -> MNAmat_comp -> data[source -> index_in_RHS - 1][source -> node2 -> number - 1] += -1;
+        circuit -> MNAmat_comp -> data[source -> node2 -> number - 1][source -> index_in_RHS - 1] += -1;
+    }
+
+}
+
+void i_ac_g1_stamp(CKTcircuit *circuit, SRC_TAB *source){
+    if(source -> node1 -> number != 0){
+        circuit -> RHSmat_comp -> data[source -> node1 -> number - 1][0] += -(source -> src_coefficient[ac_amp] * cos(source -> src_coefficient[ac_phi]*PI/180) + I * source -> src_coefficient[ac_amp] * sin(source -> src_coefficient[ac_phi]*PI/180));    
+    }
+    if(source -> node2 -> number != 0){
+        circuit -> RHSmat_comp -> data[source -> node2 -> number - 1][0] += (source -> src_coefficient[ac_amp] * cos(source -> src_coefficient[ac_phi]*PI/180) + I * source -> src_coefficient[ac_amp] * sin(source -> src_coefficient[ac_phi]*PI/180));
+    }
+
+}
+
+void i_ac_g2_stamp(CKTcircuit *circuit, SRC_TAB *source){
+    source -> index_in_RHS = get_RHS_index(circuit);
+       
+    circuit -> RHSmat_comp -> data[source -> index_in_RHS - 1][0] += (source -> src_coefficient[ac_amp] * cos(source -> src_coefficient[ac_phi]*PI/180) + I * source -> src_coefficient[ac_amp] * sin(source -> src_coefficient[ac_phi]*PI/180));
+
+    if(source -> node1 -> number != 0){
+        circuit -> MNAmat_comp -> data[source -> node1 -> number - 1][source -> index_in_RHS - 1] += 1;
+    }
+    if(source -> node2 -> number != 0){
+        circuit -> MNAmat_comp -> data[source -> node2 -> number - 1][source -> index_in_RHS - 1] += -1;
+    }
+    circuit -> MNAmat_comp -> data[source -> index_in_RHS - 1][source -> index_in_RHS - 1] += 1;
+    
+}
+

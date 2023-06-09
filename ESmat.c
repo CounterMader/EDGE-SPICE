@@ -32,6 +32,30 @@ ES_mat *ES_mat_new(unsigned int num_rows, unsigned int num_cols) {
     return m;
 }
 
+ES_mat_comp *ES_mat_comp_new(unsigned int num_rows, unsigned int num_cols) {
+    if (num_rows == 0) {
+        log_error(INVALID_ROWS);
+        return NULL;
+    }
+    if (num_cols == 0) {
+        log_error(INVALID_COLS);
+        return NULL;
+    }
+    ES_mat_comp *m = calloc(1, sizeof(*m));
+    NP_CHECK(m);
+    m->num_rows = num_rows;
+    m->num_cols = num_cols;
+    m->is_square = (num_rows == num_cols) ? 1 : 0;
+    m->data = calloc(m->num_rows, sizeof(*m->data));
+    NP_CHECK(m->data);
+    int i;
+    for(i = 0; i < m->num_rows; ++i) {
+        m->data[i] = calloc(m->num_cols, sizeof(**m->data));
+        NP_CHECK(m->data[i]);
+    }
+    return m;
+}
+
 ES_mat *ES_mat_sqr(unsigned int size){
     return ES_mat_new(size,size);
 }
@@ -121,6 +145,26 @@ void ES_mat_printf(ES_mat *mat, const char *d_fmt, FILE *fp){
     for(i = 0; i < mat->num_rows; ++i){
         for(j = 0; j < mat->num_cols; ++j){
             fprintf(fp, d_fmt, mat->data[i][j]);
+        }
+        fprintf(fp, "\n");
+    }
+    fprintf(fp, "\n");
+}
+
+void ES_mat_comp_print(ES_mat_comp *matrix, FILE *fp){
+    ES_mat_comp_printf(matrix, "%.16lf %.16lf\t\t", fp);
+}
+
+void ES_mat_comp_printf(ES_mat_comp *mat, const char *d_fmt, FILE *fp){
+    if(mat == NULL){
+        log_trace("NULL pointer passed through ES_mat_printf!\n");
+        return;
+    }
+    int i, j;
+    fprintf(fp, "\n");
+    for(i = 0; i < mat->num_rows; ++i){
+        for(j = 0; j < mat->num_cols; ++j){
+            fprintf(fp, d_fmt, creal(mat->data[i][j]),cimag(mat->data[i][j]));
         }
         fprintf(fp, "\n");
     }
@@ -858,12 +902,12 @@ ES_mat *ES_ls_solve(ES_mat_lup *lu, ES_mat* b){
 ES_mat *ES_mat_inv(ES_mat_lup *lup){
     unsigned n = lup->L->num_cols;
     ES_mat *r = ES_mat_sqr(n);
-    ES_mat *I = ES_mat_identity(lup->U->num_rows);
+    ES_mat *M = ES_mat_identity(lup->U->num_rows);
     ES_mat *invx;
     ES_mat *Ix;
     int i,j;
     for(j =0; j < n; j++){
-        Ix = ES_mat_col_get(I, j);
+        Ix = ES_mat_col_get(M, j);
         invx = ES_ls_solve(lup, Ix);
         for(i = 0; i < invx->num_rows; i++){
             r->data[i][j] = invx->data[i][0];
@@ -871,6 +915,6 @@ ES_mat *ES_mat_inv(ES_mat_lup *lup){
         ES_mat_free(invx);
         ES_mat_free(Ix);
     }
-    ES_mat_free(I);
+    ES_mat_free(M);
     return r;
 }

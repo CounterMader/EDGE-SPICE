@@ -100,6 +100,15 @@
 /*
     Matrix structure
 */
+#include <lapacke.h>
+
+typedef struct _ES_mat_complex_s{
+      unsigned int num_rows;
+      unsigned int num_cols;
+      lapack_complex_float **data;
+      int is_square;
+}ES_mat_comp;
+
 typedef struct _ES_mat_s{
       unsigned int num_rows;
       unsigned int num_cols;
@@ -121,6 +130,7 @@ typedef struct ES_mat_lup_s {
     Functions prototype
 */
 ES_mat *ES_mat_new(unsigned int num_rows, unsigned int num_cols);
+ES_mat_comp *ES_mat_comp_new(unsigned int num_rows, unsigned int num_cols);
 ES_mat *ES_mat_sqr(unsigned int size);
 ES_mat *ES_mat_identity(unsigned int size);
 ES_mat *ES_mat_cp(ES_mat *m);
@@ -128,7 +138,9 @@ void ES_mat_free(ES_mat *mat);
 int ES_mat_eqdim(ES_mat *m1, ES_mat *m2);
 int ES_mat_eq(ES_mat *m1, ES_mat *m2, double tolerance);
 void ES_mat_print(ES_mat *matrix, FILE *fp);
+void ES_mat_comp_print(ES_mat_comp *matrix, FILE *fp);
 void ES_mat_printf(ES_mat *mat, const char *d_fmt, FILE *fp);
+void ES_mat_comp_printf(ES_mat_comp *mat, const char *d_fmt, FILE *fp);
 double ES_mat_get(ES_mat *matrix, unsigned int i, unsigned int j);
 ES_mat *ES_mat_col_get(ES_mat *m, unsigned int col);
 ES_mat *ES_mat_row_get(ES_mat *m, unsigned int row);

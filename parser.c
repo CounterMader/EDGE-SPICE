@@ -341,6 +341,19 @@ void set_simultaor_tran(double Tstop, double Tstep){
 
 }
 
+void set_simulator_ac(double freq){
+        if(circuit -> simulate_type != NULL_SYM){
+        log_error("SIMULATOR Already SET!");
+        return;
+    }
+
+    circuit -> simulate_type = AC_SYM;
+
+    circuit -> frequency = freq;
+    circuit -> omega = 2 * PI * freq;
+    log_trace("AC Simulator set done!");
+}
+
 void set_output(char *out){
     if(circuit -> out.id == NULL){
         circuit -> out.id = (char *)malloc((strlen(out) + 1) * sizeof(char));

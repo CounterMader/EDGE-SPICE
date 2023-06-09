@@ -19,7 +19,13 @@ typedef struct _circuit_struct{
     ES_mat *RHSmat_prev;        //Circuit Previus RHS
     ES_mat *RESmat;
     ES_mat *RESmat_prev;
-
+    
+    ES_mat_comp *MNAmat_comp;             //Circuit MNA matrix
+    ES_mat_comp *RHSmat_comp;             //Circuit RHS matrix
+    ES_mat_comp *RHSmat_prev_comp;        //Circuit Previus RHS
+    ES_mat_comp *RESmat_comp;
+    ES_mat_comp *RESmat_prev_comp;
+    
     SIM_OUT out;
     unsigned int MNA_size;
     int simulate_type;
@@ -30,6 +36,10 @@ typedef struct _circuit_struct{
     double Tstep;
 
     int step_num;
+
+    //AC Analysis Parameters
+    double frequency;           //Frequency of intrest
+    double omega;               //Angular velocity : 2 * PI * f
 
     int is_linear;              //flag for networks linearity
 

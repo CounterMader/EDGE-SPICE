@@ -5,7 +5,7 @@
 #include "log.h"
 #include "source.h"
 #include <math.h>
-#define PI 3.14159265358979323846
+
 
 void pulse_src_update(CKTcircuit *circuit, SRC_TAB *stab){
     // Vo -> initial voltage

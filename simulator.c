@@ -6,6 +6,7 @@
 #include "simulator.h"
 #include "log.h"
 #include "stamps.h"
+#include "source.h"
 
 void simulate_DC(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
     for(int i = 0;i < htab -> e_size;i++){
@@ -276,4 +277,100 @@ void MNA_update_tran(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
     }
 
     log_trace("Transient MNA done!");
+}
+
+void simulate_AC(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
+    for(int i = 0;i < htab -> e_size;i++){
+        if(htab -> e_table[i] == NULL)
+            continue;
+        ELM_TAB *temp = htab -> e_table[i];
+        while(temp){
+            switch(temp ->key[0]){
+            case 'R':
+                log_trace("R detected");
+                if(temp -> group == 2){
+                    r_ac_g2_stamp(circuit, temp);
+                }
+                else{
+                    r_ac_g1_stamp(circuit, temp);
+                }
+                temp -> is_stamped = STAMPED;
+                break;
+            case 'L':
+                log_trace("L detected");
+                if(temp -> group == 2){
+                    l_ac_g2_stamp(circuit, temp);
+                }
+                temp -> is_stamped = STAMPED;
+                break;
+            case 'C':
+                if(temp -> group == 1){
+                    c_ac_g1_stamp(circuit, temp);
+                }
+                temp -> is_stamped = STAMPED;
+                break;
+            default:
+                break;
+            }
+            temp = temp -> next;
+        }
+    }
+
+    for(int j = 0;j < htab -> s_size;j++){
+        if(htab -> s_table[j] == NULL)
+            continue;
+        SRC_TAB *stemp = htab -> s_table[j];
+        while(stemp != NULL){
+            switch(stemp -> sid[0]){
+            case 'V':
+                if(stemp -> is_stamped == NOT_STAMPED){
+                    log_trace("V detected");
+                    if(stemp -> src_type == AC){
+                        v_ac_stamp(circuit, stemp);
+                    }
+                    else if(stemp -> src_type == DC && stemp -> src_coefficient[dc_V1] == 0){
+                        v_stamp(circuit, stemp);
+                    }
+                    stemp -> is_stamped = STAMPED;
+                }
+                break;
+            case 'I':
+                log_trace("I detected");
+                if(stemp -> group == 2){
+                    i_ac_g2_stamp(circuit, stemp);
+                }
+                else{
+                    i_ac_g1_stamp(circuit, stemp);
+                }
+                stemp -> is_stamped = STAMPED;
+                break;
+            case 'G':
+                log_trace("VCCS(G) detected");
+                g_stamp(circuit, stemp);
+                stemp -> is_stamped = STAMPED;
+                break;
+            case 'E':
+                log_trace("VCVS(E) detected");
+                e_stamp(circuit, stemp);
+                stemp -> is_stamped = STAMPED;
+                break;
+            case 'F':
+                log_trace("CCCS(F) detected");
+                f_stamp(circuit, htab, stemp);
+                stemp -> is_stamped = STAMPED;
+                break;
+            case 'H':
+                log_trace("CCVS(H) detected");
+                h_stamp(circuit, htab, stemp);
+                stemp -> is_stamped = STAMPED;
+                break;
+            default:
+                break;
+            }
+            stemp = stemp -> next;
+        }
+    }
+
+
+
 }

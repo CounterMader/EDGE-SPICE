@@ -19,5 +19,6 @@ void add_CCVS(char *eid, char *cvs, int node1, int node2, double value, int grou
 void add_node(int num);
 void set_simultaor_dc();
 void set_simultaor_tran(double Tstop, double Tstep);
+void set_simulator_ac(double freq);
 void set_output(char *out);
 void yyerror();

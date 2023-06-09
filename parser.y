@@ -36,6 +36,7 @@ statement:
 control:
       dc
     | tran
+    | ac
     | plot
     ;
 
@@ -304,6 +305,13 @@ tran:
         log_trace("Transient Analysis Detected!,stop time = %.16f, step = %.16f", $2, $3);
         set_simultaor_tran($2, $3);
     }
+    ;
+ac:
+    AS_T value {
+        log_trace("AC Analysis Detected! Frequency = %f", $2);
+        set_simulator_ac($2);
+    }
+    ;
 plot:
       PLT_T INT_T {
         char buff[20];

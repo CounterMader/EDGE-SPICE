@@ -1,3 +1,4 @@
+#define PI 3.14159265358979323846
 //Source Type
 #define TIME_DOMAIN 0
 #define FREQ_DOMAIN 1

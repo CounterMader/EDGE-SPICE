@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <lapacke.h>
+#include <complex.h>
 #include "symbol_table.h"
 #include "circuit.h"
 #include "parser.h"
@@ -40,7 +41,6 @@
 */
 
 int main(int argc, char **argv){
-    
     switch (argc){
     case 1:
         printf("EDGE-SPICE v1.0\nAuther : Ali Esmaeily - University of Tabriz - Spring 2023\n"
@@ -71,34 +71,55 @@ int main(int argc, char **argv){
         get_MNA_size(circuit, htab);
         log_trace("MNA matrix size is %d", circuit -> MNA_size);
 
-        //MNA and RHS matrices initialization
-        circuit -> MNAmat = ES_mat_new(circuit -> MNA_size, circuit -> MNA_size);
-        circuit -> RHSmat = ES_mat_new(circuit -> MNA_size, 1);
-        circuit -> RHSmat_prev = ES_mat_new(circuit -> MNA_size, 1);
-        circuit -> RESmat = ES_mat_new(circuit -> MNA_size, 1);
-        circuit -> RESmat_prev = ES_mat_new(circuit -> MNA_size, 1);
-
         //simulate
         switch (circuit -> simulate_type){
             case DC_SYM:
+                //MNA and RHS matrices initialization
+                circuit -> MNAmat = ES_mat_new(circuit -> MNA_size, circuit -> MNA_size);
+                circuit -> RHSmat = ES_mat_new(circuit -> MNA_size, 1);
+                circuit -> RHSmat_prev = ES_mat_new(circuit -> MNA_size, 1);
+                circuit -> RESmat = ES_mat_new(circuit -> MNA_size, 1);
+                circuit -> RESmat_prev = ES_mat_new(circuit -> MNA_size, 1);
                 simulate_DC(circuit, htab, log);
+                ES_mat_print(circuit -> MNAmat, log);
+                ES_mat_print(circuit -> RHSmat, log);
+                ES_mat_print(circuit -> RHSmat_prev, log);
                 break;
             case TRAN_SYM:
                 //update sources
+                if(circuit -> out.id == NULL){
+                    log_fatal("Output variable not defined! Simulate STOPED!");
+                    exit(EXIT_FAILURE);
+                }
+                //MNA and RHS matrices initialization
+                circuit -> MNAmat = ES_mat_new(circuit -> MNA_size, circuit -> MNA_size);
+                circuit -> RHSmat = ES_mat_new(circuit -> MNA_size, 1);
+                circuit -> RHSmat_prev = ES_mat_new(circuit -> MNA_size, 1);
+                circuit -> RESmat = ES_mat_new(circuit -> MNA_size, 1);
+                circuit -> RESmat_prev = ES_mat_new(circuit -> MNA_size, 1);
                 transient_source_update(circuit, htab);
                 simulate_TRAN(circuit, htab, log);
+                ES_mat_print(circuit -> MNAmat, log);
+                ES_mat_print(circuit -> RHSmat, log);
+                ES_mat_print(circuit -> RHSmat_prev, log);
                 break;
             case AC_SYM:
-
+                circuit -> MNAmat_comp = ES_mat_comp_new(circuit -> MNA_size, circuit -> MNA_size);
+                circuit -> RHSmat_comp = ES_mat_comp_new(circuit -> MNA_size, 1);
+                circuit -> RHSmat_prev_comp = ES_mat_comp_new(circuit -> MNA_size, 1);
+                circuit -> RESmat_comp = ES_mat_comp_new(circuit -> MNA_size, 1);
+                circuit -> RESmat_prev_comp = ES_mat_comp_new(circuit -> MNA_size, 1);
+                simulate_AC(circuit, htab, log);
+                ES_mat_comp_print(circuit -> MNAmat_comp, log);
+                ES_mat_comp_print(circuit -> RHSmat_comp, log);
+                ES_mat_comp_print(circuit -> RHSmat_prev_comp, log);
                 break;
             default:
                 log_fatal("Undefined Type Simulator!");
                 break;
         }
 
-        ES_mat_print(circuit -> MNAmat, log);
-        ES_mat_print(circuit -> RHSmat, log);
-        ES_mat_print(circuit -> RHSmat_prev, log);
+        
         
         free_hash_table(htab);
         free_ckt(circuit);
