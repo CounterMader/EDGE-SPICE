@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <math.h>
 #include "symbol_table.h"
 #include "circuit.h"
 #include "simulator.h"
@@ -298,9 +299,7 @@ void simulate_AC(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
                 break;
             case 'L':
                 log_trace("L detected");
-                if(temp -> group == 2){
-                    l_ac_g2_stamp(circuit, temp);
-                }
+                l_ac_g2_stamp(circuit, temp);
                 temp -> is_stamped = STAMPED;
                 break;
             case 'C':
@@ -329,7 +328,7 @@ void simulate_AC(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
                         v_ac_stamp(circuit, stemp);
                     }
                     else if(stemp -> src_type == DC && stemp -> src_coefficient[dc_V1] == 0){
-                        v_stamp(circuit, stemp);
+                        v_0_ac_stamp(circuit, stemp);
                     }
                     stemp -> is_stamped = STAMPED;
                 }
@@ -371,6 +370,58 @@ void simulate_AC(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
         }
     }
 
+    ES_mat_comp_print(circuit -> MNAmat_comp, log);
+    lapack_int n, nrhs, lda, ldb, info;
+    lapack_int ipiv[circuit -> MNA_size];
+    n = circuit -> MNA_size;
+    nrhs = 1;
+    lda = n;
+    ldb = 1;
+    EScomp b[circuit -> MNA_size][1];
+    for (int i = 0; i < circuit -> MNA_size; i++){
+        b[i][0].re = circuit -> RHSmat_comp -> data[i][0].re;
+        b[i][0].im = circuit -> RHSmat_comp -> data[i][0].im;
+    }
+    EScomp *a = (EScomp *)calloc(circuit -> MNA_size * circuit -> MNA_size, sizeof(EScomp));
+    int m = 0;
+    for(int i = 0;i < circuit -> MNA_size;i++){
+        for(int j = 0;j < circuit -> MNA_size;j++){
+            a[m].re = circuit -> MNAmat_comp -> data[i][j].re;
+            a[m].im = circuit -> MNAmat_comp -> data[i][j].im;
+            m++;
+        }  
+    }
+    info = LAPACKE_zgesv(LAPACK_ROW_MAJOR, n, nrhs, a, lda, ipiv, *b, ldb);
 
+    printf("Simulation Completed!\n====================\n\n");
+    
+    for(int i = 0;i < htab -> n_numsyms - 1;i++){
+        printf("V(%d)\t=\tamp : %lf phase : %lf deg\n", i+1,sqrt(pow(b[i][0].re,2) + pow(b[i][0].im,2)),atan(b[i][0].im/b[i][0].re)*180/PI);
+    }
 
+    for(int i = 0;i < htab -> e_size;i++){
+        if(htab -> e_table[i] == NULL)
+            continue;
+        ELM_TAB *elm_temp = htab -> e_table[i];
+        while(elm_temp){
+            if(elm_temp -> group == 2){
+                printf("I(%s)\t=\tamp : %lf phase : %lf deg\n", elm_temp -> key,sqrt(pow(b[elm_temp -> index_in_RHS - 1][0].re,2) + pow(b[elm_temp -> index_in_RHS - 1][0].im,2)),atan(b[elm_temp -> index_in_RHS - 1][0].im/b[elm_temp -> index_in_RHS - 1][0].re)*180/PI);
+            }
+            elm_temp = elm_temp -> next;
+        }
+    }
+
+    for(int j = 0;j < htab -> s_size;j++){
+        if(htab -> s_table[j] == NULL)
+            continue;
+        SRC_TAB *stemp = htab -> s_table[j];
+        while(stemp){
+            if(stemp -> group == 2){
+                printf("I(%s)\t=\tamp : %lf phase : %lf deg\n", stemp -> sid,sqrt(pow(b[stemp -> index_in_RHS - 1][0].re,2) + pow(b[stemp -> index_in_RHS - 1][0].im,2)),atan(b[stemp -> index_in_RHS - 1][0].im/b[stemp -> index_in_RHS - 1][0].re)*180/PI);
+            }
+            stemp = stemp -> next;
+        }
+    }
+
+    printf("\n====================\n");
 }

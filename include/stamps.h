@@ -27,5 +27,6 @@ void r_ac_g2_stamp(CKTcircuit *circuit, ELM_TAB *element);
 void c_ac_g1_stamp(CKTcircuit *circuit, ELM_TAB *element);
 void l_ac_g2_stamp(CKTcircuit *circuit, ELM_TAB *element);
 void v_ac_stamp(CKTcircuit *circuit, SRC_TAB *source);
+void v_0_ac_stamp(CKTcircuit *circuit, SRC_TAB *source);
 void i_ac_g1_stamp(CKTcircuit *circuit, SRC_TAB *source);
 void i_ac_g2_stamp(CKTcircuit *circuit, SRC_TAB *source);

@@ -7,7 +7,7 @@
 #include "symbol_table.h"
 #include "log.h"
 #include "circuit.h"
-
+#define PI 3.14159265358979323846
 
 CKTcircuit *makeckt(){
     CKTcircuit *circuit = NULL;

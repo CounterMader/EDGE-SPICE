@@ -77,9 +77,9 @@ int main(int argc, char **argv){
                 //MNA and RHS matrices initialization
                 circuit -> MNAmat = ES_mat_new(circuit -> MNA_size, circuit -> MNA_size);
                 circuit -> RHSmat = ES_mat_new(circuit -> MNA_size, 1);
-                circuit -> RHSmat_prev = ES_mat_new(circuit -> MNA_size, 1);
-                circuit -> RESmat = ES_mat_new(circuit -> MNA_size, 1);
-                circuit -> RESmat_prev = ES_mat_new(circuit -> MNA_size, 1);
+                //circuit -> RHSmat_prev = ES_mat_new(circuit -> MNA_size, 1);
+                //circuit -> RESmat = ES_mat_new(circuit -> MNA_size, 1);
+                //circuit -> RESmat_prev = ES_mat_new(circuit -> MNA_size, 1);
                 simulate_DC(circuit, htab, log);
                 ES_mat_print(circuit -> MNAmat, log);
                 ES_mat_print(circuit -> RHSmat, log);
@@ -106,9 +106,9 @@ int main(int argc, char **argv){
             case AC_SYM:
                 circuit -> MNAmat_comp = ES_mat_comp_new(circuit -> MNA_size, circuit -> MNA_size);
                 circuit -> RHSmat_comp = ES_mat_comp_new(circuit -> MNA_size, 1);
-                circuit -> RHSmat_prev_comp = ES_mat_comp_new(circuit -> MNA_size, 1);
-                circuit -> RESmat_comp = ES_mat_comp_new(circuit -> MNA_size, 1);
-                circuit -> RESmat_prev_comp = ES_mat_comp_new(circuit -> MNA_size, 1);
+                //circuit -> RHSmat_prev_comp = ES_mat_comp_new(circuit -> MNA_size, 1);
+                //circuit -> RESmat_comp = ES_mat_comp_new(circuit -> MNA_size, 1);
+                //circuit -> RESmat_prev_comp = ES_mat_comp_new(circuit -> MNA_size, 1);
                 simulate_AC(circuit, htab, log);
                 ES_mat_comp_print(circuit -> MNAmat_comp, log);
                 ES_mat_comp_print(circuit -> RHSmat_comp, log);

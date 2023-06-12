@@ -46,11 +46,11 @@ ES_mat_comp *ES_mat_comp_new(unsigned int num_rows, unsigned int num_cols) {
     m->num_rows = num_rows;
     m->num_cols = num_cols;
     m->is_square = (num_rows == num_cols) ? 1 : 0;
-    m->data = calloc(m->num_rows, sizeof(*m->data));
+    m->data = calloc(m->num_rows * m->num_cols, sizeof(*m->data));
     NP_CHECK(m->data);
     int i;
     for(i = 0; i < m->num_rows; ++i) {
-        m->data[i] = calloc(m->num_cols, sizeof(**m->data));
+    m->data[i] = calloc(m->num_cols, sizeof(**m->data));
         NP_CHECK(m->data[i]);
     }
     return m;
@@ -164,7 +164,7 @@ void ES_mat_comp_printf(ES_mat_comp *mat, const char *d_fmt, FILE *fp){
     fprintf(fp, "\n");
     for(i = 0; i < mat->num_rows; ++i){
         for(j = 0; j < mat->num_cols; ++j){
-            fprintf(fp, d_fmt, creal(mat->data[i][j]),cimag(mat->data[i][j]));
+            fprintf(fp, d_fmt, mat->data[i][j].re,mat->data[i][j].im);
         }
         fprintf(fp, "\n");
     }

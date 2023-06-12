@@ -102,10 +102,15 @@
 */
 #include <lapacke.h>
 
+typedef struct _complex_s{
+      double re;
+      double im;
+}EScomp;
+
 typedef struct _ES_mat_complex_s{
       unsigned int num_rows;
       unsigned int num_cols;
-      lapack_complex_float **data;
+      EScomp **data;
       int is_square;
 }ES_mat_comp;
 
