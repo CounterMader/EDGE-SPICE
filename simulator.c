@@ -126,7 +126,7 @@ void simulate_TRAN(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
     ES_mat_lup *lup = ES_mat_lup_solve(circuit -> MNAmat);
 
     //First Step
-    RHS_update_tran(circuit, htab, 0, log);
+    RHS_init_update_tran(circuit, htab, log);
     circuit -> RESmat = ES_ls_solve(lup, circuit -> RHSmat);
 
     for(int step = 1;step < circuit -> step_num;step++){ 
@@ -142,7 +142,7 @@ void RHS_update_tran(CKTcircuit *circuit, HASH_TAB *htab, int step, FILE *log){
     //ES_mat_free(circuit -> RHSmat_prev);
     //circuit -> RHSmat_prev = circuit -> RHSmat;
     //circuit -> RHSmat = ES_mat_new(circuit -> MNA_size, 1);
-
+    
     ES_mat_free(circuit -> RHSmat);
     circuit -> RHSmat = ES_mat_new(circuit -> MNA_size, 1);
 
@@ -188,6 +188,63 @@ void RHS_update_tran(CKTcircuit *circuit, HASH_TAB *htab, int step, FILE *log){
                     }
                     else{
                         i_g1_tran_RHS_stamp(circuit, stemp, step);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            stemp = stemp -> next;
+        }
+    }
+}
+
+void RHS_init_update_tran(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
+    //ES_mat_free(circuit -> RHSmat_prev);
+    //circuit -> RHSmat_prev = circuit -> RHSmat;
+    //circuit -> RHSmat = ES_mat_new(circuit -> MNA_size, 1);
+
+    ES_mat_free(circuit -> RESmat_prev);
+    circuit -> RESmat_prev = circuit -> RESmat;
+
+    for(int i = 0;i < htab -> e_size;i++){
+        if(htab -> e_table[i] == NULL){
+            continue;
+        }
+        ELM_TAB *etemp = htab -> e_table[i];
+        while(etemp){
+            switch(etemp -> key[0]){
+                case 'L':
+                    l_tran_RHS_stamp(circuit, etemp, 0);
+                    break;
+                case 'C':
+                    if(etemp -> group == 2){
+                        c_g2_tran_RHS_stamp(circuit, htab, etemp, 0);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            etemp = etemp -> next;
+        }
+    }
+
+
+    for(int j = 0;j < htab -> s_size;j++){
+        if(htab -> s_table[j] == NULL){
+            continue;
+        }
+        SRC_TAB *stemp = htab -> s_table[j];
+        while(stemp){
+            switch(stemp -> sid[0]){
+                case 'V':
+                    v_tran_RHS_stamp(circuit, stemp, 0);
+                    break;
+                case 'I':
+                    if(stemp -> group == 2){
+                        i_g2_tran_RHS_stamp(circuit, stemp, 0);
+                    }
+                    else{
+                        i_g1_tran_RHS_stamp(circuit, stemp, 0);
                     }
                     break;
                 default:
@@ -345,22 +402,22 @@ void simulate_AC(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
                 break;
             case 'G':
                 log_trace("VCCS(G) detected");
-                g_stamp(circuit, stemp);
+                g_ac_stamp(circuit, stemp);
                 stemp -> is_stamped = STAMPED;
                 break;
             case 'E':
                 log_trace("VCVS(E) detected");
-                e_stamp(circuit, stemp);
+                e_ac_stamp(circuit, stemp);
                 stemp -> is_stamped = STAMPED;
                 break;
             case 'F':
                 log_trace("CCCS(F) detected");
-                f_stamp(circuit, htab, stemp);
+                f_ac_stamp(circuit, htab, stemp);
                 stemp -> is_stamped = STAMPED;
                 break;
             case 'H':
                 log_trace("CCVS(H) detected");
-                h_stamp(circuit, htab, stemp);
+                h_ac_stamp(circuit, htab, stemp);
                 stemp -> is_stamped = STAMPED;
                 break;
             default:
@@ -377,10 +434,10 @@ void simulate_AC(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
     nrhs = 1;
     lda = n;
     ldb = 1;
-    EScomp b[circuit -> MNA_size][1];
+    EScomp *b = (EScomp *)calloc(circuit -> MNA_size * circuit -> MNA_size, sizeof(EScomp));
     for (int i = 0; i < circuit -> MNA_size; i++){
-        b[i][0].re = circuit -> RHSmat_comp -> data[i][0].re;
-        b[i][0].im = circuit -> RHSmat_comp -> data[i][0].im;
+        b[i].re = circuit -> RHSmat_comp -> data[i][0].re;
+        b[i].im = circuit -> RHSmat_comp -> data[i][0].im;
     }
     EScomp *a = (EScomp *)calloc(circuit -> MNA_size * circuit -> MNA_size, sizeof(EScomp));
     int m = 0;
@@ -391,12 +448,13 @@ void simulate_AC(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
             m++;
         }  
     }
-    info = LAPACKE_zgesv(LAPACK_ROW_MAJOR, n, nrhs, a, lda, ipiv, *b, ldb);
-
+    info = LAPACKE_zgesv(LAPACK_ROW_MAJOR, n, nrhs, a, lda, ipiv, b, ldb);
+    log_trace("LAPCKE info=%d",info);
     printf("Simulation Completed!\n====================\n\n");
     
     for(int i = 0;i < htab -> n_numsyms - 1;i++){
-        printf("V(%d)\t=\tamp : %lf phase : %lf deg\n", i+1,sqrt(pow(b[i][0].re,2) + pow(b[i][0].im,2)),atan(b[i][0].im/b[i][0].re)*180/PI);
+        printf("V(%d)\t=\tamp : %lf phase : %lf deg\n", i+1,sqrt(pow(b[i].re,2) + pow(b[i].im,2)),atan(b[i].im/b[i].re)*180/PI);
+        printf("V(%d)\t=\tamp : %lf j%lf\n", i+1,b[i].re,b[i].im);
     }
 
     for(int i = 0;i < htab -> e_size;i++){
@@ -405,7 +463,8 @@ void simulate_AC(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
         ELM_TAB *elm_temp = htab -> e_table[i];
         while(elm_temp){
             if(elm_temp -> group == 2){
-                printf("I(%s)\t=\tamp : %lf phase : %lf deg\n", elm_temp -> key,sqrt(pow(b[elm_temp -> index_in_RHS - 1][0].re,2) + pow(b[elm_temp -> index_in_RHS - 1][0].im,2)),atan(b[elm_temp -> index_in_RHS - 1][0].im/b[elm_temp -> index_in_RHS - 1][0].re)*180/PI);
+                printf("I(%s)\t=\tamp : %lf phase : %lf deg\n", elm_temp -> key,sqrt(pow(b[elm_temp -> index_in_RHS - 1].re,2) + pow(b[elm_temp -> index_in_RHS - 1].im,2)),atan(b[elm_temp -> index_in_RHS - 1].im/b[elm_temp -> index_in_RHS - 1].re)*180.0/PI);
+                printf("I(%s)\t=\tamp : %lf j%lf\n", elm_temp -> key,b[elm_temp -> index_in_RHS - 1].re,b[elm_temp -> index_in_RHS - 1].im);
             }
             elm_temp = elm_temp -> next;
         }
@@ -417,11 +476,13 @@ void simulate_AC(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
         SRC_TAB *stemp = htab -> s_table[j];
         while(stemp){
             if(stemp -> group == 2){
-                printf("I(%s)\t=\tamp : %lf phase : %lf deg\n", stemp -> sid,sqrt(pow(b[stemp -> index_in_RHS - 1][0].re,2) + pow(b[stemp -> index_in_RHS - 1][0].im,2)),atan(b[stemp -> index_in_RHS - 1][0].im/b[stemp -> index_in_RHS - 1][0].re)*180/PI);
+                printf("I(%s)\t=\tamp : %lf phase : %lf deg\n", stemp -> sid,sqrt(pow(b[stemp -> index_in_RHS - 1].re,2) + pow(b[stemp -> index_in_RHS - 1].im,2)),atan(b[stemp -> index_in_RHS - 1].im/b[stemp -> index_in_RHS - 1].re)*180.0/PI);
             }
             stemp = stemp -> next;
         }
     }
 
     printf("\n====================\n");
+    free(b);
+    free(a);
 }

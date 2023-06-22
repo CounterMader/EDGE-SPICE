@@ -16,7 +16,7 @@
 %token <sv> RE_T CE_T LE_T EE_T FE_T GE_T HE_T VE_T IE_T ELM_T
 %token <iv> INT_T
 %token <dv> DEC_T PREF_T
-%token TS_T DS_T AS_T G2_T END_T DC_T AC_T SINE_T PULSE_T RAMP_T STEP_T PLT_T
+%token TS_T DS_T AS_T G2_T END_T DC_T AC_T SINE_T PULSE_T RAMP_T STEP_T PLT_T IC_T
 %type <dv> value
 
 %define parse.error verbose
@@ -56,14 +56,14 @@ resistor:
       RE_T INT_T INT_T value {
         add_node($2);
         add_node($3);
-        add_RLC($1,$2,$3,$4,1);
+        add_RLC($1,$2,$3,$4,1,0);
         log_trace("Resistor : %s ,node %d --> %d ,value = %.16f OHM.",$1,$2,$3,$4);
         free($1);   //DeAllocating sv memory which we allocatd in lexer
     }
     | RE_T INT_T INT_T value G2_T {
         add_node($2);
         add_node($3);
-        add_RLC($1,$2,$3,$4,2);
+        add_RLC($1,$2,$3,$4,2,0);
         log_trace("Resistor : %s ,node %d --> %d ,value = %.16f OHM.",$1,$2,$3,$4);
         free($1);   //DeAllocating sv memory which we allocatd in lexer
     }
@@ -73,15 +73,29 @@ capacitor:
       CE_T INT_T INT_T value {
         add_node($2);
         add_node($3);
-        add_RLC($1,$2,$3,$4,1);
+        add_RLC($1,$2,$3,$4,1,0);
         log_trace("Capacitor : %s ,node %d --> %d ,value = %.16f FARAD.",$1,$2,$3,$4);
+        free($1);   //DeAllocating sv memory which we allocatd in lexer
+    }
+    | CE_T INT_T INT_T value IC_T value {
+        add_node($2);
+        add_node($3);
+        add_RLC($1,$2,$3,$4,1,$6);
+        log_trace("Capacitor : %s ,node %d --> %d ,value = %.16f FARAD, Ic = %f",$1,$2,$3,$4,$6);
         free($1);   //DeAllocating sv memory which we allocatd in lexer
     }
     | CE_T INT_T INT_T value G2_T {
         add_node($2);
         add_node($3);
-        add_RLC($1,$2,$3,$4,2);
+        add_RLC($1,$2,$3,$4,2,0);
         log_trace("Capacitor : %s ,node %d --> %d ,value = %.16f FARAD.",$1,$2,$3,$4);
+        free($1);   //DeAllocating sv memory which we allocatd in lexer
+    }
+    | CE_T INT_T INT_T value G2_T IC_T value{
+        add_node($2);
+        add_node($3);
+        add_RLC($1,$2,$3,$4,2,$7);
+        log_trace("Capacitor : %s ,node %d --> %d ,value = %.16f FARAD, Ic = %f",$1,$2,$3,$4,$7);
         free($1);   //DeAllocating sv memory which we allocatd in lexer
     }
     ;
@@ -90,8 +104,15 @@ inductor:
       LE_T INT_T INT_T value {
         add_node($2);
         add_node($3);
-        add_RLC($1,$2,$3,$4,2);
+        add_RLC($1,$2,$3,$4,2,0);
         log_trace("Inductor : %s ,node %d --> %d ,value = %.16f Henry.",$1,$2,$3,$4);
+        free($1);   //DeAllocating sv memory which we allocatd in lexer
+    }
+    | LE_T INT_T INT_T value IC_T value {
+        add_node($2);
+        add_node($3);
+        add_RLC($1,$2,$3,$4,2,$6);
+        log_trace("Inductor : %s ,node %d --> %d ,value = %.16f Henry, Ic = %f",$1,$2,$3,$4,$6);
         free($1);   //DeAllocating sv memory which we allocatd in lexer
     }
     ;

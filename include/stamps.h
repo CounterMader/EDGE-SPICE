@@ -30,3 +30,7 @@ void v_ac_stamp(CKTcircuit *circuit, SRC_TAB *source);
 void v_0_ac_stamp(CKTcircuit *circuit, SRC_TAB *source);
 void i_ac_g1_stamp(CKTcircuit *circuit, SRC_TAB *source);
 void i_ac_g2_stamp(CKTcircuit *circuit, SRC_TAB *source);
+void g_ac_stamp(CKTcircuit *circuit, SRC_TAB *source);
+void e_ac_stamp(CKTcircuit *circuit, SRC_TAB *source);
+void f_ac_stamp(CKTcircuit *circuit, HASH_TAB *htab, SRC_TAB *source);
+void h_ac_stamp(CKTcircuit *circuit, HASH_TAB *htab, SRC_TAB *source);

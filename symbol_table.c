@@ -112,13 +112,13 @@ NODE_TAB *create_node(char *key,int number){
     return ntab;
 }
 
-ELM_TAB *create_element(char *eid, NODE_TAB *node1, NODE_TAB *node2, NODE_TAB *node3, NODE_TAB *node4, double value, int group){
+ELM_TAB *create_element(char *eid, NODE_TAB *node1, NODE_TAB *node2, NODE_TAB *node3, NODE_TAB *node4, double value, int group, double ic){
     ELM_TAB *etab = NULL;
     etab = (ELM_TAB*)malloc(sizeof(ELM_TAB));
 
     etab -> key = (char*)malloc(strlen(eid) + 1);
     strcpy(etab -> key, eid);
-
+    
     etab ->current = NULL;
 
     etab -> next = NULL;
@@ -133,7 +133,11 @@ ELM_TAB *create_element(char *eid, NODE_TAB *node1, NODE_TAB *node2, NODE_TAB *n
 
     etab -> is_stamped = NOT_STAMPED;
 
-    etab -> cvs = NULL;
+    etab -> ic = NULL;
+    if(ic != 0.0){
+        etab -> ic = (double *)calloc(1, sizeof(double));
+        etab -> ic[0] = ic;
+    }
     return etab;
 }
 
@@ -144,8 +148,8 @@ void free_node(NODE_TAB *ntab){
 
 void free_element(ELM_TAB *etab){
     free(etab -> key);
-    if(etab -> cvs != NULL){
-        free(etab -> cvs);
+    if(etab -> ic != NULL){
+        free(etab -> ic);
     }
     free(etab);
 }
@@ -196,13 +200,9 @@ int elm_cmp(ELM_TAB *p, ELM_TAB*q){
 
 /*return 1 when symbol already exist in data base
   return 0 when inserting successfull*/
-int elm_insert(HASH_TAB *tab, char *eid, char *cvs, NODE_TAB *node1, NODE_TAB *node2, NODE_TAB *node3, NODE_TAB *node4, double value, int group){
-    ELM_TAB *elm = create_element(eid, node1, node2, node3, node4, value, group);
-    
-    if(cvs != NULL){
-        elm -> cvs = malloc((strlen(cvs) + 1) * sizeof(char));
-        strcpy(elm -> cvs, cvs);
-    }
+int elm_insert(HASH_TAB *tab, char *eid, NODE_TAB *node1, NODE_TAB *node2, NODE_TAB *node3, NODE_TAB *node4, double value, int group, double ic){
+    ELM_TAB *elm = create_element(eid, node1, node2, node3, node4, value, group, ic);
+
     unsigned int index = tab -> hash(eid) % tab -> e_size;
     
     if(tab -> e_table[index] == NULL){
@@ -334,9 +334,15 @@ void print_element_table(HASH_TAB *tab, FILE *fp){
             continue;
         ELM_TAB *temp = tab -> e_table[i];
         while(temp){
-            fprintf(fp,"%d\teid = %s\tnode : %d -> %d\tvalue = %f\tg:%d\n",tab -> hash(temp -> key) % tab -> e_size,
+            fprintf(fp,"%d\teid = %s\tnode : %d -> %d\tvalue = %f\tg:%d",tab -> hash(temp -> key) % tab -> e_size,
                                                                        temp -> key, temp -> node1 -> number, temp ->node2 -> number,
                                                                        temp -> value, temp -> group);
+            if(temp -> ic != NULL){
+                fprintf(fp, " ,Ic = %f\n", temp -> ic[0]);
+            }
+            else{
+                fprintf(fp, "\n");
+            }
             temp = temp -> next;
         }
     }

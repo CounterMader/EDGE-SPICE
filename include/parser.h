@@ -1,5 +1,5 @@
 int parse(const char *file_name);
-void add_RLC(char *eid, int node1, int node2, double value,int group);
+void add_RLC(char *eid, int node1, int node2, double value,int group, double ic);
 void add_V(char *eid, int node1, int node2, double value);
 void add_sine_v(char *sid, int node1, int node2, double offset, double amp, double freq, double delay, double d_factor, double phase);
 void add_pulse_v(char *sid, int node1, int node2, double v_off, double v_on, double delay, double Tr, double Tf, double t_on, double t_period);

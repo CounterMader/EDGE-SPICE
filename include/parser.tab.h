@@ -78,7 +78,8 @@ extern int yydebug;
     PULSE_T = 279,                 /* PULSE_T  */
     RAMP_T = 280,                  /* RAMP_T  */
     STEP_T = 281,                  /* STEP_T  */
-    PLT_T = 282                    /* PLT_T  */
+    PLT_T = 282,                   /* PLT_T  */
+    IC_T = 283                     /* IC_T  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -93,7 +94,7 @@ union YYSTYPE
     double dv;
     int iv;
 
-#line 97 "./include/parser.tab.h"
+#line 98 "./include/parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

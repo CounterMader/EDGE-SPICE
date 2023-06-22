@@ -20,7 +20,7 @@ NUM         [0-9]
 alph        [a-z]
 ALPH        [A-Z]
 DEC         [+-]?({NUM}+"."?{NUM}*|{NUM}*"."{NUM}+)
-ELM_ID      {NUM}+
+ELM_ID      ({NUM}+|{alph}+|{ALPH}+)
 NODE_ID     {NUM}+
 
  //Prefixes
@@ -215,6 +215,9 @@ ELEMENT      ("I"{ELM_ID}|"V"{ELM_ID}|"E"{ELM_ID}|"F"{ELM_ID}|"G"{ELM_ID}|"H"{EL
                             }
 {END}                       {
                                 return END_T;
+                            }
+"Ic="                        {
+                                return IC_T;
                             }
 .                           {yyerror("ERROR!, %c in line %d", *yytext, yylineno);}
 %%

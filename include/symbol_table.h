@@ -32,10 +32,10 @@ typedef struct elm_table {
     int group;
     
     double value;
+    double *ic;
     double *current;
 
     int is_stamped;
-    char *cvs;             //Corresponding voltage source for current controled sources
 }ELM_TAB;
 
 typedef struct src_table{
@@ -87,13 +87,13 @@ HASH_TAB *maketab(int NTsize, int ETsize, int STsize,
                   int(*s_cmp_function)(SRC_TAB *, SRC_TAB *));
 
 NODE_TAB *create_node(char *key,int data);
-ELM_TAB *create_element(char *eid, NODE_TAB *node1, NODE_TAB *node2, NODE_TAB *node3, NODE_TAB *node4, double value, int group);
+ELM_TAB *create_element(char *eid, NODE_TAB *node1, NODE_TAB *node2, NODE_TAB *node3, NODE_TAB *node4, double value, int group, double ic);
 void free_node(NODE_TAB *ntab);
 void free_element(ELM_TAB *etab);
 void free_hash_table(HASH_TAB *tab);
 int node_cmp(NODE_TAB *p, NODE_TAB *q);
 int elm_cmp(ELM_TAB *p, ELM_TAB *q);
-int elm_insert(HASH_TAB *tab, char *eid, char *cvs, NODE_TAB *node1, NODE_TAB *node2, NODE_TAB *node3, NODE_TAB *node4, double value, int group);
+int elm_insert(HASH_TAB *tab, char *eid, NODE_TAB *node1, NODE_TAB *node2, NODE_TAB *node3, NODE_TAB *node4, double value, int group, double ic);
 int node_insert(HASH_TAB *tab, char *key, int number);
 ELM_TAB *search_element(HASH_TAB *tab, char *key);
 NODE_TAB *search_node(HASH_TAB *tab, char *key);

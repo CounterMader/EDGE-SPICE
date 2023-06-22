@@ -22,8 +22,8 @@ int parse(const char *file_name){
     yyparse();
 }
 
-void add_RLC(char *eid, int node1, int node2, double value,int group){
-    if(elm_insert(htab, eid, NULL, search_node_by_num(htab, node1), search_node_by_num(htab, node2), NO_NODE, NO_NODE, value, group)){
+void add_RLC(char *eid, int node1, int node2, double value,int group, double ic){
+    if(elm_insert(htab, eid, search_node_by_num(htab, node1), search_node_by_num(htab, node2), NO_NODE, NO_NODE, value, group, ic)){
         log_error("Duplicated Element %s in line %d",eid, (yylineno - 1));
         exit(EXIT_FAILURE);
     }
