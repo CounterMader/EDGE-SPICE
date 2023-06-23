@@ -451,10 +451,16 @@ void simulate_AC(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
     info = LAPACKE_zgesv(LAPACK_ROW_MAJOR, n, nrhs, a, lda, ipiv, b, ldb);
     log_trace("LAPCKE info=%d",info);
     printf("Simulation Completed!\n====================\n\n");
-    
+    printf("Freq = %f Hz\n\n", circuit -> frequency);
+
     for(int i = 0;i < htab -> n_numsyms - 1;i++){
-        printf("V(%d)\t=\tamp : %lf phase : %lf deg\n", i+1,sqrt(pow(b[i].re,2) + pow(b[i].im,2)),atan(b[i].im/b[i].re)*180/PI);
-        printf("V(%d)\t=\tamp : %lf j%lf\n", i+1,b[i].re,b[i].im);
+        if(b[i].re < 0){
+            printf("V(%d)\t=\tamp : %lf phase : %lf deg\n", i+1,sqrt(pow(b[i].re,2) + pow(b[i].im,2)),(atan(b[i].im/b[i].re)*180/PI) - 180);
+        }
+        else{
+            printf("V(%d)\t=\tamp : %lf phase : %lf deg\n", i+1,sqrt(pow(b[i].re,2) + pow(b[i].im,2)),atan(b[i].im/b[i].re)*180/PI);
+        }
+        //printf("V(%d)\t=\tamp : %lf j%lf\n", i+1,b[i].re,b[i].im);
     }
 
     for(int i = 0;i < htab -> e_size;i++){
@@ -463,8 +469,13 @@ void simulate_AC(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
         ELM_TAB *elm_temp = htab -> e_table[i];
         while(elm_temp){
             if(elm_temp -> group == 2){
-                printf("I(%s)\t=\tamp : %lf phase : %lf deg\n", elm_temp -> key,sqrt(pow(b[elm_temp -> index_in_RHS - 1].re,2) + pow(b[elm_temp -> index_in_RHS - 1].im,2)),atan(b[elm_temp -> index_in_RHS - 1].im/b[elm_temp -> index_in_RHS - 1].re)*180.0/PI);
-                printf("I(%s)\t=\tamp : %lf j%lf\n", elm_temp -> key,b[elm_temp -> index_in_RHS - 1].re,b[elm_temp -> index_in_RHS - 1].im);
+                if(b[elm_temp -> index_in_RHS - 1].re < 0){
+                    printf("I(%s)\t=\tamp : %lf phase : %lf deg\n", elm_temp -> key,sqrt(pow(b[elm_temp -> index_in_RHS - 1].re,2) + pow(b[elm_temp -> index_in_RHS - 1].im,2)),(atan(b[elm_temp -> index_in_RHS - 1].im/b[elm_temp -> index_in_RHS - 1].re)*180.0/PI) - 180);    
+                }
+                else{
+                    printf("I(%s)\t=\tamp : %lf phase : %lf deg\n", elm_temp -> key,sqrt(pow(b[elm_temp -> index_in_RHS - 1].re,2) + pow(b[elm_temp -> index_in_RHS - 1].im,2)),atan(b[elm_temp -> index_in_RHS - 1].im/b[elm_temp -> index_in_RHS - 1].re)*180.0/PI);
+                }
+                //printf("I(%s)\t=\tamp : %lf j%lf\n", elm_temp -> key,b[elm_temp -> index_in_RHS - 1].re,b[elm_temp -> index_in_RHS - 1].im);
             }
             elm_temp = elm_temp -> next;
         }
@@ -476,7 +487,12 @@ void simulate_AC(CKTcircuit *circuit, HASH_TAB *htab, FILE *log){
         SRC_TAB *stemp = htab -> s_table[j];
         while(stemp){
             if(stemp -> group == 2){
-                printf("I(%s)\t=\tamp : %lf phase : %lf deg\n", stemp -> sid,sqrt(pow(b[stemp -> index_in_RHS - 1].re,2) + pow(b[stemp -> index_in_RHS - 1].im,2)),atan(b[stemp -> index_in_RHS - 1].im/b[stemp -> index_in_RHS - 1].re)*180.0/PI);
+                if(b[stemp -> index_in_RHS - 1].re < 0){
+                    printf("I(%s)\t=\tamp : %lf phase : %lf deg\n", stemp -> sid,sqrt(pow(b[stemp -> index_in_RHS - 1].re,2) + pow(b[stemp -> index_in_RHS - 1].im,2)),(atan(b[stemp -> index_in_RHS - 1].im/b[stemp -> index_in_RHS - 1].re)*180.0/PI) - 180);
+                }
+                else{
+                    printf("I(%s)\t=\tamp : %lf phase : %lf deg\n", stemp -> sid,sqrt(pow(b[stemp -> index_in_RHS - 1].re,2) + pow(b[stemp -> index_in_RHS - 1].im,2)),atan(b[stemp -> index_in_RHS - 1].im/b[stemp -> index_in_RHS - 1].re)*180.0/PI);
+                }
             }
             stemp = stemp -> next;
         }

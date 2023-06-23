@@ -385,7 +385,7 @@ void v_ac_stamp(CKTcircuit *circuit, SRC_TAB *source){
 
     circuit -> RHSmat_comp -> data[source -> index_in_RHS - 1][0].re += source -> src_coefficient[ac_amp] * cos(radians);
     circuit -> RHSmat_comp -> data[source -> index_in_RHS - 1][0].im += source -> src_coefficient[ac_amp] * sin(radians);
-    printf("%f %f\n",circuit -> RHSmat_comp -> data[source -> index_in_RHS - 1][0].re,circuit -> RHSmat_comp -> data[source -> index_in_RHS - 1][0].im);
+    //printf("%f %f\n",circuit -> RHSmat_comp -> data[source -> index_in_RHS - 1][0].re,circuit -> RHSmat_comp -> data[source -> index_in_RHS - 1][0].im);
     if(source -> node1 -> number != 0){
         circuit -> MNAmat_comp -> data[source -> index_in_RHS - 1][source -> node1 -> number - 1].re += +1;
         circuit -> MNAmat_comp -> data[source -> node1 -> number - 1][source -> index_in_RHS - 1].re += +1;    
@@ -422,8 +422,8 @@ void i_ac_g1_stamp(CKTcircuit *circuit, SRC_TAB *source){
         circuit -> RHSmat_comp -> data[source -> node1 -> number - 1][0].im += -source -> src_coefficient[ac_amp] * sin(radians);
     }
     if(source -> node2 -> number != 0){
-        circuit -> RHSmat_comp -> data[source -> node2 -> number - 1][0].re += -source -> src_coefficient[ac_amp] * cos(radians);    
-        circuit -> RHSmat_comp -> data[source -> node2 -> number - 1][0].im += -source -> src_coefficient[ac_amp] * sin(radians);
+        circuit -> RHSmat_comp -> data[source -> node2 -> number - 1][0].re += source -> src_coefficient[ac_amp] * cos(radians);    
+        circuit -> RHSmat_comp -> data[source -> node2 -> number - 1][0].im += source -> src_coefficient[ac_amp] * sin(radians);
     }
 
 }
@@ -478,8 +478,6 @@ void g_ac_stamp(CKTcircuit *circuit, SRC_TAB *source){
     ------- node4   |------- node2
 */
 void e_ac_stamp(CKTcircuit *circuit, SRC_TAB *source){
-    //ES_mat *MNAstamp = ES_mat_new(circuit -> MNA_size, circuit -> MNA_size);
-
     source -> index_in_RHS = get_RHS_index(circuit);
 
     if(source -> node1 -> number != 0){
@@ -496,9 +494,6 @@ void e_ac_stamp(CKTcircuit *circuit, SRC_TAB *source){
     if(source -> node4 -> number != 0){
         circuit -> MNAmat_comp -> data[source -> index_in_RHS - 1][source -> node4 -> number - 1].re += source -> src_coefficient[dep_value];
     }
-    
-    //circuit -> MNAmat = ES_mat_add(circuit -> MNAmat, MNAstamp);
-    //ES_mat_free(MNAstamp);
 }
 
 void f_ac_stamp(CKTcircuit *circuit, HASH_TAB *htab, SRC_TAB *source){
